@@ -1,0 +1,86 @@
+<template>
+  <div class="hello">
+    <div class="name-box">
+      <h1 class="name">Früügal</h1>
+      <h2>Getting the financial information you need</h2>
+    </div>
+    <input type="text" v-model="querey" autofocus="on" placeholder="What do you want to know?"></input>
+    <button type="submit" @click="askWatson">Search</button>
+
+
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      // note: changing this line won't causes changes
+      // with hot-reload because the reloaded component
+      // preserves its current state and we are modifying
+      // its initial state.
+      querey: ''
+    }
+  },
+
+  methods: {
+    askWatson () {
+     // GET /someUrl
+      this.$http.get('/api').then(response => {
+        // get body data
+        console.log(response.body)
+      }, response => {
+        // error callback
+      })
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.name-box {
+  margin-bottom: 40px;
+}
+h1.name {
+  color: #42b983;
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+input {
+  border-radius: 5px;
+  border: none;
+  width: 300px;
+  height: 30px;
+  font-size: 18px;
+
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus, button:hover {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+  outline: none;
+
+}
+
+button {
+  height: 32px;
+  width: 70px;
+  margin-left: 6px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #2E86AB;
+
+  font: inherit;
+
+  transition: all 0.2s ease-in-out;
+}
+</style>
