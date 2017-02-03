@@ -1,11 +1,11 @@
 <template>
-  <div class="hello">
+  <div class="">
     <div class="name-box">
       <h1 class="name">Früügal</h1>
       <h2>Getting the financial information you need</h2>
     </div>
     <input type="text" v-model="querey" autofocus="on" placeholder="What do you want to know?"></input>
-    <button type="submit" @click="askWatson">Search</button>
+    <button @click="askWatson">Search</button>
 
 
   </div>
@@ -44,7 +44,7 @@ export default {
 }
 h1.name {
   color: #42b983;
-  font-size: 50px;
+  font-size: 70px;
   margin-bottom: 10px;
 }
 
@@ -64,7 +64,7 @@ input {
 }
 
 input:focus, button:hover {
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+  box-shadow: 1px 2px 4px rgba(48, 64, 80, .8);
   outline: none;
 
 }

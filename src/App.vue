@@ -1,36 +1,51 @@
 <template>
   <div id="app">
-    <search></search>
+    <div id="header">
+      <!-- not sure if we will need header, may be a component, or nothing -->
+    </div>
+    <div id="mainContainer">
 
+        <div id="sidebar" v-if="currentView !== 'search'">
+          <transition appear name="slide-in">
+          <sidebar></sidebar>
+          </transition>
+        </div>
+
+
+      <div id="mainView">
+        <component :is="currentView"></component>
+        <button @click="currentView = 'stock'">change component</button>
+      </div>
+
+    </div> <!-- end MainContainer -->
 
   </div>
 </template>
 
 <script>
-import Search from './components/Search'
-import Stock from './components/Stock'
-import Sidebar from './components/Sidebar'
+import search from './components/Search'
+import stock from './components/Stock'
+import sidebar from './components/Sidebar'
 
 export default {
-  components: {
-    Search,
-    Stock,
-    Sidebar
+  data: function () {
+    return {
+      currentView: 'search'
+    }
   },
 
-  data: {
-    currentView: Search
+  components: {
+    search,
+    stock,
+    sidebar
   }
+
 }
 </script>
 
 
 <style>
-
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   height: 100%;
   background: #2E86AB;
@@ -41,14 +56,40 @@ body {
 
 #app {
   color: #2c3e50;
-  margin-top: 100px;
-  max-width: 600px;
   font-family: Source Sans Pro, Helvetica, sans-serif;
   text-align: center;
 }
 
-#app a {
-  color: #42b983;
-  text-decoration: none;
+#header {
+  background: grey;
+  height: 100px;
+  width: 100%;
+}
+
+#mainContainer {
+  padding: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#mainView {
+  width: 80%;
+  //background: coral;
+}
+
+#sidebar {
+  width: 20%;
+  background: #4efc67;
+  margin-right: 10px;
+
+}
+
+
+
+.slide-in-enter-active, .slide-in-leave-active {
+  transition: opacity 2s;
+}
+.slide-in-enter, .slide-in-leave-to  {
+  opacity: 0;
 }
 </style>

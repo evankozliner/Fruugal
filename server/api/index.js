@@ -7,7 +7,6 @@ var stocks = require('./stocks.js');
 routes.use('/stocks', stocks);
 
 
-
 routes.get('/', function(req, res) {
   res.status(200).json({ heartbeat: 'Connected!' });
 });
