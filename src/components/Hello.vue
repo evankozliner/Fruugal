@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button @click="askWatson">search!!!!</button>
+    <button @click="askWatson">{{msg}}</button>
   </div>
 </template>
 
@@ -9,17 +9,13 @@
 export default {
   data () {
     return {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
-      msg: 'Hello World!'
+      msg: 'Search'
     }
   },
   methods: {
     askWatson () {
      // GET /someUrl
-      this.$http.get('/api').then(response => {
+      this.$http.get('/api', {params: {message: this.msg}}).then(response => {
         // get body data
         console.log(response.body)
       }, response => {
