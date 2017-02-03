@@ -17,6 +17,7 @@ routes.get('/', function(req, res) {
 
   var questionClassifier = new QuestionClassifier();
 
+  // TODO 
   // Question abstract class
   // QuestionRouter class, returns an implementation of type Question 
 
@@ -25,6 +26,10 @@ routes.get('/', function(req, res) {
     .then(function(watsonsAnswer) {
       console.log(watsonsAnswer);
       res.status(200).json({reply: watsonsAnswer});
+    })
+    .catch(function(reason) { 
+      console.log(reason); 
+      res.status(500).json({error: reason});
     });
 });
 

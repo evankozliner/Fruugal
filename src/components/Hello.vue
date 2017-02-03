@@ -1,7 +1,8 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <button @click="askWatson">{{msg}}</button>
+    <h1>Ask Watson!</h1>
+    <input type="text" value={{msg}} v-model="msg"></input>
+    <button @click="askWatson">Ask Watson!</button>
   </div>
 </template>
 
@@ -9,7 +10,7 @@
 export default {
   data () {
     return {
-      msg: 'Search'
+      msg: 'What is the stock price of Apple?'
     }
   },
   methods: {
