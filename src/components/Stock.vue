@@ -19,7 +19,7 @@ export default {
 <style scoped>
 .info {
   color: #42b983;
-  background: lightblue;
+  background: rgba(173, 216, 230, 0.1);
   height: 400px;
 }
 </style>
