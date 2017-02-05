@@ -1,53 +1,85 @@
 <template>
   <div id="app">
-    <img class="logo" src="./assets/logo.png">
-    <hello></hello>
-    <p>
-      Welcome to your Vue.js app!
-    </p>
-    <p style="color:red">
-      If you're seeing this on Heroku, you successfully deployed your app!
-    </p>
+    <div id="header">
+      <!-- not sure if we will need header, may be a component, or nothing -->
+    </div>
+    <div id="mainContainer">
+
+        <div id="sidebar" v-if="currentView !== 'search'">
+          <sidebar></sidebar>
+        </div>
+
+
+      <div id="mainView">
+        <component :is="currentView"></component>
+        <button @click="currentView = 'stock'">change component</button>
+      </div>
+
+    </div> <!-- end MainContainer -->
+
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
+import search from './components/Search'
+import stock from './components/Stock'
+import sidebar from './components/Sidebar'
 
 export default {
+  data: function () {
+    return {
+      currentView: 'search'
+    }
+  },
+
   components: {
-    Hello
+    search,
+    stock,
+    sidebar
   }
+
 }
 </script>
 
-<style>
-html {
-  height: 100%;
-}
 
+<style>
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   height: 100%;
+  background: #2E86AB;
+
+  font-family: sans-serif;
+  font-style: Verdana, Geneva;
 }
 
 #app {
   color: #2c3e50;
-  margin-top: -100px;
-  max-width: 600px;
   font-family: Source Sans Pro, Helvetica, sans-serif;
   text-align: center;
 }
 
-#app a {
-  color: #42b983;
-  text-decoration: none;
+#header {
+  background: grey;
+  height: 100px;
+  width: 100%;
 }
 
-.logo {
-  width: 100px;
-  height: 100px
+#mainContainer {
+  padding: 5px;
+  display: flex;
+  justify-content: space-around;
 }
+
+#mainView {
+  width: 80%;
+  //background: coral;
+}
+
+#sidebar {
+  width: 20%;
+  //background: #4efc67;
+  margin-right: 20px;
+
+}
+
 </style>

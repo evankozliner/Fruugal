@@ -1,0 +1,35 @@
+//Mock reuslt for buy/sell request
+{
+  "stock_price": 128.52,
+  "change_percent": -0.234,
+  "number_positive_articles": 27,
+  "positive_articles": [
+    {"article_name": "Apple is Good",
+    "url": "http://www.apple.com/",
+    "keywords": ["Apple", "Good", "sorta-kinda-good"]
+    },
+    {"article_name": "Samsung is Good",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["Apple", "Good", "sorta-kinda-good"]
+    },
+    {"article_name": "Nokia is Good",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["NOKIA", "Good", "sorta-kinda-good"]
+    }
+  ],
+  "number_negative_articles": 8,
+  "negative_articles": [
+    {"article_name": "Apple is Bad",
+    "url": "http://www.apple.com/",
+    "keywords": ["Apple", "Good", "sorta-kinda-good"]
+    },
+    {"article_name": "Samsung is Bad",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["Apple", "OK", "sorta-kinda-good"]
+    },
+    {"article_name": "Nokia is Bad",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["NOKIA", "robust"]
+    }
+  ]
+}
