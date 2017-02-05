@@ -26,7 +26,7 @@ export default {
   methods: {
     askWatson () {
      // GET /someUrl
-      this.$http.get('/api').then(response => {
+      this.$http.get('/api', {params: {message: this.querey}}).then(response => {
         // get body data
         console.log(response.body)
       }, response => {
