@@ -16,7 +16,13 @@ function getGeneral(response, ticker) {
 
   request({uri: host + pathGeneral})
     .then(function (res) {
-    response.json(JSON.parse(res)[0]);
+    request({uri: host + pathStock})
+      .then(function (res2) {
+        var generalJSON = JSON.parse(res)[0];
+        var stockJSON = JSON.parse(res2);
+        
+        response.json(generalJSON.concat(stockJSON));
+      }
   });
 
 }
