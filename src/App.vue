@@ -1,17 +1,12 @@
 <template>
   <div id="app">
-    <div id="header">
-      <!-- not sure if we will need header, may be a component, or nothing -->
-    </div>
     <div id="mainContainer">
-
-        <div id="sidebar" v-if="currentView !== 'search'">
-          <sidebar></sidebar>
-        </div>
-
+      <div id="sidebar" v-if="currentView !== 'search'">
+        <sidebar></sidebar>
+      </div>
 
       <div id="mainView">
-        <component :is="currentView"></component>
+        <component v-on:category="changeView" :is="currentView"></component>
         <button @click="currentView = 'stock'">change component</button>
       </div>
 
@@ -36,6 +31,13 @@ export default {
     search,
     stock,
     sidebar
+  },
+
+  methods: {
+    changeView: function (category) {
+      console.log('Here in App.vue, I got the category ' + category)
+      this.currentView = category
+    }
   }
 
 }
