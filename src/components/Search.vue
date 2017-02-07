@@ -4,7 +4,7 @@
       <h1 class="name">Früügal</h1>
       <h2>Getting the financial information you need</h2>
     </div>
-    <input type="text" v-model="querey" autofocus="on" placeholder="What do you want to know?"></input>
+    <input type="text" v-model="query" autofocus="on" placeholder="What do you want to know?"></input>
     <button @click="askWatson">Search</button>
 
 
@@ -19,14 +19,14 @@ export default {
       // with hot-reload because the reloaded component
       // preserves its current state and we are modifying
       // its initial state.
-      querey: ''
+      query: ''
     }
   },
 
   methods: {
     askWatson () {
      // GET /someUrl
-      this.$http.get('/api').then(response => {
+      this.$http.get('/api', {params: {message: this.query}}).then(response => {
         // get body data
         console.log(response.body)
       }, response => {
