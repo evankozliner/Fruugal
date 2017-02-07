@@ -1,0 +1,45 @@
+//Mock result for buy/sell request
+{
+  "stock_price": 128.52,
+  "change_percent": -0.234,
+  "number_positive_articles": 27,
+  "positive_articles": [
+    {"article_name": "Apple is Good",
+    "url": "http://www.apple.com/",
+    "keywords": ["Apple", "Good", "sorta-kinda-good"]
+    },
+    {"article_name": "Samsung is Good",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["Apple", "Good", "sorta-kinda-good"]
+    },
+    {"article_name": "Nokia is Good",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["NOKIA", "Good", "sorta-kinda-good"]
+    }
+  ],
+  "number_negative_articles": 8,
+  "negative_articles": [
+    {"article_name": "Apple is Bad",
+    "url": "http://www.apple.com/",
+    "keywords": ["Apple", "Good", "sorta-kinda-good"]
+    },
+    {"article_name": "Samsung is Bad",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["Apple", "OK", "sorta-kinda-good"]
+    },
+    {"article_name": "Nokia is Bad",
+    "url": "https://en.wikipedia.org/wiki/List_of_stock_exchanges",
+    "keywords": ["NOKIA", "robust"]
+    }
+  ]
+}
+
+//Mock result for info request
+{
+  "stock_price": 128.52,
+  "company_name": "Apple Inc.",
+  "company_leader": "Tim Cook",
+  "company_history": "Founded in 1994 by a man pursuing a mission, Apple is a corner stone of development and fruit.",
+  "stock_history": [[1999, 1.00],[2000, 1.10],[2001, 1.50],[2002, 3.00],[2003, 10.00],[2004, 25.00],[2005, 50.00],[2006, 75.00],[2007, 80.30],[2008, 90.21],[2009, 97.84],[2010, 101.52],[2011, 111.11],[2012, 120.00],[2013, 121.00],[2014, 123.00],[2015, 124.00],[2016, 126.00]],
+  "logo": "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?201609051049"
+}

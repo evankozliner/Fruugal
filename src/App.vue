@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <div id="header">
-      <!-- not sure if we will need header, may be a component, or nothing -->
-    </div>
     <div id="mainContainer">
 
         <div id="sidebar" v-if="currentView !== 'search'">
