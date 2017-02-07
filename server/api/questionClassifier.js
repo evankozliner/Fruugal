@@ -4,16 +4,16 @@ module.exports = class QuestionClassifier {
     return watsonRes.top_class;
   }
 
-  emptyRequestPromise() {
+  emptyRequestPromise(question) {
     return new Promise(function(resolve,rej) {
-      resolve("Empty Question");
+      resolve({question: "Blank Question"});
     });
   }
  
   classify(question) {
     var questionThis = this;
 
-    if (question === "") { return this.emptyRequestPromise(); }
+    if (question === "") { return this.emptyRequestPromise(question); }
 
     return new Promise(function(resolve, reject) {
       var watson = require('watson-developer-cloud');
@@ -30,7 +30,10 @@ module.exports = class QuestionClassifier {
           console.log(err); 
           reject(err);
         } else {
-          resolve(questionThis.filterWatsonResponse(watsonResponse));
+          resolve({
+            watsonClassRes: questionThis.filterWatsonResponse(watsonResponse),
+            question: question
+          });
         }
       });
     });
