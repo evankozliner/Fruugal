@@ -13,6 +13,7 @@ var routeQuestion = function(questionClass) {
 }
 
 routes.get('/', function(req, res) {
+  console.log(req);
   console.log("User query: " + req.query.message);
 
   var questionClassifier = new QuestionClassifier();
