@@ -20,9 +20,13 @@ function getGeneral(response, ticker) {
       .then(function (res2) {
         var generalJSON = JSON.parse(res)[0];
         var stockJSON = JSON.parse(res2);
-        
-        response.json(generalJSON.concat(stockJSON));
-      }
+
+        var jsons = new Array();
+        jsons.push(generalJSON);
+        jsons.push(stockJSON);
+
+        response.json(jsons);
+      })
   });
 
 }
