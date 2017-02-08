@@ -14,7 +14,7 @@ function getStock(response) {
 
   request({uri: host + pathGeneral})
     .then(function (res) {
-    response.json(JSON.parse(res));
+    response.json(JSON.parse(res)[0]);
   });
 }
 
