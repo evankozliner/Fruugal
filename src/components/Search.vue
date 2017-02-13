@@ -28,11 +28,12 @@ export default {
      // GET /someUrl
       this.$http.get('/api', {params: {message: this.querey}}).then(response => {
         // get body data
-        console.log(response.body)
         // Emit the category of the response
         var categoryOfQuestion = response.body.reply
+        var dataRetrieved = response
         console.log(categoryOfQuestion)
         this.$emit('category', categoryOfQuestion)
+        this.$emit('data', dataRetrieved)
       }, response => {
         // error callback
       })

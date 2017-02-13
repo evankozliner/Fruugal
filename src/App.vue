@@ -7,7 +7,6 @@
 
       <div id="mainView">
         <component v-on:category="changeView" :is="currentView"></component>
-        <button @click="currentView = 'stock'">change component</button>
       </div>
 
     </div> <!-- end MainContainer -->
@@ -17,8 +16,13 @@
 
 <script>
 import search from './components/Search'
+// import StockAnswer from './components/Stock'
 import stock from './components/Stock'
+// import GeneralInfoClass from './components/Info'
+import info from './components/Info'
 import sidebar from './components/Sidebar'
+import errorComponent from './components/Error'
+// import QuestionUnknownAnswer from ./components/UnknownAnswer
 
 export default {
   data: function () {
@@ -30,13 +34,20 @@ export default {
   components: {
     search,
     stock,
+    info,
+    // StockAnswer,
+    // GeneralInfoClass,
     sidebar
   },
 
   methods: {
     changeView: function (category) {
       console.log('Here in App.vue, I got the category ' + category)
-      this.currentView = category
+      if (category === null) {
+        this.currentView = errorComponent
+      } else {
+        this.currentView = category
+      }
     }
   }
 
