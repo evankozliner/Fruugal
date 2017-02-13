@@ -32,9 +32,7 @@ routes.get('/', function(req, res) {
     .then(function(watsonsAnswer) { 
       return watsonsAnswer.answer(); 
     })
-    .then(function(ans) {
-      res.status(200).json({reply: ans});
-    })
+    .then(function(ans) { res.status(200).json(ans); })
     .catch(function(reason) { 
       console.log(reason); 
       res.status(500).json({error: reason});
