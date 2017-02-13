@@ -4,12 +4,12 @@
 let Answer = require('./Answer.js');
 let StockQuery = require('../stockQuery.js');
 let QueryExtractor = require('../queryExtractor.js');
+var QuestionUnknownAnswer = require('./questionUnknownAnswer.js');
 
 module.exports = class StockAnswer extends Answer {
-  answer() {
+  stockAnswer(extractedData) {
     return new Promise((res, rej) => {
       // Assume we only want 1 symbol here, hence [0] array reference
-      let extractedData = (new QueryExtractor(this.rawQuestion)).extractSymbols()[0];
       let companySymbol = extractedData.ticker;
       let companyName = extractedData.marketName;
       let stockQuery = new StockQuery(companySymbol);
@@ -26,5 +26,13 @@ module.exports = class StockAnswer extends Answer {
         rej(reason);
       });
     });
+  }
+
+  answer() {
+    let extractedData = (new QueryExtractor(this.rawQuestion)).extractSymbols()[0];
+    if (extractedData === undefined) {  
+      return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
+    };
+    return this.stockAnswer(extractedData);
   }
 }
