@@ -2,6 +2,7 @@ let masterStockHash = require('./master_stock_hash.json');
 let stopWords = require('./stopwords.json');
 let punctuation = require('./punctuation.json');
 
+// TODO This should be using entity recognition
 module.exports = class QueryExtractor {
   constructor(question) {
     this.question = question;
