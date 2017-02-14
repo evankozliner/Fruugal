@@ -1,7 +1,7 @@
 <template>
   <div class="info">
-    <h1>Here is what we think...</h1>
-    <p> Stock price and article information here</p>
+    <h1>Sorry...</h1>
+    <p> {{ theResponse.apology }} </p>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 export default {
 
   // The data returned from the API call
-  props: ['data'],
+  props: ['theResponse'],
 
   data () {
     return {

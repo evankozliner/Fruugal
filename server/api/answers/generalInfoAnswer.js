@@ -16,7 +16,7 @@ module.exports = class GeneralInfoAnswer extends Answer {
       .then(answers => {
       return {
         answers: answers,
-        className: 'GeneralInfoAnswer'
+        classType: 'GeneralInfoAnswer'
       }
     });
   }

@@ -1,6 +1,7 @@
 let Answer = require('./Answer.js');
 var request = require('request-promise');
 let QueryExtractor = require('../queryExtractor.js');
+var QuestionUnknownAnswer = require('./questionUnknownAnswer.js');
 
 module.exports = class DescriptionAnswer extends Answer {
   constructor(question) {
@@ -10,7 +11,7 @@ module.exports = class DescriptionAnswer extends Answer {
   }
 
   buildBasicAuth() {
-    return "Basic " + new Buffer(process.env.INTRINO_USERNAME + ":" 
+    return "Basic " + new Buffer(process.env.INTRINO_USERNAME + ":"
       + process.env.INTRINO_PASSWORD).toString("base64");
   }
 
@@ -31,7 +32,7 @@ module.exports = class DescriptionAnswer extends Answer {
   answer() {
     // TODO this logic is a repeat of stockAnswer
     let extractedData = (new QueryExtractor(this.rawQuestion)).extractSymbols()[0];
-    if (extractedData === undefined) {  
+    if (extractedData === undefined) {
       return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
     };
     console.log(extractedData)

@@ -29,11 +29,11 @@ export default {
       this.$http.get('/api', {params: {message: this.query}}).then(response => {
         // get body data
         // Emit the category of the response
-        var categoryOfQuestion = response.body.reply
+        var categoryOfQuestion = response.body.classType
         var dataRetrieved = response
         console.log(categoryOfQuestion)
         this.$emit('category', categoryOfQuestion)
-        this.$emit('data', dataRetrieved)
+        this.$emit('data', dataRetrieved.body)
       }, response => {
         // error callback
       })
