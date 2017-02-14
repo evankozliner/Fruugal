@@ -31,6 +31,7 @@ export default {
         // Emit the category of the response
         var categoryOfQuestion = response.body.classType
         var dataRetrieved = response
+        console.log(response)
         console.log(categoryOfQuestion)
         this.$emit('category', categoryOfQuestion)
         this.$emit('data', dataRetrieved.body)

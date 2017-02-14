@@ -17,8 +17,6 @@
 <script>
 import search from './components/Search'
 import StockAnswer from './components/Stock'
-// import stock from './components/Stock'
-// import GeneralInfoClass from './components/Info'
 import GeneralInfoAnswer from './components/Info'
 import sidebar from './components/Sidebar'
 import QuestionUnknownAnswer from './components/Unknown'

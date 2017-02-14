@@ -1,9 +1,12 @@
 <template>
-< HEAD
   <div class="info">
-    <h1>{{theResponse.company_name}}</h1>
-    <h2>Stock price: {{theResponse.stock_price}}</h2>
-    <h2>Company leader: {{src.company_leader}}</h2>
+    <h1>You asked an information question!</h1>
+    <h2>{{theResponse.answers[1].data.name}}: ${{theResponse.answers[0].stockPrice}}</h2>
+    <h2>CEO: {{theResponse.answers[1].data.ceo}}</h2>
+    <p><b>Headquarters:</b> {{theResponse.answers[1].data.hq_address1}}, {{theResponse.answers[1].data.hq_address_city}}, {{theResponse.answers[1].data.hq_state}}</p>
+    <p><b>Number of employees:</b> {{theResponse.answers[1].data.employees}}</p>
+    <p>{{theResponse.answers[1].data.short_description}}</p>
+    <a href="{{theResponse.answers[1].data.company_url}}">{{theResponse.answers[1].data.company_url}}</a>
   </div>
 </template>
 
@@ -24,8 +27,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .info {
-  color: #42b983;
-  background: rgba(173, 216, 230, 0.1);
+  color: #2c3e50;
+  background: #42b983;
   height: 400px;
 }
 </style>
