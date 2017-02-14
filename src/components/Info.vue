@@ -1,15 +1,18 @@
 <template>
   <div class="info">
-    <h1>Here is what we think...</h1>
-    <p> Stock price and article information here</p>
+    <h1>{{src.company_name}}</h1>
+    <h2>Stock price: {{src.stock_price}}</h2>
+    <h2>Company leader: {{src.company_leader}}</h2>
+    <p>{{src.company_history}}</p>
   </div>
 </template>
 
 <script>
+import JSON from '../../misc/example.json'
 export default {
   data () {
     return {
-
+      src: JSON
     }
   }
 }
