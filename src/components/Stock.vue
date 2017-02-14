@@ -11,6 +11,10 @@
 <script>
 import JSON from '../../misc/example.json'
 export default {
+
+  // The data returned from the API call
+  props: ['data'],
+
   data () {
     return {
       src: JSON

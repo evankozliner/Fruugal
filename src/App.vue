@@ -1,15 +1,12 @@
 <template>
   <div id="app">
     <div id="mainContainer">
-
-        <div id="sidebar" v-if="currentView !== 'search'">
-          <sidebar></sidebar>
-        </div>
-
+      <div id="sidebar" v-if="currentView !== 'search'">
+        <sidebar></sidebar>
+      </div>
 
       <div id="mainView">
-        <component :is="currentView"></component>
-        <button @click="currentView = 'stock'">change component</button>
+        <component v-on:data="getJSONData" v-on:category="changeView" :is="currentView" :the-response="responseFromAPI"></component>
       </div>
 
     </div> <!-- end MainContainer -->
@@ -19,20 +16,49 @@
 
 <script>
 import search from './components/Search'
-import stock from './components/Stock'
+import StockAnswer from './components/Stock'
+// import stock from './components/Stock'
+// import GeneralInfoClass from './components/Info'
+import GeneralInfoAnswer from './components/Info'
 import sidebar from './components/Sidebar'
+import QuestionUnknownAnswer from './components/Unknown'
+import error from './components/Error'
+// import QuestionUnknownAnswer from ./components/Unknown
 
 export default {
   data: function () {
     return {
-      currentView: 'search'
+      currentView: 'search',
+      responseFromAPI: ''
     }
   },
 
   components: {
     search,
-    stock,
+    // stock,
+    GeneralInfoAnswer,
+    QuestionUnknownAnswer,
+    error,
+    StockAnswer,
     sidebar
+  },
+
+  methods: {
+    changeView: function (category) {
+      console.log('Here in App.vue, I got the category ' + category)
+      if (category === undefined) {
+        this.currentView = error
+      } else {
+        this.currentView = category
+      }
+    },
+
+    // This will set the data from the search component
+    getJSONData: function (data) {
+      this.responseFromAPI = data
+      console.log('Here is the data...')
+      console.log(data)
+    }
   }
 
 }

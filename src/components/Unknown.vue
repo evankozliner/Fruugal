@@ -1,9 +1,7 @@
 <template>
-< HEAD
   <div class="info">
-    <h1>{{theResponse.company_name}}</h1>
-    <h2>Stock price: {{theResponse.stock_price}}</h2>
-    <h2>Company leader: {{src.company_leader}}</h2>
+    <h1>Sorry...</h1>
+    <p> {{ theResponse.apology }} </p>
   </div>
 </template>
 

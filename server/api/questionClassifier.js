@@ -1,19 +1,19 @@
-module.exports = class QuestionClassifier { 
-  
+module.exports = class QuestionClassifier {
+
   filterWatsonResponse(watsonRes) {
     return watsonRes.top_class;
   }
 
-  emptyRequestPromise() {
+  emptyRequestPromise(question) {
     return new Promise(function(resolve,rej) {
-      resolve("Empty Question");
+      resolve({question: "Blank Question"});
     });
   }
- 
+
   classify(question) {
     var questionThis = this;
 
-    if (question === "") { return this.emptyRequestPromise(); }
+    if (question === "") { return this.emptyRequestPromise(question); }
 
     return new Promise(function(resolve, reject) {
       var watson = require('watson-developer-cloud');
@@ -23,14 +23,17 @@ module.exports = class QuestionClassifier {
         version: 'v1'
       });
       nlc.classify({
-        text: question, 
+        text: question,
         classifier_id: `${process.env.NLC_ID}`
       }, function(err, watsonResponse) {
-        if (err) { 
-          console.log(err); 
+        if (err) {
+          console.log(err);
           reject(err);
         } else {
-          resolve(questionThis.filterWatsonResponse(watsonResponse));
+          resolve({
+            watsonClassRes: questionThis.filterWatsonResponse(watsonResponse),
+            question: question
+          });
         }
       });
     });
