@@ -10,7 +10,7 @@
     "build": "node build/build.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e",
+    "test": "npm run unit && npm run e2e && npm run api-test",
     "deploy": "git subtree push --prefix dist heroku master",
     "postinstall": "npm install express"
   },
@@ -58,7 +58,7 @@
     "karma-spec-reporter": "0.0.24",
     "karma-webpack": "^1.7.0",
     "lolex": "^1.4.0",
-    "mocha": "^2.4.5",
+    "mocha": "^2.5.3",
     "nightwatch": "^0.8.18",
     "nodemon": "^1.11.0",
     "ora": "^0.2.0",
