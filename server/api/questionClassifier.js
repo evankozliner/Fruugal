@@ -1,5 +1,5 @@
-module.exports = class QuestionClassifier { 
-  
+module.exports = class QuestionClassifier {
+
   filterWatsonResponse(watsonRes) {
     return watsonRes.top_class;
   }
@@ -9,7 +9,7 @@ module.exports = class QuestionClassifier {
       resolve({question: "Blank Question"});
     });
   }
- 
+
   classify(question) {
     var questionThis = this;
 
@@ -23,11 +23,11 @@ module.exports = class QuestionClassifier {
         version: 'v1'
       });
       nlc.classify({
-        text: question, 
+        text: question,
         classifier_id: `${process.env.NLC_ID}`
       }, function(err, watsonResponse) {
-        if (err) { 
-          console.log(err); 
+        if (err) {
+          console.log(err);
           reject(err);
         } else {
           resolve({

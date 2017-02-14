@@ -1,8 +1,6 @@
 <template>
-  <div class="info">
-    <h1>Here is what we think...</h1>
-    <p> Stock price and article information here</p>
-  </div>
+  <h1>General Information</h1>
+
 </template>
 
 <script>
