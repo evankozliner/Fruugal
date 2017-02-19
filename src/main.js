@@ -19,20 +19,24 @@ router.map({
   '/': {
     component: App,
     subRoutes: {
-      '/stock': {
-        component: Stock
-      },
       '/': {
         component: Search
+      },
+      '/stock': {
+        component: Stock
       }
       // Add in any addition components here that are rendered inside App.vue (should be most)
     }
   }
 })
 
+// Define redirects
 router.redirect({
   // Redirect search url to home page, which is search component
-  '/search': '/'
+  '/search': '/',
+  // Redirect anything that is not a url we want to the search page
+  '*': '/'
 })
 
+//Start the router, which creates a Vue instance for us to use
 router.start({template: ''}, '#app')
