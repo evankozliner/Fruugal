@@ -1,41 +1,16 @@
 <template>
   <div id="app">
-    <div id="header">
-      <!-- not sure if we will need header, may be a component, or nothing -->
-    </div>
-    <div id="mainContainer">
 
-        <div id="sidebar" v-if="currentView !== 'search'">
-          <sidebar></sidebar>
-        </div>
-
-
-      <div id="mainView">
-        <component :is="currentView"></component>
-        <button @click="currentView = 'stock'">change component</button>
-      </div>
-
-    </div> <!-- end MainContainer -->
-
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import search from './components/Search'
-import stock from './components/Stock'
-import sidebar from './components/Sidebar'
-
 export default {
   data: function () {
     return {
       currentView: 'search'
     }
-  },
-
-  components: {
-    search,
-    stock,
-    sidebar
   }
 
 }
