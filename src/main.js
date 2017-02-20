@@ -4,6 +4,7 @@ import App from './App'
 import VueResource from 'vue-resource'
 import Stock from './components/Stock.vue'
 import Search from './components/Search.vue'
+import ErrorComp from './components/Error.vue'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -24,8 +25,11 @@ router.map({
       },
       '/stock': {
         component: Stock
+      },
+      '/error': {
+        component: ErrorComp
       }
-      // Add in any addition components here that are rendered inside App.vue (should be most)
+      // Add in any addition components here that are rendered inside App.vue (should be most) and import the component at the top of the page too.
     }
   }
 })
@@ -38,5 +42,5 @@ router.redirect({
   '*': '/'
 })
 
-//Start the router, which creates a Vue instance for us to use
+// Start the router, which creates a Vue instance for us to use
 router.start({template: ''}, '#app')

@@ -4,7 +4,7 @@
       <h1 class="name">Früügal</h1>
       <h2>Getting the financial information you need</h2>
     </div>
-    <input type="text" v-model="query" autofocus="on" placeholder="What do you want to know?"></input>
+    <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
     <button @click="askWatson">Search</button>
 
 
@@ -25,12 +25,23 @@ export default {
 
   methods: {
     askWatson () {
-     // GET /someUrl
+      // Maybe set a loading icon here
+      // GET /someUrl
       this.$http.get('/api', {params: {message: this.query}}).then(response => {
         // get body data
         console.log(response.body)
+
+        // Route to the component based on the classType returned in json response
+        // Will probably need to create an object and just pass the data to the next
+        // component using the object.
+        // Check https://github.com/vuejs/vue-router/blob/1.0/docs/en/api/go.md
+
+        // var comp = response.body.classType
+        // this.$router.go('/' + comp)
+        this.$router.go('/stock') // This is for example. In practice, use above
       }, response => {
-        // error callback
+        // error callback, route to error page
+        this.$router.go('/error')
       })
     }
   }

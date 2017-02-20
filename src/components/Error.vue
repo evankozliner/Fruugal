@@ -1,4 +1,4 @@
 <template>
-  <h1>404 Error</h1>
-  <h4>The page you requested was not found</h4>
+  <h1>Sorry about that!</h1>
+  <h4>It seems there has been a problem. We are working on it!</h4>
 </template>
