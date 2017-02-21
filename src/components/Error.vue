@@ -1,12 +1,4 @@
 <template>
-  <h1>Error in finding the correct component</h1>
-  <p>In Search.vue, the data returned did not have an attribute of the name
-  it was looking for</p>
-
+  <h1>Sorry about that!</h1>
+  <h4>It seems there has been a problem. We are working on it!</h4>
 </template>
-
-<script>
-export default {
-
-}
-</script>
