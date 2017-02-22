@@ -44,6 +44,7 @@ body {
   color: #2c3e50;
   font-family: Source Sans Pro, Helvetica, sans-serif;
   text-align: center;
+  background: #2E86AB;
 }
 
 #header {

@@ -16,11 +16,16 @@ const routes = [
   { path: '/', name: 'Search', component: Search },
   { path: '/Stock', name: 'StockAnswer',
       component: Stock, props: true, meta: { requiresSearch: true }},
-  { path: '/Information', name: 'GeneralInfoAnswer', component: Info, props: true },
+  { path: '/Information', name: 'GeneralInfoAnswer', component: Info, props: true,
+      meta: { requiresSearch: true } },
   { path: '/Error', name: 'Error', component: ErrorComp },
-  { path: '/UnknownAnswer', name: 'QuestionUnknownAnswer', component: Unknown, props: true }
+  { path: '/UnknownAnswer', name: 'QuestionUnknownAnswer', component: Unknown, props: true },
   // Add more routes here as needed. NOTE: 'props: true' must be set in each route that
   // needs the json data from the API call!!
+
+  // Redirects
+  { path: '/Search', redirect: '/' },
+  { path: '/*', redirect: '/' }
 ]
 
 // Create the router instance
@@ -29,13 +34,14 @@ var router = new VueRouter({
   mode: 'history'
 })
 
-import SearchCheck from './SearchCheck'
+// Check before goin to each route if it is ok to be going there
+import SearchCheck from './SearchCheck.js'
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresSearch)) {
     // This route requires a search to have been performed
-    if (!SearchCheck.searchHasBeenPerformed()) {
+    if (!SearchCheck.searchHasBeenPerformedToThisClass(to.name)) {
       next({
-        name: Search,
+        path: '/',
         query: {}
       })
     } else {

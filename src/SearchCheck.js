@@ -2,14 +2,20 @@
 // been perfomed
 export default {
   search: {
-    sp: false
+    sp: false,
+    mostRecentClass: ''
   },
 
-  searchPerfomed () {
-    this.search.sP = true
+  searchPerformed (classType) {
+    console.log(classType)
+    this.search.sp = true
+    this.search.mostRecentClass = classType
+    console.log(this.search.mostRecentClass)
   },
 
-  searchHasBeenPerformed () {
-    return this.search.sp
+  searchHasBeenPerformedToThisClass (classType) {
+    console.log(classType)
+    console.log(this.search.mostRecentClass)
+    return this.search.sp && (classType === this.search.mostRecentClass)
   }
 }

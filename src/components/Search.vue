@@ -1,18 +1,18 @@
 <template>
-  <div class="">
+  <div class="container">
     <div class="name-box">
       <h1 class="name">Früügal</h1>
       <h2>Getting the financial information you need</h2>
     </div>
     <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
     <button @click="askWatson">Search</button>
-    <router-link to="/Stock">Stock</router-link>
-
 
   </div>
 </template>
 
 <script>
+import SearchCheck from '../SearchCheck.js'
+
 export default {
   data () {
     return {
@@ -29,9 +29,11 @@ export default {
       // GET /someUrl
       this.$http.get('/api', {params: {message: this.query}}).then(response => {
         console.log(response.body)
+        var comp = response.body.classType
+        // Let router know a search has been performed through this object
+        SearchCheck.searchPerformed(comp)
 
         // Create the object that will contain the returned json
-        var comp = response.body.classType
         var whereToGo = {
           params: { theResponse: response.body },
           name: comp
@@ -50,6 +52,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.container {
+  background: #2E86AB;
+}
+
 .name-box {
   margin-bottom: 40px;
 }
