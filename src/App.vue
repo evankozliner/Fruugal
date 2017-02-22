@@ -1,23 +1,34 @@
 <template>
   <div id="app">
 
-    <router-view></router-view>
+    <router-view :the-response="responseFromAPI"></router-view>
   </div>
 </template>
 
 <script>
-
 export default {
   data: function () {
     return {
       currentView: 'search',
       responseFromAPI: ''
     }
+  },
+  // This is used to set the data that will be passed into the component as a prop
+  computed: {
+    getData () {
+      console.log('In getData()')
+    }
+  },
+
+  events: {
+    'data': function (jsonData) {
+      console.log('In function for data event')
+      this.responseFromAPI = jsonData
+    }
   }
 
 }
 </script>
-
 
 <style>
 body {

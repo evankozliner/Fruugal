@@ -6,7 +6,7 @@
     <p><b>Headquarters:</b> {{theResponse.answers[1].data.hq_address1}}, {{theResponse.answers[1].data.hq_address_city}}, {{theResponse.answers[1].data.hq_state}}</p>
     <p><b>Number of employees:</b> {{theResponse.answers[1].data.employees}}</p>
     <p>{{theResponse.answers[1].data.short_description}}</p>
-    <a href="{{theResponse.answers[1].data.company_url}}">{{theResponse.answers[1].data.company_url}}</a>
+    <a :href="theResponse.answers[1].data.company_url">{{theResponse.answers[1].data.company_url}}</a>
   </div>
 </template>
 

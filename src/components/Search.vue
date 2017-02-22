@@ -45,13 +45,20 @@ export default {
         // component using the object.
         // Check https://github.com/vuejs/vue-router/blob/1.0/docs/en/api/go.md
 
-        // var comp = response.body.classType
-        // this.$router.go('/' + comp)
-        this.$router.go('/stock') // This is for example. In practice, use above
-
+        var comp = response.body.classType  // Get the question type
+        // var urlPath = '/' + comp
+        // Create the object that will contain the returned json
+        var whereToGo = {
+          params: {message: 'hey'},
+          name: comp
+        }
+        // Emit this event because supposedly data cannot be passed in router params?
+        this.$emit('data', response.body)
+        // Go to this route
+        this.$router.go(whereToGo)
       }, response => {
         // error callback, route to error page
-        this.$router.go('/error')
+        this.$router.go('/Error')
       })
     }
   }
