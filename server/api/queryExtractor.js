@@ -16,8 +16,9 @@ module.exports = class QueryExtractor {
     return cleanedQuestion;
   }
 
-  extractSymbols() {
-    return this.getQuestionWithoutPunctuation()
+  extractSymbols(inputString = this.getQuestionWithoutPunctuation()) {
+    
+    return inputString
       .toUpperCase()
       .split(" ")
       .filter( (word) => {
@@ -28,5 +29,30 @@ module.exports = class QueryExtractor {
           ticker: word
         };
       });
+  }
+
+  getCompany(ticker) {
+
+    var spawn = require('child_process').spawn;
+    var entityPython = spawn('python', ['entity_extractor.py']);
+
+    var dataString;
+
+    entityPython.stdout.on('data', function(data){
+      dataString = data.toString();
+    });
+
+    entityPython.stdout.on('end', function(){
+
+      console.log('String returned by python file =',dataString);
+
+
+
+    });
+
+
+    entityPython.stdin.write(JSON.stringify(this.question));
+    entityPython.stdin.end();
+
   }
 }
