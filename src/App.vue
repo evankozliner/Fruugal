@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-
+    Hi from the App.vue
     <router-view :the-response="responseFromAPI"></router-view>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body {
 
   height: 100%;

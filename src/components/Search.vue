@@ -6,6 +6,7 @@
     </div>
     <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
     <button @click="askWatson">Search</button>
+    <router-link to="/Stock">Stock</router-link>
 
 
   </div>
@@ -25,40 +26,22 @@ export default {
 
   methods: {
     askWatson () {
-      // Maybe set a loading icon here
       // GET /someUrl
       this.$http.get('/api', {params: {message: this.query}}).then(response => {
-        // get body data
-
-        // Emit the category of the response
-        // var categoryOfQuestion = response.body.classType
-        // var dataRetrieved = response
-        // console.log(response)
-        // console.log(categoryOfQuestion)
-        // this.$emit('category', categoryOfQuestion)
-        // this.$emit('data', dataRetrieved.body)
-
         console.log(response.body)
 
-        // Route to the component based on the classType returned in json response
-        // Will probably need to create an object and just pass the data to the next
-        // component using the object.
-        // Check https://github.com/vuejs/vue-router/blob/1.0/docs/en/api/go.md
-
-        var comp = response.body.classType  // Get the question type
-        // var urlPath = '/' + comp
         // Create the object that will contain the returned json
+        var comp = response.body.classType
         var whereToGo = {
-          params: {message: 'hey'},
+          params: { theResponse: response.body },
           name: comp
         }
-        // Emit this event because supposedly data cannot be passed in router params?
-        this.$emit('data', response.body)
+
         // Go to this route
-        this.$router.go(whereToGo)
+        this.$router.push(whereToGo)
       }, response => {
         // error callback, route to error page
-        this.$router.go('/Error')
+        this.$router.push('/Error')
       })
     }
   }

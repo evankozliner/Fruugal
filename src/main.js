@@ -13,48 +13,42 @@ Vue.use(VueRouter)
 
 // Define the routes
 const routes = [
-  { path: '/', component: App,
-    children: [
-      { path: '/', component: Search },
-      { path: '/Stock', name: 'StockAnswer', component: Stock },
-      { path: '/Information', name: 'GeneralInfoAnswer', component: Info },
-      { path: '/Error', name: 'Error', component: Error },
-      { path: '/UnknownAnswer', name: 'QuestionUnknownAnswer', component: Unknown },
-    ]
-  }
+  { path: '/', name: 'Search', component: Search },
+  { path: '/Stock', name: 'StockAnswer',
+      component: Stock, props: true, meta: { requiresSearch: true }},
+  { path: '/Information', name: 'GeneralInfoAnswer', component: Info, props: true },
+  { path: '/Error', name: 'Error', component: ErrorComp },
+  { path: '/UnknownAnswer', name: 'QuestionUnknownAnswer', component: Unknown, props: true }
+  // Add more routes here as needed. NOTE: 'props: true' must be set in each route that
+  // needs the json data from the API call!!
 ]
 
 // Create the router instance
 var router = new VueRouter({
-  routes: routes,
-  hashbang: false,
-  history: true
+  routes,
+  mode: 'history'
 })
 
-// Define routes
-router.map({
-  '/': {
-    component: App,
-    subRoutes: {
-      '/': { component: Search },
-      '/StockAnswer': { name: 'StockAnswer', component: Stock, props: (route) => ({ theResponse: route.params.jsonData }) },
-      '/GeneralInfoAnswer': { name: 'GeneralInfoAnswer', component: Info, props: true },
-      '/Error': { name: 'Error', component: ErrorComp, props: true },
-      '/QuestionUnknownAnswer': { name: 'QuestionUnknownAnswer', component: Unknown, props: true }
-      // Add in any addition components here that are rendered inside App.vue (should be most) and import the component at the top of the page too.
+import SearchCheck from './SearchCheck'
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresSearch)) {
+    // This route requires a search to have been performed
+    if (!SearchCheck.searchHasBeenPerformed()) {
+      next({
+        name: Search,
+        query: {}
+      })
+    } else {
+      next()
     }
+  } else {
+    next() // Needs to be called to continue on
   }
 })
 
-// Define redirects
-router.redirect({
-  // Redirect search url to home page, which is search component
-  '/search': '/',
-  // Redirect anything that is not a url we want to the search page
-  '*': '/'
+// Create the vue instance and bind it to the body with id=app in index.html
+new Vue({ // eslint-disable-line no-new
+  el: '#app',
+  router,
+  render: h => h(App)
 })
-
-// Define hooks
-
-// Start the router, which creates a Vue instance for us to use
-router.start({template: ''}, '#app')
