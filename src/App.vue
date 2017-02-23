@@ -12,21 +12,7 @@ export default {
       currentView: 'search',
       responseFromAPI: ''
     }
-  },
-  // This is used to set the data that will be passed into the component as a prop
-  computed: {
-    getData () {
-      console.log('In getData()')
-    }
-  },
-
-  events: {
-    'data': function (jsonData) {
-      console.log('In function for data event')
-      this.responseFromAPI = jsonData
-    }
   }
-
 }
 </script>
 
@@ -44,7 +30,7 @@ body {
   color: #2c3e50;
   font-family: Source Sans Pro, Helvetica, sans-serif;
   text-align: center;
-  background: #2E86AB;
+  //background: #2E86AB;
 }
 
 #header {
