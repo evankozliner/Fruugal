@@ -1,8 +1,9 @@
 <template>
+ <body>
   <div id="app">
-    Hi from the App.vue
     <router-view :the-response="responseFromAPI"></router-view>
   </div>
+ </body>
 </template>
 
 <script>
