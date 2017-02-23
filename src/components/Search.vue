@@ -32,7 +32,6 @@ export default {
         var comp = response.body.classType
         // Let router know a search has been performed through this object
         SearchCheck.searchPerformed(comp)
-
         // Create the object that will contain the returned json
         var whereToGo = {
           params: { theResponse: response.body },
