@@ -1,6 +1,7 @@
 var QuestionClassifier = require('./questionClassifier.js');
 var GeneralInfoAnswer = require('./answers/generalInfoAnswer.js');
 var QuestionUnknownAnswer = require('./answers/questionUnknownAnswer.js');
+let StockAnswer = require('./answers/stockAnswer.js');
 
 var routes = require('express').Router();
 
@@ -11,9 +12,10 @@ var stocks = require('./stocks.js');
 routes.use('/stocks', stocks);
 
 var routeQuestion = function(classificationRes) {
-  console.log("asdf: " + classificationRes);
   switch(classificationRes.watsonClassRes) {
     case "stock":
+      return new StockAnswer(classificationRes.question);
+    case "info":
       return new GeneralInfoAnswer(classificationRes.question);
     default:
       return new QuestionUnknownAnswer(classificationRes.question);
@@ -25,17 +27,14 @@ routes.get('/', function(req, res) {
 
   var questionClassifier = new QuestionClassifier();
 
-  // TODO 
-  // Question abstract class
-  // QuestionRouter class, returns an implementation of type Question 
-
   questionClassifier.classify(req.query.message)
     .then(routeQuestion)
     .then(function(watsonsAnswer) {
-      res.status(200).json({reply: watsonsAnswer.answer()});
+      return watsonsAnswer.answer();
     })
-    .catch(function(reason) { 
-      console.log(reason); 
+    .then(function(ans) { res.status(200).json(ans); })
+    .catch(function(reason) {
+      console.log(reason);
       res.status(500).json({error: reason});
     });
 });
