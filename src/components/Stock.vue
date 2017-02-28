@@ -18,8 +18,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .info {
-  color: #2c3e50;
   background: #42b983;
-  height: 400px;
+  padding: 5px;
+  width: 30%;
+  margin: auto;
 }
 </style>

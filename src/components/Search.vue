@@ -6,7 +6,6 @@
     </div>
     <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
     <button @click="askWatson">Search</button>
-
   </div>
 </template>
 
@@ -53,11 +52,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
-  background: #2E86AB;
+  margin-top: 250px;
 }
 
 .name-box {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 h1.name {
   color: #42b983;
@@ -66,8 +65,7 @@ h1.name {
 }
 
 h2 {
-  margin: 0;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 input {
