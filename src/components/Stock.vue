@@ -3,6 +3,7 @@
     <h1>You asked a stock question!</h1>
     <h2>{{theResponse.companyName}}: {{theResponse.companySymbol}}</h2>
     <h2>Stock price: ${{theResponse.stockPrice}}</h2>
+    <h3>{{ articles }}</h3>
   </div>
 </template>
 
@@ -10,7 +11,7 @@
 export default {
 
   // The data returned from the API call
-  props: ['theResponse']
+  props: ['theResponse', 'articles']
 
 }
 </script>
