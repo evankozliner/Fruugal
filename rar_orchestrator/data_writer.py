@@ -22,8 +22,8 @@ def main():
         f.write(raw_json)
 
 def get_data_num():
-    # TODO write this
-    return 1
+    # No one will ever read this right
+    return max([int("".join(filter(lambda x: x.isdigit(),list(fn)))) for fn in os.listdir("data")]) + 1
 
 # Sketchy method to get the data into the non json-rfc format ibm requests
 def build_data(conn):
@@ -31,18 +31,21 @@ def build_data(conn):
     cur = conn.cursor()
     data = []
     for row in cur.execute("select * from articles where solr_enabled=0"):
-        data.append(('add', 
-            { "doc": {
-                "id": row['id'],
-                "fear": row['fear'],
-                "anger": row['anger'],
-                "joy": row['joy'],
-                "sadness": row['sadness'],
-                "disgust": row['disgust'],
-                "published": row['published'],
-                "url": row['url'],
-                "body": extract_body(row['id'], conn),
-                "title": row['title']}}))
+        if row['url'] is not None and row['url'] != "":
+            data.append(('add', 
+                { "doc": {
+                    "id": row['id'],
+                    "fear": row['fear'],
+                    "anger": row['anger'],
+                    "joy": row['joy'],
+                    "sadness": row['sadness'],
+                    "disgust": row['disgust'],
+                    "published": row['published'],
+                    "url": row['url'],
+                    "body": extract_body(row['id'], conn),
+                    "title": row['title']}}))
+            conn.execute("update articles set solr_enabled=1 where id=?", [row['id']])
+            conn.commit()
     final_json = '{%s}' % ',\n'.join(['"{}": {}'.format(action, json.dumps(dictionary)) 
         for action, dictionary in data])
     return final_json

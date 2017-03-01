@@ -20,7 +20,7 @@ import dateutil.parser as date_parser
 
 OUTPUT_DIR = "scraped_articles/"
 DATA_DIR = "data/"
-SOURCES = ["reuters", "ars-technica", "business-insider"]
+SOURCES = ["reuters", "ars-technica", "business-insider", "financial-times", "the-wall-street-journal", 'bloomberg', 'google-news', 'time']
 
 #feed_url = 'http://feeds.reuters.com/reuters/technologyNews'
 #r = req.get("https://newsapi.org/v1/articles?source=techcrunch&apiKey=" + os.environ["NEWS_API_KEY"]).json
@@ -31,18 +31,29 @@ def main():
 
     # TODO Sentiment 
     for source in SOURCES:
+        print "Scraping " + source
         res = req.get("https://newsapi.org/v1/articles?source=" + source +
                 "&sortBy=latest&apiKey=" + os.environ["NEWS_API_KEY"]).json()
-        scrape_articles(res['articles'], conn)
-        time.sleep(5)
+        if 'articles' in res.keys():
+            scrape_articles(res['articles'], conn)
+        else:
+            print "No articles in response. Dumping response:"
+            print res
     
+    print "Sleeping for 2 minutes before checking again."
+    time.sleep(60 * 2)
+
 def scrape_articles(articles, conn):
     for article in articles:
         url = article['url']
         title = article['title']
         if conn.execute("select * from articles where url = ?", [url]).fetchone() is  None:
             print "Recording article: " + title
-            date_str = date_parser.parse(article['publishedAt']).strftime("%Y-%m-%d %H:%M")
+            if 'publishedAt' in article.keys() and article['publishedAt'] != None:
+                print article['publishedAt']
+                date_str = date_parser.parse(article['publishedAt']).strftime("%Y-%m-%d %H:%M")
+            else:
+                date_str = ""
             hashed_url = hashlib.md5(url).hexdigest()
 
             # TODO handle 503s and log them 
@@ -82,7 +93,10 @@ def scrape_articles(articles, conn):
 def get_sentiment(url):
     key=os.environ['ALCHEMY_KEY']
     alchemy_language = AlchemyLanguageV1(api_key=key)
-    raw_res = alchemy_language.emotion(url=url)
+    try:
+        raw_res = alchemy_language.emotion(url=url)
+    except Exception:
+        return {'anger': '', 'fear': '', 'joy': '', 'sadness': '', 'disgust': ''}
     return raw_res['docEmotions']
 
 #CREATE TABLE articles(id int primary key not null, hash string unique, url string non null, title string non null, description string non null, published date, solr_enabled boolean, anger float, joy float, fear float, sadness float, disgust float);
@@ -142,7 +156,8 @@ def get_text(html):
     return '\n'.join(chunk for chunk in chunks if chunk)
 
 if __name__ == "__main__":
-    main()
+    while True:
+        main()
 
 # TODO 
 # Create a collection for RAR
