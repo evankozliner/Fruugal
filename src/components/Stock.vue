@@ -4,8 +4,6 @@
     <h1>You asked a stock question!</h1>
     <h2>{{theResponse.companyName}}: {{theResponse.companySymbol}}</h2>
     <h2>Stock price: ${{theResponse.stockPrice}}</h2>
-
-    <h3>{{ articles }}</h3>
   </div>
 
   <transition name="slide-fade" mode="out-in"> <!-- This will allow the articles div to transition in -->
@@ -14,8 +12,8 @@
       <h1>What are people thinking?</h1>
       <div id="good_articles">
         <div class="article" v-for="article in articles">
-          <h3>{{article.title}}
-
+          <h3>{{article.title[0]}}</h3>
+          <a :href="article.url">{{article.url}}</a>
         </div>
 
       </div>
@@ -45,6 +43,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+--good: rgba(150, 150, 150, 0.3);
+--bad: red;
+--fearful: white;
+
 .info {
   color: #2c3e50;
   background: #42b983;
@@ -63,14 +65,22 @@ export default {
 
 #good_articles {
   margin: 15px 5px 15px 5px;
-  height: 300px;
-  background: green;
+  padding: 10px;
+  background: rgba(150, 150, 150, 0.3);
 }
 
 #bad_articles {
   margin: 15px 5px 15px 5px;
-  height: 300px;
   background: red;
+}
+
+.article {
+  background: rgba(230, 230, 230, 0.3);
+}
+
+.article a {
+  text-decoration: none;
+  color: black;
 }
 
 /* Trainsitions */
