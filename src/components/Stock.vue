@@ -13,6 +13,10 @@
     <div id="articles" v-else>
       <h1>What are people thinking?</h1>
       <div id="good_articles">
+        <div class="article" v-for="article in articles">
+          <h3>{{article.title}}
+
+        </div>
 
       </div>
       <div id="bad_articles">

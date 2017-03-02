@@ -38,13 +38,16 @@ export default {
       console.log(this.theResponse.companySymbol)
       var companyName = '/' + this.theResponse.companyName
 
-      var baseUrl = 'localhost:4040'
+      var baseUrl = 'http://localhost:4040'
 
       console.log('We are going to get the data')
       var fullUrl = baseUrl + ticker + companyName
       this.$http.get(fullUrl).then(response => {
         // Success
-        this.articles = this.response.response.docs
+        console.log('success')
+        var resp = JSON.parse(response)
+        console.log(resp)
+        this.articles = resp.response.docs
       }, response => {
         // Error
         this.articles = 'There was an error getting the articles'
