@@ -37,8 +37,10 @@ def main():
         if 'articles' in res.keys():
             scrape_articles(res['articles'], conn)
         else:
-            print "No articles in response. Dumping response:"
-            print res
+            print "Non recent-resource:"
+            res = req.get("https://newsapi.org/v1/articles?source=" + source +
+                    "&apiKey=" + os.environ["NEWS_API_KEY"]).json()
+            scrape_articles(res['articles'], conn)
     
     print "Sleeping for 2 minutes before checking again."
     time.sleep(60 * 2)
@@ -50,14 +52,18 @@ def scrape_articles(articles, conn):
         if conn.execute("select * from articles where url = ?", [url]).fetchone() is  None:
             print "Recording article: " + title
             if 'publishedAt' in article.keys() and article['publishedAt'] != None:
-                print article['publishedAt']
+                #print article['publishedAt']
                 date_str = date_parser.parse(article['publishedAt']).strftime("%Y-%m-%d %H:%M")
             else:
                 date_str = ""
             hashed_url = hashlib.md5(url).hexdigest()
 
             # TODO handle 503s and log them 
-            page = urllib2.urlopen(url)
+            try: 
+                page = urllib2.urlopen(url)
+            except urllib2.HTTPError as err:
+                print "HTTP exception: Skipping article"
+                return
 
             # Corresponds with SOLR id, decided to keep an integer ID colum because the SOLR documentation
             # highly reccomends it (read the schema file and it has a note on this)

@@ -20,6 +20,10 @@ def main():
     data_num = str(get_data_num())
     with open(DATA_DIR + "data-" + data_num + ".json", 'w+') as f:
         f.write(raw_json)
+    upload_articles(data_num)
+
+def upload_articles(data_num):
+    return
 
 def get_data_num():
     # No one will ever read this right
