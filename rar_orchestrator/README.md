@@ -3,6 +3,8 @@ This folder provides a mechanism to make RAR queries through a seperate server, 
 
 The justification for a new server to make RAR requests from is that we will have 2 RAR clusters to manage in the future: One that is updating and another that is serving requests. 
 
+Until that feature is implemented 
+
 # RAR commands
 
 ## Create

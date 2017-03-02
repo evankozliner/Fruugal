@@ -1,6 +1,5 @@
 import time
 import random
-import scraper
 import requests as r 
 import os
 from flask import Flask
