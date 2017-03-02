@@ -3,15 +3,23 @@
     <h1>You asked a stock question!</h1>
     <h2>{{theResponse.companyName}}: {{theResponse.companySymbol}}</h2>
     <h2>Stock price: ${{theResponse.stockPrice}}</h2>
+
+    <spinner class="center" v-if="!loaded"></spinner>
     <h3>{{ articles }}</h3>
   </div>
 </template>
 
 <script>
+import Spinner from './Spinner.vue'
+
 export default {
 
   // The data returned from the API call
-  props: ['theResponse', 'articles']
+  props: ['theResponse', 'articles', 'loaded'],
+
+  components: {
+    'spinner': Spinner
+  }
 
 }
 </script>
@@ -22,5 +30,9 @@ export default {
   color: #2c3e50;
   background: #42b983;
   height: 400px;
+}
+
+.center {
+  margin: auto
 }
 </style>
