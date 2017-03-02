@@ -4,8 +4,11 @@ import requests as r
 import os
 from flask import Flask
 from flask import jsonify
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+
+CORS(app)
 
 @app.route('/<ticker>/<short_name>')
 def get_rar_resp(ticker, short_name):

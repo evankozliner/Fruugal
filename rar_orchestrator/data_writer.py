@@ -29,6 +29,10 @@ def upload_articles(data_num, payload):
     url = raw_url.format(os.environ['RAR_CLUSTER_ID'])
     req.post(url, auth=auth, data=json.dumps(payload))
 
+def post_all():
+    for f in os.listdir(DATA_DIR):
+
+
 def get_data_num():
     # No one will ever read this right
     return max([int("".join(filter(lambda x: x.isdigit(),list(fn)))) for fn in os.listdir("data")]) + 1
@@ -51,6 +55,7 @@ def build_data(conn):
                     "published": row['published'],
                     "url": row['url'],
                     "body": extract_body(row['id'], conn),
+                    "description": row['description'],
                     "title": row['title']}}))
             conn.execute("update articles set solr_enabled=1 where id=?", [row['id']])
             conn.commit()
