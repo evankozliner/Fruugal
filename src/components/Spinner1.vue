@@ -4,8 +4,8 @@
 
 <style>
 .loader {
-    border: 10px solid #2E86AB; /* Light grey */
-    border-top: 10px solid #f3f3f3; /* Blue */
+    border: 10px solid #2E86AB; /* Blue */
+    border-top: 10px solid #f3f3f3; /* Light grey */
     border-radius: 50%;
     width: 50px;
     height: 50px;

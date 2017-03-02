@@ -6,26 +6,35 @@
     </div>
     <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
     <button @click="askWatson">Search</button>
+    <spinner class="center" v-if="loading"></spinner>
 
   </div>
 </template>
 
 <script>
 import SearchCheck from '../SearchCheck.js'
+import Spinner from './Spinner2.vue'
 
 export default {
+  components: {
+    'spinner': Spinner
+  },
+
   data () {
     return {
       // note: changing this line won't causes changes
       // with hot-reload because the reloaded component
       // preserves its current state and we are modifying
       // its initial state.
-      query: ''
+      query: '',
+      loading: false
     }
   },
 
   methods: {
     askWatson () {
+      // Start the spinner
+      this.loading = true
       // GET /someUrl
       this.$http.get('/api', {params: {message: this.query}}).then(response => {
         console.log(response.body)
@@ -37,11 +46,12 @@ export default {
           params: { theResponse: response.body },
           name: comp
         }
-
+        this.loading = false
         // Go to this route
         this.$router.push(whereToGo)
       }, response => {
         // error callback, route to error page
+        this.loading = false
         this.$router.push('/Error')
       })
     }
@@ -98,5 +108,9 @@ button {
   font: inherit;
 
   transition: all 0.2s ease-in-out;
+}
+
+.center {
+  margin: auto
 }
 </style>
