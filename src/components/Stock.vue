@@ -70,17 +70,20 @@ export default {
 }
 
 /* Trainsitions */
-.slide-fade-enter-active {
+.slide-fade-enter-active, .slide-fade-leave-active {
   transition: all .5s ease;
 }
 
-.slide-fade-leave-active {
-  transition: all .5s ease;
-}
-
-.slide-fade-enter, .slide-fade-leave-to
+/* For the articles div entrance */
+.slide-fade-enter
 /* .slide-fade-leave-active for <2.1.8 */ {
   transform: translateY(20px);
+  opacity: 0;
+}
+
+/* For the loading spinner leaving */
+.slide-fade-leave-to
+/* .slide-fade-leave-active for <2.1.8 */ {
   opacity: 0;
 }
 </style>

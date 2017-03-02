@@ -17,6 +17,10 @@
 
 <script>
 export default {
+
+  // theResponse will get the returned data
+  props: ['theResponse'],
+
   data () {
     return {
       articles: 'uhhhhh...',
@@ -27,9 +31,25 @@ export default {
   // Method for making the call to get articles from the cluster
   methods: {
     getData: function () {
+      console.log('Now in validQuestion')
+      console.log(this.theResponse)
+      // First get the ticker from the response
+      var ticker = '/' + this.theResponse.companySymbol
+      console.log(this.theResponse.companySymbol)
+      var companyName = '/' + this.theResponse.companyName
+
+      var baseUrl = 'localhost:4040'
+
       console.log('We are going to get the data')
-      this.$http.get()
-      this.articles = 'here they are!'
+      var fullUrl = baseUrl + ticker + companyName
+      this.$http.get(fullUrl).then(response => {
+        // Success
+        this.articles = this.response.response.docs
+      }, response => {
+        // Error
+        this.articles = 'There was an error getting the articles'
+      })
+
       console.log('We have gotten the articles')
       this.loaded = true
     }
