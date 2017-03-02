@@ -24,7 +24,8 @@ def get_req_str():
     base += "{0}/solr/example_collection/select?q="
     base += get_solr_query()
     base += "&wt=json&fl="
-    base += "title,url,description"
+    # TODO Add description
+    base += "title,url,anger,joy,fear,sadness,disgust,published"
     return base
 
 def get_solr_query():

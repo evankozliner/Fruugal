@@ -52,8 +52,11 @@ def scrape_articles(articles, conn):
         if conn.execute("select * from articles where url = ?", [url]).fetchone() is  None:
             print "Recording article: " + title
             if 'publishedAt' in article.keys() and article['publishedAt'] != None:
-                #print article['publishedAt']
-                date_str = date_parser.parse(article['publishedAt']).strftime("%Y-%m-%d %H:%M")
+                try: 
+                    date_str = date_parser.parse(article['publishedAt']).strftime("%Y-%m-%d %H:%M")
+                except ValueError:
+                    print "Date parsing error: Using blank date."
+                    date_str = ""
             else:
                 date_str = ""
             hashed_url = hashlib.md5(url).hexdigest()
