@@ -20,10 +20,14 @@ def main():
     data_num = str(get_data_num())
     with open(DATA_DIR + "data-" + data_num + ".json", 'w+') as f:
         f.write(raw_json)
-    upload_articles(data_num)
+    upload_articles(data_num, raw_json)
 
-def upload_articles(data_num):
-    return
+def upload_articles(data_num, payload):
+    auth = (os.environ['RAR_USERNAME'], os.environ['RAR_PASSWORD'])
+    raw_url ="https://gateway.watsonplatform.net/retrieve-and-rank/api/v1/solr_clusters/{0}"
+    raw_url += "/solr/admin/collections/update"
+    url = raw_url.format(os.environ['RAR_CLUSTER_ID'])
+    req.post(url, auth=auth, data=json.dumps(payload))
 
 def get_data_num():
     # No one will ever read this right
