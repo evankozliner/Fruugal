@@ -6,13 +6,14 @@
       <h3>{{theResponse.companyName}}</h3>
       <h2>Current stock price: ${{theResponse.stockPrice}}</h2>
     </header>
+    <br>
     <div id="advice">
       <h2>What should you do?</h2>
       <p>{{this.advice}}</p>
     </div>
   </div>
 
-  <transition name="slide-fade"> <!-- Allows articles div to transition in -->
+  <transition name="slide-fade" mode="in-out"> <!-- Allows articles div to transition in -->
     <spinner class="center" v-if="!loaded"></spinner>
     <div id="articles" v-else-if="articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
@@ -20,6 +21,7 @@
       <div id="good_articles">
         <div class="article" v-for="article in articles.good">
           <h3>{{article.title}}</h3>
+          <p class="description">{{article.description}}</p>
           <a :href="article.url">{{article.url}}</a>
         </div>
       </div>
@@ -28,6 +30,7 @@
       <div id="even_articles">
         <div class="article" v-for="article in articles.even">
           <h3>{{article.title}}</h3>
+          <p class="description">{{article.description}}</p>
           <a :href="article.url">{{article.url}}</a>
         </div>
       </div>
@@ -36,6 +39,7 @@
       <div id="bad_articles">
         <div class="article" v-for="article in articles.bad">
           <h3>{{article.title}}</h3>
+          <p class="description">{{article.description}}</p>
           <a :href="article.url">{{article.url}}</a>
         </div>
       </div>
@@ -68,16 +72,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-:root {
-  --good-color: rgba(47, 87, 47, 1);
-  --bad: #FC3D32;
-  --fearful: #FFC300;
-}
-
 .info {
   padding: 20px 2px 20px 2px;
   color: #2c3e50;
-  background: #42b983;
+  //background: rgba(150, 150, 150, 0.3);
+  background: rgba(240,240,240,0.2);
 }
 
 #stock_info, #advice {
@@ -86,6 +85,11 @@ export default {
 
 .center {
   margin: auto
+}
+
+.break {
+  width: 200px;
+  border-bottom: 30px solid black;
 }
 
 #articles {
@@ -97,31 +101,38 @@ export default {
 
 #good_articles {
   margin: 15px 5px 15px 5px;
-  padding: 10px;
-  background: rgba(119,221,119,0.6)
+  padding: 0px;
+  //background: #42b983;
+  border-left: 6px solid #42b983;
 }
 
 #bad_articles {
   margin: 15px 5px 15px 5px;
-  padding: 10px;
-  background: #FC3D32;
+  padding: 0px;
+  //background: #FF6961;
+  border-left: 6px solid #FF6961;
 }
 
 #even_articles {
   margin: 15px 5px 15px 5px;
-  padding: 10px;
-  background: #F8EC96;
+  padding: 0px;
+  //background: #F8EC96;
+  border-left: 6px solid #F8EC96;
 }
 
 .article {
-  margin: 5px;
+  margin: 8px 5px 5px 5px;
   padding: 1px 4px 1px 4px;
   background: rgba(20,20,20,0.1);
 }
 
-.article a {
+p.description {
+  padding-left: 20px;
+}
+
+.article a, .article h3 {
   text-decoration: none;
-  color: black;
+  color: rgba(0,0,0,0.7);
 }
 
 /* Transitions */
@@ -130,7 +141,6 @@ export default {
 }
 .slide-fade-leave-active {
   transition: all .5s ease;
-  position: relative;
 }
 
 /* For the articles div entrance */
@@ -144,5 +154,7 @@ export default {
 .slide-fade-leave-to
 /* .slide-fade-leave-active for <2.1.8 */ {
   opacity: 0;
+  position: absolute;
+  left: 50%;
 }
 </style>
