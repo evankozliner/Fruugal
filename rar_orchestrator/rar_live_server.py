@@ -28,7 +28,7 @@ def get_req_str(short_name):
     base += get_solr_query(short_name)
     base += "&wt=json&fl="
     # TODO Add description
-    base += "title,url,anger,joy,fear,sadness,disgust,published"
+    base += "title,url,anger,joy,fear,sadness,disgust,published,description"
     return base
 
 # TODO use short name to make more adept SOLR query
