@@ -20,7 +20,7 @@ export default {
 
   data () {
     return {
-      articles: 'uhhhhh...',
+      articles: null,
       loaded: false
     }
   },
@@ -28,13 +28,9 @@ export default {
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
   mounted: function () {
-    console.log('Now in validQuestion')
-    console.log(this.theResponse)
     // First get the ticker from the response
     var ticker = '/' + this.theResponse.companySymbol
-    console.log(this.theResponse.companySymbol)
     var companyName = '/' + this.theResponse.companyName
-
     var baseUrl = 'http://localhost:4040'
 
     console.log('We are going to get the data')
@@ -44,10 +40,12 @@ export default {
       console.log('success')
       var resp = response.body
       console.log(resp)
-      this.articles = resp.response.docs
+      if (!resp.hasOwnProperty('solrErrorMessage')) {
+        this.articles = resp.response.docs
+      }
     }, response => {
       // Error
-      this.articles = 'There was an error getting the articles'
+      console.log('Error getting articles')
     })
 
     console.log('We have gotten the articles')

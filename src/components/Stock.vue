@@ -6,9 +6,9 @@
     <h2>Stock price: ${{theResponse.stockPrice}}</h2>
   </div>
 
-  <transition name="slide-fade" mode="out-in"> <!-- This will allow the articles div to transition in -->
+  <transition name="slide-fade" mode="out-in"> <!-- Allows articles div to transition in -->
     <spinner class="center" v-if="!loaded"></spinner>
-    <div id="articles" v-else>
+    <div id="articles" v-else-if="articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
       <div id="good_articles">
         <div class="article" v-for="article in articles">
@@ -44,8 +44,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 --good: rgba(150, 150, 150, 0.3);
---bad: red;
---fearful: white;
+--bad: #FC3D32;
+--fearful: #FFC300;
 
 .info {
   color: #2c3e50;
@@ -75,7 +75,7 @@ export default {
 }
 
 .article {
-  background: rgba(230, 230, 230, 0.3);
+  background: green;
 }
 
 .article a {
