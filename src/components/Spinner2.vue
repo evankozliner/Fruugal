@@ -1,3 +1,5 @@
+// Animation and code provided by https://projects.lukehaas.me/css-loaders/
+
 <template>
   <div class="loader"></div>
 </template>

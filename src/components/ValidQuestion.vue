@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
-    <div>
-      This is where the side bar goes
+    <div class='sideBar'>
+      <!--This is where the side bar goes-->
     </div>
 
     <div>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import Sentiment from '../Sentiment.js'
 export default {
 
   // theResponse will get the returned data
@@ -33,23 +34,28 @@ export default {
     var companyName = '/' + this.theResponse.companyName
     var baseUrl = 'http://localhost:4040'
 
-    console.log('We are going to get the data')
     var fullUrl = baseUrl + ticker + companyName
     this.$http.get(fullUrl).then(response => {
       // Success
-      console.log('success')
       var resp = response.body
       console.log(resp)
       if (!resp.hasOwnProperty('solrErrorMessage')) {
-        this.articles = resp.response.docs
+        var arrOfArticles = resp.response.docs
+        this.articles = Sentiment.sortBySentiment(arrOfArticles)
+        console.log(this.articles)
       }
     }, response => {
       // Error
       console.log('Error getting articles')
     })
-
-    console.log('We have gotten the articles')
+    // Stop the spinner
     this.loaded = true
   }
 }
 </script>
+
+<style>
+.sideBar {
+
+}
+</style>

@@ -1,27 +1,44 @@
 <template>
 <div>
   <div class="info">
-    <h1>You asked a stock question!</h1>
-    <h2>{{theResponse.companyName}}: {{theResponse.companySymbol}}</h2>
-    <h2>Stock price: ${{theResponse.stockPrice}}</h2>
+    <header id='stock_info'>
+      <h1>Stock Information for {{theResponse.companySymbol}}</h1>
+      <h3>{{theResponse.companyName}}</h3>
+      <h2>Current stock price: ${{theResponse.stockPrice}}</h2>
+    </header>
+    <div id="advice">
+      <h2>What should you do?</h2>
+      <p>{{this.advice}}</p>
+    </div>
   </div>
 
-  <transition name="slide-fade" mode="out-in"> <!-- Allows articles div to transition in -->
+  <transition name="slide-fade"> <!-- Allows articles div to transition in -->
     <spinner class="center" v-if="!loaded"></spinner>
     <div id="articles" v-else-if="articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
+
       <div id="good_articles">
-        <div class="article" v-for="article in articles">
-          <h3>{{article.title[0]}}</h3>
+        <div class="article" v-for="article in articles.good">
+          <h3>{{article.title}}</h3>
           <a :href="article.url">{{article.url}}</a>
         </div>
-
       </div>
+
+      <div id="even_articles">
+        <div class="article" v-for="article in articles.even">
+          <h3>{{article.title}}</h3>
+          <a :href="article.url">{{article.url}}</a>
+        </div>
+      </div>
+
       <div id="bad_articles">
-
+        <div class="article" v-for="article in articles.bad">
+          <h3>{{article.title}}</h3>
+          <a :href="article.url">{{article.url}}</a>
+        </div>
       </div>
 
-    </div>
+    </div> <!-- articles div -->
   </transition>
 </div>
 </template>
@@ -36,6 +53,12 @@ export default {
 
   components: {
     'spinner': Spinner
+  },
+
+  data () {
+    return {
+      advice: 'We\'re not too sure.  We suggest asking around'
+    }
   }
 
 }
@@ -50,9 +73,13 @@ export default {
 }
 
 .info {
+  padding: 20px 2px 20px 2px;
   color: #2c3e50;
   background: #42b983;
-  height: 400px;
+}
+
+#stock_info, #advice {
+  margin: 10px;
 }
 
 .center {
@@ -75,7 +102,13 @@ export default {
 #bad_articles {
   margin: 15px 5px 15px 5px;
   padding: 10px;
-  background: red;
+  background: #FC3D32;
+}
+
+#even_articles {
+  margin: 15px 5px 15px 5px;
+  padding: 10px;
+  background: #F8EC96;
 }
 
 .article {
