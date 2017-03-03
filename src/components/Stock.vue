@@ -16,7 +16,7 @@
     <spinner class="center" v-if="!loaded"></spinner>
     <div id="articles" v-else-if="articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
-
+      <h3>Favorable</h3>
       <div id="good_articles">
         <div class="article" v-for="article in articles.good">
           <h3>{{article.title}}</h3>
@@ -24,6 +24,7 @@
         </div>
       </div>
 
+      <h3>Neutral</h3>
       <div id="even_articles">
         <div class="article" v-for="article in articles.even">
           <h3>{{article.title}}</h3>
@@ -31,6 +32,7 @@
         </div>
       </div>
 
+      <h3>Unfavorable</h3>
       <div id="bad_articles">
         <div class="article" v-for="article in articles.bad">
           <h3>{{article.title}}</h3>
@@ -122,9 +124,13 @@ export default {
   color: black;
 }
 
-/* Trainsitions */
-.slide-fade-enter-active, .slide-fade-leave-active {
+/* Transitions */
+.slide-fade-enter-active {
   transition: all .5s ease;
+}
+.slide-fade-leave-active {
+  transition: all .5s ease;
+  position: relative;
 }
 
 /* For the articles div entrance */

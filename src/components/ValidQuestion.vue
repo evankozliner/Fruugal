@@ -50,6 +50,10 @@ export default {
     })
     // Stop the spinner
     this.loaded = true
+  },
+
+  beforeDestroy: function () {
+    console.log('ValidQuestion component is being destoryed')
   }
 }
 </script>

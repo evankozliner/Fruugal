@@ -61,6 +61,7 @@ export default {
    * its confidence score in that category
    */
   sortBySentiment (response) {
+    // Create object with the 3 categories
     var retObj = {
       'good': [],
       'bad': [],
@@ -69,7 +70,6 @@ export default {
 
     for (var i = 0; i < response.length; i++) {
       var article = response[i]
-      console.log(article)
       // Get the category
       var catAndConf = getCategory(article)
 
