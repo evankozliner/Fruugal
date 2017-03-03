@@ -118,6 +118,7 @@
    <field name="published" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
    <field name="url" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
    <field name="title" type="watson_text_en" indexed="true" stored="true" required="false" multiValued="true" />
+   <field name="description" type="watson_text_en" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="body" type="watson_text_en" indexed="true" stored="true" required="false" multiValued="true" />
 
    <!-- make a copy field using normal OOB solr text_en -->
@@ -127,10 +128,12 @@
    
    <copyField source="title" dest="text"/>
    <copyField source="url" dest="text"/>
+   <copyField source="description" dest="text"/>
    <copyField source="body" dest="text"/>
    
    <copyField source="title" dest="watson_text"/>
    <copyField source="url" dest="watson_text"/>
+   <copyField source="description" dest="watson_text"/>
    <copyField source="body" dest="watson_text"/>
 
    <!-- Dynamic field definitions allow using convention over configuration

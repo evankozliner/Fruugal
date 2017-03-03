@@ -31,10 +31,14 @@ def upload_articles(data_num, payload):
 
 def post_all():
     for f in os.listdir(DATA_DIR):
-
+        with open(DATA_DIR + f) as json_file:
+            lines = json_file.read()
+            upload_articles("",lines)
 
 def get_data_num():
     # No one will ever read this right
+    if os.listdir("data") == []:
+        return 1
     return max([int("".join(filter(lambda x: x.isdigit(),list(fn)))) for fn in os.listdir("data")]) + 1
 
 # Sketchy method to get the data into the non json-rfc format ibm requests
@@ -43,7 +47,7 @@ def build_data(conn):
     cur = conn.cursor()
     data = []
     for row in cur.execute("select * from articles where solr_enabled=0"):
-        if row['url'] is not None and row['url'] != "":
+        if row['url'] is not None and row['url'] != "" and row['joy'] != '':
             data.append(('add', 
                 { "doc": {
                     "id": row['id'],
