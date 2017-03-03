@@ -43,9 +43,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
---good: rgba(150, 150, 150, 0.3);
---bad: #FC3D32;
---fearful: #FFC300;
+:root {
+  --good-color: rgba(47, 87, 47, 1);
+  --bad: #FC3D32;
+  --fearful: #FFC300;
+}
 
 .info {
   color: #2c3e50;
@@ -59,23 +61,27 @@ export default {
 
 #articles {
   background: rgba(150, 150, 150, 0.3);
-  margin-top: 30px;
+  margin: 30px 50px 30px 50px;
   padding: 5px;
+  text-align: left;
 }
 
 #good_articles {
   margin: 15px 5px 15px 5px;
   padding: 10px;
-  background: rgba(150, 150, 150, 0.3);
+  background: rgba(119,221,119,0.6)
 }
 
 #bad_articles {
   margin: 15px 5px 15px 5px;
+  padding: 10px;
   background: red;
 }
 
 .article {
-  background: green;
+  margin: 5px;
+  padding: 1px 4px 1px 4px;
+  background: rgba(20,20,20,0.1);
 }
 
 .article a {
