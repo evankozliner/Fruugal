@@ -29,8 +29,9 @@ module.exports = class StockAnswer extends Answer {
   }
 
   answer() {
-    let extractedData = (new QueryExtractor(this.rawQuestion)).extractSymbols()[0];
+    let extractedData = (new QueryExtractor(this.rawQuestion)).getCompany();
     if (extractedData === undefined) {  
+        console.log("Stock answer = " + extractedData);
       return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
     };
     return this.stockAnswer(extractedData);

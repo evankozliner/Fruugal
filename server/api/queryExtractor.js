@@ -34,21 +34,29 @@ module.exports = class QueryExtractor {
 
   getCompany() {
 
-    var spawn = require('child_process').spawn;
-    var entityPython = spawn('python', ['entity_extractor.py']);
-
+    var PythonShell = require('python-shell');
+    var entityPython = new PythonShell('server/api/entity_extractor.py');
+    
+    entityPython.send(JSON.stringify(this.getQuestionWithoutPunctuation()));
+    
     var dataString;
 
-    entityPython.stdout.on('data', function(data){
-      dataString = data.toString();
+    entityPython.on('message', function(message){
+      dataString = message;
+        console.log("message");
     });
 
-    entityPython.stdout.on('end', function(){
+    entityPython.end(function(err){
+        
+        if (err) {
+            throw err;
+        };
 
-      console.log('String returned by python file =',dataString);
+      console.log('String returned by python file = ' + dataString);
 
       //attempt to find symbol in MSH
-      var symbolArr = extractSymbols(dataString, masterStockHash);
+        var extractor = new QueryExtractor();
+      var symbolArr = extractor.extractSymbols(dataString, masterStockHash);
       if (symbolArr.length != 0) {
         return symbolArr[0].ticker;
       }
@@ -68,18 +76,14 @@ module.exports = class QueryExtractor {
           }
       });
 
-      for each (pair in masterStockHash) {
-        var currentName = masterStockHash[pair];
-        var currentSymbol = pair;
+     //for(pair in masterStockHash) {
+     //  var currentName = masterStockHash[pair];
+     //  var currentSymbol = pair;
 
 
-      }
+      //}
 
     });
-
-
-    entityPython.stdin.write(JSON.stringify(this.getQuestionWithoutPunctuation()));
-    entityPython.stdin.end();
 
   }
 }
