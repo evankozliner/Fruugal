@@ -1,10 +1,19 @@
 <template>
   <div class='container'>
-    <div class='sideBar'>
+  <!--
+    <header>
+      This is the header
+    </header>
+-->
+
+    <div class='col-md-3'>
+      <div class='sideBar'>
       <!--This is where the side bar goes-->
+        <sidebar></sidebar>
+      </div>
     </div>
 
-    <div>
+    <div class="col-md-9">
       <keep-alive>
         <router-view :articles="articles" :loaded="loaded"></router-view>
       </keep-alive>
@@ -14,10 +23,13 @@
 
 <script>
 import Sentiment from '../Sentiment.js'
+import sidebar from './Sidebar.vue'
 export default {
 
   // theResponse will get the returned data
   props: ['theResponse'],
+
+  components: { 'sidebar': sidebar },
 
   data () {
     return {
@@ -58,8 +70,18 @@ export default {
 }
 </script>
 
-<style>
-.sideBar {
-
+<style scoped>
+header {
+  height: 30px;
+  width: 100%;
+  margin-bottom: 20px;
+  background: green;
 }
+
+.sideBar {
+  padding: 1px;
+  //background: rgba(200,200,200,0.4);
+  //position: fixed;
+}
+
 </style>

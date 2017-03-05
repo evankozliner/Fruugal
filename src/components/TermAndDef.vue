@@ -2,10 +2,13 @@
 //specific one you wanted and for easier selection.
 
 <template>
-<div class="totalContainer" v-bind:class="{ active: isActive }" v-on:click="changeActive()">
-  <span class="name">{{ term }}</span>
-  <br />
-  <span v-bind:class="{ active: isActive }" class="definition">{{ definition }}</span>
+<div class="totalContainer" v-on:click="changeActive()">
+  <div class="name">
+    <span>{{ term }}</span>
+  </div>
+  <div class="definition" v-bind:class="{ active: isActive }">
+    <span>{{ definition }}</span>
+  </div>
 </div>
 </template>
 
@@ -23,7 +26,6 @@ export default {
   methods: {
     changeActive: function () {
       this.isActive = !this.isActive
-      console.log('here')
     }
   }
 }
@@ -33,9 +35,8 @@ export default {
 .totalContainer {
   background: #2c3e50;
   font: inherit;
-  color: #42b983;
   border-radius: 8px;
-  width: 150px;
+  min-width: 100%;
   padding: 10px 5px;
   overflow: hidden;
 
@@ -44,22 +45,32 @@ export default {
 
 .name{
   font-size: 30px;
+  width: auto;
+  color: #2E86AB;
 }
 
 .definition {
-  display: none;
+  display: block;
   opacity: 0;
+  height: 0px;
   overflow: hidden;
-  transition: opacity 0.5s;
+  color: #42b983;
+
+  transition: all 0.5s;
 }
 
 .totalContainer.active {
-  flex-grow: 5;
+  //flex-grow: 5;
   width: 100%;
+  height: 200px;
+  overflow: scroll;
 }
 
-.active {
+.definition.active {
   display: block;
+  background: #2c3e50;
   opacity: 1;
+  height: 100px;
+  overflow: auto;
 }
 </style>

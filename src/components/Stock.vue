@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class=''>
   <div class="info">
     <header id='stock_info'>
       <h1>Stock Information for {{theResponse.companySymbol}}</h1>
@@ -87,14 +87,9 @@ export default {
   margin: auto
 }
 
-.break {
-  width: 200px;
-  border-bottom: 30px solid black;
-}
-
 #articles {
   background: rgba(150, 150, 150, 0.3);
-  margin: 30px 50px 30px 50px;
+  margin: 30px 0px 30px 0px;
   padding: 5px;
   text-align: left;
 }
