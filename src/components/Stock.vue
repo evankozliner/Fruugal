@@ -55,7 +55,7 @@ import Spinner from './Spinner2.vue'
 export default {
 
   // The data returned from the API call
-  props: ['theResponse', 'articles', 'loaded'],
+  props: ['articles', 'loaded'],
 
   components: {
     'spinner': Spinner
@@ -64,7 +64,24 @@ export default {
   data () {
     return {
       advice: 'We\'re not too sure.  We suggest asking around'
+      // theResponse: this.$store.state.data
     }
+  },
+
+  computed: {
+    theResponse: function () {
+      console.log('Here in computed')
+      return this.$store.state.data
+    }
+  },
+
+  created: function () {
+    console.log('In stock.vue, I am getting the data from the store')
+    // this.theResponse = this.$store.state.data
+  },
+
+  beforeDestroy: function () {
+    console.log('Stock.vue is being destroyed')
   }
 
 }

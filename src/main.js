@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
 import VueResource from 'vue-resource'
+import Vuex from 'vuex'
 
 // Components
 import Search from './components/Search.vue'
@@ -13,6 +14,21 @@ import Unknown from './components/Unknown.vue'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
+Vue.use(Vuex)
+
+// Create the vuex store
+const store = new Vuex.Store({
+  state: {
+    data: {}
+  },
+
+  mutations: {
+    newDataRetrieved (state, payload) {
+      state.data = payload.retrievedData
+    }
+  }
+})
+
 // , meta: { requiresSearch: false }
 // Define the routes
 const routes = [
@@ -63,5 +79,6 @@ router.beforeEach((to, from, next) => {
 new Vue({ // eslint-disable-line no-new
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

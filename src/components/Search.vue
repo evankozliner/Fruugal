@@ -43,9 +43,12 @@ export default {
         SearchCheck.searchPerformed(comp)
         // Create the object that will contain the returned json
         var whereToGo = {
-          params: { theResponse: response.body },
+          // params: { theResponse: response.body },
           name: comp
         }
+        console.log(whereToGo)
+        // Update the store
+        this.$store.commit('newDataRetrieved', {retrievedData: response.body})
         this.loading = false
         // Go to this route
         this.$router.push(whereToGo)

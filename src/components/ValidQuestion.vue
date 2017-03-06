@@ -27,20 +27,22 @@ import sidebar from './Sidebar.vue'
 export default {
 
   // theResponse will get the returned data
-  props: ['theResponse'],
+  // props: ['theResponse'],
 
   components: { 'sidebar': sidebar },
 
   data () {
     return {
       articles: null,
-      loaded: false
+      loaded: false,
+      theResponse: this.$store.state.data
     }
   },
 
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
   created: function () {
+    console.log('here in the created function')
     // First get the ticker from the response
     var ticker = '/' + this.theResponse.companySymbol
     var companyName = '/' + this.theResponse.companyName

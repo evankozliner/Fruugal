@@ -14,11 +14,18 @@
 export default {
 
   // The data returned from the API call
-  props: ['theResponse'],
+  // props: ['theResponse'],
 
   data () {
     return {
 
+    }
+  },
+
+  computed: {
+    theResponse: function () {
+      console.log('Here in computed')
+      return this.$store.state.data
     }
   }
 }
