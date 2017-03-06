@@ -1,21 +1,19 @@
 <template>
   <div class="info">
     <h1>Sorry...</h1>
-    <p> {{ theResponse.apology }} </p>
+    <h4> {{ theResponse.apology }} </h4>
   </div>
 </template>
 
 <script>
 export default {
 
-  // The data returned from the API call
-  props: ['theResponse'],
-
-  data () {
-    return {
-
+  computed: {
+    theResponse: function () {
+      return this.$store.state.data
     }
   }
+
 }
 </script>
 

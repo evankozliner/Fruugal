@@ -22,7 +22,7 @@
         <div class="article" v-for="article in articles.good">
           <h3>{{article.title}}</h3>
           <p class="description">{{article.description}}</p>
-          <a :href="article.url">{{article.url}}</a>
+          <a :href="article.url" target="_blank">{{article.url}}</a>
         </div>
       </div>
 
@@ -31,7 +31,7 @@
         <div class="article" v-for="article in articles.even">
           <h3>{{article.title}}</h3>
           <p class="description">{{article.description}}</p>
-          <a :href="article.url">{{article.url}}</a>
+          <a :href="article.url" target="_blank">{{article.url}}</a>
         </div>
       </div>
 
@@ -40,7 +40,7 @@
         <div class="article" v-for="article in articles.bad">
           <h3>{{article.title}}</h3>
           <p class="description">{{article.description}}</p>
-          <a :href="article.url">{{article.url}}</a>
+          <a :href="article.url" target="_blank">{{article.url}}</a>
         </div>
       </div>
 
@@ -64,7 +64,6 @@ export default {
   data () {
     return {
       advice: 'We\'re not too sure.  We suggest asking around'
-      // theResponse: this.$store.state.data
     }
   },
 
@@ -77,7 +76,6 @@ export default {
 
   created: function () {
     console.log('In stock.vue, I am getting the data from the store')
-    // this.theResponse = this.$store.state.data
   },
 
   beforeDestroy: function () {
