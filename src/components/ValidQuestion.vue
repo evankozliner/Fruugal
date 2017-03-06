@@ -40,7 +40,7 @@ export default {
 
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
-  mounted: function () {
+  created: function () {
     // First get the ticker from the response
     var ticker = '/' + this.theResponse.companySymbol
     var companyName = '/' + this.theResponse.companyName
@@ -62,6 +62,10 @@ export default {
     })
     // Stop the spinner
     this.loaded = true
+  },
+
+  beforeCreate: function () {
+    console.log('ValidQuestion component is being created')
   },
 
   beforeDestroy: function () {
