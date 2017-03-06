@@ -36,7 +36,6 @@ export default {
       // Start the spinner
       this.loading = true
       SearchActions.initialSearch(this, this.query)
-      this.loading = false
     }
   }
 }
