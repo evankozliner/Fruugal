@@ -41,7 +41,7 @@ export default {
       console.log(resp)
       if (!resp.hasOwnProperty('solrErrorMessage')) {
         var arrOfArticles = resp.response.docs
-        this.articles = Sentiment.sortBySentiment(arrOfArticles)
+        this.articles = Sentiment.sortByDate(arrOfArticles)
         console.log(this.articles)
       }
     }, response => {
