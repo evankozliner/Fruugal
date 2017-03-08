@@ -8,26 +8,28 @@ export default {
    * stack to go to that route.
    */
   initialSearch (vueInstance, query) {
-    vueInstance.$http.get('/api', {params: {message: query}}).then(response => {
-      console.log(response.body)
-      var comp = response.body.classType
-      // Let router know a search has been performed through this object
-      SearchCheck.searchPerformed(comp)
+    return new Promise(function (resolve, reject) {
+      vueInstance.$http.get('/api', {params: {message: query}}).then(response => {
+        console.log(response.body)
+        var comp = response.body.classType
+        // Let router know a search has been performed through this object
+        SearchCheck.searchPerformed(comp)
 
-      // Create the object that will contain the next route
-      var whereToGo = {
-        name: comp
-      }
+        // Create the object that will contain the next route
+        var whereToGo = {
+          name: comp
+        }
 
-      console.log(whereToGo)
-      // Update the store
-      vueInstance.$store.commit('newDataRetrieved', {retrievedData: response.body, query: query})
+        console.log(whereToGo)
+        // Update the store
+        vueInstance.$store.commit('newDataRetrieved', {retrievedData: response.body, query: query})
 
-      // Go to this route
-      vueInstance.$router.push(whereToGo)
-    }, response => {
-      // error callback, route to error page
-      vueInstance.$router.push('/Error')
+        // Go to this route
+        resolve(whereToGo)
+      }, response => {
+        // error callback, route to error page
+        reject('/Error')
+      })
     })
   }
 }

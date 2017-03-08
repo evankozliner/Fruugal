@@ -35,7 +35,13 @@ export default {
     askWatson () {
       // Start the spinner
       this.loading = true
-      SearchActions.initialSearch(this, this.query)
+      SearchActions.initialSearch(this, this.query).then((result) => {
+        this.loading = false
+        console.log('Here we are about to go')
+        this.$router.push(result)
+      }, function (err) {
+        this.$router.push(err)
+      })
     }
   }
 }
