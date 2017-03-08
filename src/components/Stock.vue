@@ -17,33 +17,9 @@
     <spinner class="center" v-if="!loaded"></spinner>
     <div id="articles" v-else-if="articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
-      <h3>Favorable</h3>
-      <div id="good_articles">
-        <div class="article" v-for="article in articles.good">
-          <h3>{{article.title}}</h3>
-          <p class="description">{{article.description}}</p>
-          <a :href="article.url">{{article.url}}</a>
-        </div>
+      <div id='article_display' v-for="article in articles">
+        <article-box :info="article"></article-box>
       </div>
-
-      <h3>Neutral</h3>
-      <div id="even_articles">
-        <div class="article" v-for="article in articles.even">
-          <h3>{{article.title}}</h3>
-          <p class="description">{{article.description}}</p>
-          <a :href="article.url">{{article.url}}</a>
-        </div>
-      </div>
-
-      <h3>Unfavorable</h3>
-      <div id="bad_articles">
-        <div class="article" v-for="article in articles.bad">
-          <h3>{{article.title}}</h3>
-          <p class="description">{{article.description}}</p>
-          <a :href="article.url">{{article.url}}</a>
-        </div>
-      </div>
-
     </div> <!-- articles div -->
   </transition>
 </div>
@@ -51,6 +27,7 @@
 
 <script>
 import Spinner from './Spinner2.vue'
+import Article from './Article.vue'
 
 export default {
 
@@ -58,7 +35,8 @@ export default {
   props: ['theResponse', 'articles', 'loaded'],
 
   components: {
-    'spinner': Spinner
+    'spinner': Spinner,
+    'article-box': Article
   },
 
   data () {
@@ -97,42 +75,6 @@ export default {
   margin: 30px 50px 30px 50px;
   padding: 5px;
   text-align: left;
-}
-
-#good_articles {
-  margin: 15px 5px 15px 5px;
-  padding: 0px;
-  //background: #42b983;
-  border-left: 6px solid #42b983;
-}
-
-#bad_articles {
-  margin: 15px 5px 15px 5px;
-  padding: 0px;
-  //background: #FF6961;
-  border-left: 6px solid #FF6961;
-}
-
-#even_articles {
-  margin: 15px 5px 15px 5px;
-  padding: 0px;
-  //background: #F8EC96;
-  border-left: 6px solid #F8EC96;
-}
-
-.article {
-  margin: 8px 5px 5px 5px;
-  padding: 1px 4px 1px 4px;
-  background: rgba(20,20,20,0.1);
-}
-
-p.description {
-  padding-left: 20px;
-}
-
-.article a, .article h3 {
-  text-decoration: none;
-  color: rgba(0,0,0,0.7);
 }
 
 /* Transitions */
