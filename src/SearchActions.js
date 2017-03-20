@@ -9,7 +9,7 @@ export default {
    */
   initialSearch (vueInstance, query) {
     return new Promise(function (resolve, reject) {
-      vueInstance.$http.get('/api', {params: {message: query}}).then(response => {
+      vueInstance.$http.get('/api', {params: {message: query}}).then(function (response) {
         console.log(response.body)
         var comp = response.body.classType
         // Let router know a search has been performed through this object
@@ -26,8 +26,9 @@ export default {
 
         // Go to this route
         resolve(whereToGo)
-      }, response => {
+      }, function (response) {
         // error callback, route to error page
+        console.log('There was an error')
         reject('/Error')
       })
     })
