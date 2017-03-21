@@ -47,6 +47,27 @@ function getCategory (obj) {
   return {'category': retCat, 'confidence': retConf}
 }
 
+// Returns a list containing json objects with the information we want from
+// each article
+function stripArticle (article) {
+  // Get only the information we want
+  var stripedArticle = {
+    'position': '',
+    'title': article.title[0],
+    'url': article.url,
+    'confidence': '',
+    'category': '',
+    'description': article.description[0],
+    'pubDate': article.published
+  }
+
+  return stripedArticle
+}
+
+function sortByDate (dateA, dateB) {
+  return new Date(dateA.pubDate).getTime() - new Date(dateB.pubDate).getTime()
+}
+
 export default {
 
   /* Sorts the articles returned by the solr cluster into categories based on the
@@ -86,6 +107,33 @@ export default {
     }
 
     return retObj
+  },
+
+  sortByDate (response) {
+    var stripedArticles = []
+
+    // Get the sentiment category and confidence for each article
+    for (var i = 0; i < response.length; i++) {
+      var article = response[i]
+
+      var catAndConf = getCategory(article)
+      article = stripArticle(article) // Strip to get only stuff we want
+
+      // Add new keys and values
+      article.confidence = catAndConf.confidence
+      article.category = catAndConf.category
+
+      // Add to the final array
+      stripedArticles.push(article)
+    }
+    // Sort by date
+    stripedArticles.sort(sortByDate)
+    // Add position to each object
+    stripedArticles.map(function (item, index) {
+      item.position = index + 1
+    })
+
+    return stripedArticles
   }
 
 }
