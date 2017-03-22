@@ -42,7 +42,7 @@ export default {
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
   created: function () {
-    console.log('here in the created function')
+    console.log('Going to get articles')
     // First get the ticker from the response
     var ticker = '/' + this.theResponse.companySymbol
     var companyName = '/' + this.theResponse.companyName

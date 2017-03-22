@@ -37,11 +37,11 @@ export default {
       this.loading = true
       var instance = this
       SearchActions.initialSearch(this, this.query).then(function (result) {
-        this.loading = false
-        console.log('Here we are about to go')
-        this.$router.push(result)
+        instance.loading = false
+        console.log('Search was classified')
+        instance.$router.push(result)
       }, function (err) {
-        console.log(instance)
+        console.log('There was an error')
         instance.loading = false
         instance.$router.push(err)
       })
