@@ -1,6 +1,6 @@
 <template>
   <div class="info">
-    <h1>You asked an information question!</h1>
+    <h1>Information on {{theResponse.answers[1].data.name}}</h1>
     <h2>{{theResponse.answers[1].data.name}}: ${{theResponse.answers[0].stockPrice}}</h2>
     <h2>CEO: {{theResponse.answers[1].data.ceo}}</h2>
     <p><b>Headquarters:</b> {{theResponse.answers[1].data.hq_address1}}, {{theResponse.answers[1].data.hq_address_city}}, {{theResponse.answers[1].data.hq_state}}</p>
@@ -28,7 +28,8 @@ export default {
 <style scoped>
 .info {
   color: #2c3e50;
-  background: #42b983;
+  //background: #42b983;
+  background: rgba(240,240,240,0.2);
   height: 400px;
 }
 </style>
