@@ -60,7 +60,8 @@ module.exports = class QueryExtractor {
         var symbolArr = extractor.extractSymbols(dataString, masterStockHash);
         if (symbolArr.length != 0) {
           resolve(symbolArr[0]);
-        } else {
+        } 
+        else {
           //attempt to find first name in MSH
 
           // TODO add market name here
@@ -71,7 +72,7 @@ module.exports = class QueryExtractor {
 
               if (generalJSON != undefined) {
 
-                resolve(generalJSON.Symbol);
+                resolve(generalJSON);
 
               }
           });
