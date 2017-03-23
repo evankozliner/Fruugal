@@ -18,7 +18,6 @@ module.exports = class QueryExtractor {
   }
 
   extractSymbols(inputString = this.getQuestionWithoutPunctuation(), mapObject) {
-    
     return inputString
       .toUpperCase()
       .split(" ")
