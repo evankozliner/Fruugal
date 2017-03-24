@@ -1,10 +1,8 @@
 <template>
   <div class='container'>
-  <!--
-    <header>
-      This is the header
+    <header class="searchBar">
+      <search smallpage="false"><search>
     </header>
--->
 
     <div class='col-md-3'>
       <div class='sideBar'>
@@ -24,12 +22,15 @@
 <script>
 import Sentiment from '../Sentiment.js'
 import sidebar from './Sidebar.vue'
+import search from './Search.vue'
 export default {
 
   // theResponse will get the returned data
   // props: ['theResponse'],
 
-  components: { 'sidebar': sidebar },
+  components: { 'sidebar': sidebar,
+      'search': search
+   },
 
   data () {
     return {
@@ -39,31 +40,44 @@ export default {
     }
   },
 
+  methods: {
+    getArticles: function () {
+      console.log('Going to get articles')
+      // First get the ticker from the response
+      var ticker = '/' + this.theResponse.companySymbol
+      var companyName = '/' + this.theResponse.companyName
+      var baseUrl = 'http://localhost:4040'
+
+      var fullUrl = baseUrl + ticker + companyName
+      this.$http.get(fullUrl).then(response => {
+        // Success
+        var resp = response.body
+        console.log(resp)
+        if (!resp.hasOwnProperty('solrErrorMessage')) {
+          var arrOfArticles = resp.response.docs
+          this.articles = Sentiment.sortByDate(arrOfArticles)
+          console.log(this.articles)
+        }
+      }, response => {
+        // Error
+        console.log('Error getting articles')
+      })
+      // Stop the spinner
+      this.loaded = true
+    }
+  },
+
+  events: {
+    'searchPerformed': function () {
+      console.log('Will get articles in ValidQuestion')
+      this.getArticles()
+    }
+  },
+
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
   created: function () {
-    console.log('Going to get articles')
-    // First get the ticker from the response
-    var ticker = '/' + this.theResponse.companySymbol
-    var companyName = '/' + this.theResponse.companyName
-    var baseUrl = 'http://localhost:4040'
-
-    var fullUrl = baseUrl + ticker + companyName
-    this.$http.get(fullUrl).then(response => {
-      // Success
-      var resp = response.body
-      console.log(resp)
-      if (!resp.hasOwnProperty('solrErrorMessage')) {
-        var arrOfArticles = resp.response.docs
-        this.articles = Sentiment.sortByDate(arrOfArticles)
-        console.log(this.articles)
-      }
-    }, response => {
-      // Error
-      console.log('Error getting articles')
-    })
-    // Stop the spinner
-    this.loaded = true
+    this.getArticles()
   },
 
   beforeCreate: function () {
@@ -77,8 +91,8 @@ export default {
 </script>
 
 <style scoped>
-header {
-  height: 30px;
+header.searchBar {
+  height: auto;
   width: 100%;
   margin-bottom: 20px;
   background: green;

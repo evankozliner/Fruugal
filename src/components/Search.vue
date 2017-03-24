@@ -1,14 +1,26 @@
 <template>
-  <div class="container">
-    <div class="name-box">
-      <h1 class="name">Früügal</h1>
-      <h2>Getting the financial information you need</h2>
-    </div>
-    <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
-    <button @click="askWatson">Search</button>
-    <spinner class="center" v-if="loading"></spinner>
+  <div v-if="!smallpage">
+    <div class="container">
+      <div class="name-box">
+        <h1 class="name">Früügal</h1>
+        <h2>Getting the financial information you need</h2>
+      </div>
+      <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
+      <button @click="askWatson">Search</button>
 
-  </div>
+      <spinner class="center" v-if="loading"></spinner>
+    </div>
+  </div>  <!-- End of full page div -->
+  <div v-else>
+    <div >
+      <span>
+        <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
+        <button @click="askWatson">Search</button>
+
+        <spinner class="center" v-if="loading"></spinner>
+      </span>
+    </div>
+  </div>  <!-- End of small page div -->
 </template>
 
 <script>
@@ -19,6 +31,8 @@ export default {
   components: {
     'spinner': Spinner
   },
+
+  props: ['smallpage'],
 
   data () {
     return {

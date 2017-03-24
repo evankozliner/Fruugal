@@ -47,13 +47,9 @@ export default {
 
   computed: {
     theResponse: function () {
-      console.log('Here in computed')
+      console.log(this.$store.state)
       return this.$store.state.data
     }
-  },
-
-  created: function () {
-    console.log('In stock.vue, I am getting the data from the store')
   },
 
   beforeDestroy: function () {
