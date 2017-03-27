@@ -11,14 +11,16 @@
       <spinner class="center" v-if="loading"></spinner>
     </div>
   </div>  <!-- End of full page div -->
-  <div v-else>
-    <div >
-      <span>
+
+  <div v-else> <!-- This is for small search bar on top of a page -->
+    <div class="container cont">
+      <h1 class="smallName col-md-3">Früügal</h1>
+      <div class="inputArea col-md-7">
         <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
         <button @click="askWatson">Search</button>
 
-        <spinner class="center" v-if="loading"></spinner>
-      </span>
+        <spinner class='col-md-2 right' v-if="loading"></spinner>
+      </div>
     </div>
   </div>  <!-- End of small page div -->
 </template>
@@ -53,12 +55,14 @@ export default {
       SearchActions.initialSearch(this, this.query).then(function (result) {
         instance.loading = false
         console.log('Search was classified')
+        instance.$emit('SP') // Emit the event that search occured
         instance.$router.push(result)
       }, function (err) {
         console.log('There was an error')
         instance.loading = false
         instance.$router.push(err)
       })
+      this.$emit('searchPerformed') // Emit the event that search occured
     }
   }
 }
@@ -66,8 +70,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container {
-  background: #2E86AB;
+.cont {
+  //background: #2E86AB;
 }
 
 .name-box {
@@ -79,13 +83,19 @@ h1.name {
   margin-bottom: 10px;
 }
 
+h1.smallName {
+  color: #42b983;
+  font-size: 50px;
+  text-align: left;
+}
+
 h2 {
   margin: 0;
   font-size: 16px;
 }
 
 input {
-  border-radius: 5px;
+  //border-radius: 5px;
   border: none;
   width: 300px;
   height: 30px;
@@ -117,5 +127,20 @@ button {
 
 .center {
   margin: auto
+}
+
+.right {
+  float: right;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.oneline {
+  margin: 0px;
+}
+
+.inputArea {
+  text-align: left;
+  margin-top: 35px;
 }
 </style>

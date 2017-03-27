@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
     <header class="searchBar">
-      <search smallpage="false"><search>
+      <search v-on:SP="possiblyGetArticles" smallpage="false"><search>
     </header>
 
     <div class='col-md-3'>
@@ -36,7 +36,19 @@ export default {
     return {
       articles: null,
       loaded: false,
-      theResponse: this.$store.state.data
+      cachedResponse: null
+    }
+  },
+
+  computed: {
+    theResponse: function () {
+      var storeData = this.$store.state
+      var retVal = this.cachedResponse
+      if (storeData.page === 'StockAnswer') {
+        retVal = storeData.data
+        this.cachedResponse = retVal
+      }
+      return retVal
     }
   },
 
@@ -64,13 +76,13 @@ export default {
       })
       // Stop the spinner
       this.loaded = true
-    }
-  },
+    },
 
-  events: {
-    'searchPerformed': function () {
-      console.log('Will get articles in ValidQuestion')
-      this.getArticles()
+    possiblyGetArticles: function () {
+      // If the page we are going to is a stock page, get articles for this company
+      if (this.$store.state.page === 'StockAnswer') {
+        this.getArticles()
+      }
     }
   },
 
@@ -92,10 +104,11 @@ export default {
 
 <style scoped>
 header.searchBar {
+  text-align: left;
   height: auto;
   width: 100%;
   margin-bottom: 20px;
-  background: green;
+  padding: 3px 2% 3px;
 }
 
 .sideBar {
