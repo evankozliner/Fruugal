@@ -74,13 +74,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-<<<<<<< HEAD
 .container {
   margin-top: 250px;
-=======
 .cont {
   //background: #2E86AB;
->>>>>>> master
 }
 
 .name-box {
