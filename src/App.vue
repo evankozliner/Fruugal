@@ -1,7 +1,7 @@
 <template>
  <body>
   <div id="app">
-    <router-view :the-response="responseFromAPI"></router-view>
+    <router-view></router-view>
   </div>
  </body>
 </template>

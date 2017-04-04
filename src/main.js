@@ -2,22 +2,29 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
 import VueResource from 'vue-resource'
-import Stock from './components/Stock.vue'
+
+// Components
 import Search from './components/Search.vue'
+import ValidQuestion from './components/ValidQuestion.vue'
+import Stock from './components/Stock.vue'
+import Info from './components/Info.vue'
 import ErrorComp from './components/Error.vue'
 import Unknown from './components/Unknown.vue'
-import Info from './components/Info.vue'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
-
+// , meta: { requiresSearch: false }
 // Define the routes
 const routes = [
   { path: '/', name: 'Search', component: Search },
-  { path: '/Stock', name: 'StockAnswer',
-      component: Stock, props: true, meta: { requiresSearch: true }},
-  { path: '/Information', name: 'GeneralInfoAnswer', component: Info, props: true,
-      meta: { requiresSearch: true } },
+  { path: '/question', name: 'ValidQuestion', component: ValidQuestion, props: true,
+    children: [
+      { path: 'Stock', name: 'StockAnswer',
+          component: Stock, props: true, meta: { requiresSearch: false }},
+      { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true,
+      meta: { requiresSearch: false } }
+    ]
+  },
   { path: '/Error', name: 'Error', component: ErrorComp },
   { path: '/UnknownAnswer', name: 'QuestionUnknownAnswer', component: Unknown, props: true },
   // Add more routes here as needed. NOTE: 'props: true' must be set in each route that
