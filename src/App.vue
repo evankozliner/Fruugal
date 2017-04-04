@@ -25,6 +25,8 @@ body {
 
   font-family: sans-serif;
   font-style: Verdana, Geneva;
+
+  padding: 10px;
 }
 
 #app {
