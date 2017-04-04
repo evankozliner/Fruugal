@@ -1,10 +1,19 @@
 <template>
   <div class='container'>
-    <div class='sideBar'>
+  <!--
+    <header>
+      This is the header
+    </header>
+-->
+
+    <div class='col-md-3'>
+      <div class='sideBar'>
       <!--This is where the side bar goes-->
+        <sidebar></sidebar>
+      </div>
     </div>
 
-    <div>
+    <div class="col-md-9">
       <keep-alive>
         <router-view :articles="articles" :loaded="loaded"></router-view>
       </keep-alive>
@@ -14,21 +23,26 @@
 
 <script>
 import Sentiment from '../Sentiment.js'
+import sidebar from './Sidebar.vue'
 export default {
 
   // theResponse will get the returned data
-  props: ['theResponse'],
+  // props: ['theResponse'],
+
+  components: { 'sidebar': sidebar },
 
   data () {
     return {
       articles: null,
-      loaded: false
+      loaded: false,
+      theResponse: this.$store.state.data
     }
   },
 
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
-  mounted: function () {
+  created: function () {
+    console.log('Going to get articles')
     // First get the ticker from the response
     var ticker = '/' + this.theResponse.companySymbol
     var companyName = '/' + this.theResponse.companyName
@@ -52,14 +66,28 @@ export default {
     this.loaded = true
   },
 
+  beforeCreate: function () {
+    console.log('ValidQuestion component is being created')
+  },
+
   beforeDestroy: function () {
     console.log('ValidQuestion component is being destoryed')
   }
 }
 </script>
 
-<style>
-.sideBar {
-
+<style scoped>
+header {
+  height: 30px;
+  width: 100%;
+  margin-bottom: 20px;
+  background: green;
 }
+
+.sideBar {
+  padding: 1px;
+  //background: rgba(200,200,200,0.4);
+  //position: fixed;
+}
+
 </style>

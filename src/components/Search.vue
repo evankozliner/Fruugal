@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import SearchCheck from '../SearchCheck.js'
+import SearchActions from '../SearchActions.js'
 import Spinner from './Spinner2.vue'
 
 export default {
@@ -34,24 +34,15 @@ export default {
     askWatson () {
       // Start the spinner
       this.loading = true
-      // GET /someUrl
-      this.$http.get('/api', {params: {message: this.query}}).then(response => {
-        console.log(response.body)
-        var comp = response.body.classType
-        // Let router know a search has been performed through this object
-        SearchCheck.searchPerformed(comp)
-        // Create the object that will contain the returned json
-        var whereToGo = {
-          params: { theResponse: response.body },
-          name: comp
-        }
-        this.loading = false
-        // Go to this route
-        this.$router.push(whereToGo)
-      }, response => {
-        // error callback, route to error page
-        this.loading = false
-        this.$router.push('/Error')
+      var instance = this
+      SearchActions.initialSearch(this, this.query).then(function (result) {
+        instance.loading = false
+        console.log('Search was classified')
+        instance.$router.push(result)
+      }, function (err) {
+        console.log('There was an error')
+        instance.loading = false
+        instance.$router.push(err)
       })
     }
   }

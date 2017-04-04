@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
 import VueResource from 'vue-resource'
+import Vuex from 'vuex'
 
 // Components
 import Search from './components/Search.vue'
@@ -13,6 +14,23 @@ import Unknown from './components/Unknown.vue'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
+Vue.use(Vuex)
+
+// Create the vuex store
+const store = new Vuex.Store({
+  state: {
+    data: {},
+    searchString: ''
+  },
+
+  mutations: {
+    newDataRetrieved (state, payload) {
+      state.data = payload.retrievedData
+      state.searchString = payload.query
+    }
+  }
+})
+
 // , meta: { requiresSearch: false }
 // Define the routes
 const routes = [
@@ -20,15 +38,14 @@ const routes = [
   { path: '/question', name: 'ValidQuestion', component: ValidQuestion, props: true,
     children: [
       { path: 'Stock', name: 'StockAnswer',
-          component: Stock, props: true, meta: { requiresSearch: false }},
+          component: Stock, props: true, meta: { requiresSearch: true }},
       { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true,
-      meta: { requiresSearch: false } }
+      meta: { requiresSearch: true } }
     ]
   },
   { path: '/Error', name: 'Error', component: ErrorComp },
   { path: '/UnknownAnswer', name: 'QuestionUnknownAnswer', component: Unknown, props: true },
-  // Add more routes here as needed. NOTE: 'props: true' must be set in each route that
-  // needs the json data from the API call!!
+  // Add more routes here as needed.
 
   // Redirects
   { path: '/Search', redirect: '/' },
@@ -48,8 +65,7 @@ router.beforeEach((to, from, next) => {
     // This route requires a search to have been performed
     if (!SearchCheck.searchHasBeenPerformedToThisClass(to.name)) {
       next({
-        path: '/',
-        query: {}
+        path: '/'
       })
     } else {
       next()
@@ -63,5 +79,6 @@ router.beforeEach((to, from, next) => {
 new Vue({ // eslint-disable-line no-new
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

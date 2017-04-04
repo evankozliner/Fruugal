@@ -21,6 +21,9 @@ export default {
 body {
   background: #2E86AB;
   font-family: sans-serif;
+  font-style: Verdana, Geneva;
+
+  padding: 10px;
 }
 
 #app {
