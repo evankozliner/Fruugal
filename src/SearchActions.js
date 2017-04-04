@@ -20,9 +20,9 @@ export default {
           name: comp
         }
 
-        console.log(whereToGo)
+        console.log(whereToGo.name + ' -- Will now update the store')
         // Update the store
-        vueInstance.$store.commit('newDataRetrieved', {retrievedData: response.body, query: query})
+        vueInstance.$store.commit('newDataRetrieved', {retrievedData: response.body, query: query, page: comp})
 
         // Go to this route
         resolve(whereToGo)

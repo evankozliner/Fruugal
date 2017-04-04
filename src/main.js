@@ -20,13 +20,15 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     data: {},
-    searchString: ''
+    searchString: '',
+    page: ''
   },
 
   mutations: {
     newDataRetrieved (state, payload) {
       state.data = payload.retrievedData
       state.searchString = payload.query
+      state.page = payload.page
     }
   }
 })

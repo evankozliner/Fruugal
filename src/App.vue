@@ -10,8 +10,7 @@
 export default {
   data: function () {
     return {
-      currentView: 'search',
-      responseFromAPI: ''
+
     }
   }
 }
