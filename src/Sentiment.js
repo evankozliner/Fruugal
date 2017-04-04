@@ -65,7 +65,7 @@ function stripArticle (article) {
 }
 
 function sortByDate (dateA, dateB) {
-  return new Date(dateA.pubDate).getTime() - new Date(dateB.pubDate).getTime()
+  return new Date(dateB.pubDate).getTime() - new Date(dateA.pubDate).getTime()
 }
 
 export default {
