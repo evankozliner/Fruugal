@@ -2,15 +2,9 @@
 <div class=''>
   <div class="info">
     <header id='stock_info'>
-      <h1>Stock Information for {{theResponse.companySymbol}}</h1>
-      <h3>{{theResponse.companyName}}</h3>
+      <h1>{{theResponse.companyName}}</h1>
       <h2>Current stock price: ${{theResponse.stockPrice}}</h2>
     </header>
-    <br>
-    <div id="advice">
-      <h2>What should you do?</h2>
-      <p>{{this.advice}}</p>
-    </div>
   </div>
 
   <transition name="slide-fade" mode="in-out"> <!-- Allows articles div to transition in -->
@@ -39,12 +33,6 @@ export default {
     'article-box': Article
   },
 
-  data () {
-    return {
-      advice: 'We\'re not too sure.  We suggest asking around'
-    }
-  },
-
   computed: {
     theResponse: function () {
       console.log(this.$store.state)
@@ -64,7 +52,7 @@ export default {
 .info {
   background: #42b983;
   padding: 5px;
-  width: 30%;
+  width: 100%;
   margin: auto;
   padding: 20px 2px 20px 2px;
   color: #2c3e50;
