@@ -14,7 +14,6 @@
   </div>
 
   <transition name="slide-fade" mode="out-in"> <!-- Allows articles div to transition in -->
-    <!--<spinner class="center" v-if="!this.stockCompAlreadyOpen && !loaded"></spinner>-->
     <div id="articles" v-if="loaded && articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
       <div id='article_display' v-for="article in articles" v-bind:key='article'>
@@ -41,8 +40,7 @@ export default {
 
   data () {
     return {
-      advice: 'We\'re not too sure.  We suggest asking around',
-      stockCompAlreadyOpen: true
+      advice: 'We\'re not too sure.  We suggest asking around'
     }
   },
 
@@ -102,11 +100,6 @@ export default {
 /* For the loading the page */
 .slide-fade-leave-to {
   transform: translateY(10px);
-  opacity: 0;
-}
-
-/* For the loading spinner leaving */
-.slide-fade-leave-to spinner {
   opacity: 0;
 }
 </style>
