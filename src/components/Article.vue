@@ -1,5 +1,5 @@
 <template>
-  <a :href="info.url">
+  <a :href="info.url" target="_blank">
     <div class='article' :class="[info.category]">
       <h3>{{info.title}}</h3>
       <p class="description">{{info.description}}</p>
@@ -40,7 +40,7 @@ export default {
   margin: 12px 5px 5px 5px;
   padding: 1px 4px 1px 4px;
   background: rgba(20,20,20,0.1);
-  transition: all 0.3s;
+  transition: all 0.15s;
 }
 
 p.description {

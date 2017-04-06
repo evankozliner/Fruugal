@@ -95,7 +95,7 @@ h2 {
 }
 
 input {
-  //border-radius: 5px;
+  border-radius: 1px;
   border: none;
   width: 300px;
   height: 30px;

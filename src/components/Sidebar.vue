@@ -48,7 +48,7 @@ export default {
 
 .titleQuestion {
   font-size: 20px;
-  color: black;
+  color: #2c3e50;
 }
 
 #terms {

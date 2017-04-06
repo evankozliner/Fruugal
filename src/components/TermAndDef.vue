@@ -35,7 +35,7 @@ export default {
 .totalContainer {
   background: #2c3e50;
   font: inherit;
-  border-radius: 8px;
+  border-radius: 2px;
   min-width: 100%;
   padding: 10px 5px;
   overflow: hidden;
@@ -73,4 +73,30 @@ export default {
   height: 100px;
   overflow: auto;
 }
+
+/* Scroll bar styling */
+.definition::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #2E86AB;
+}
+
+.definition::-webkit-scrollbar
+{
+  width: 0px;
+  background-color: #F5F5F5;
+  transition: all .4s;
+}
+
+.active.definition::-webkit-scrollbar
+{
+  width: 6px;
+}
+
+.definition::-webkit-scrollbar-thumb
+{
+  background-color: rgba(140,140,140,0.8);
+  //border: 2px solid #555555;
+}
+
 </style>
