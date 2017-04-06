@@ -31,6 +31,15 @@ module.exports = class QueryExtractor {
       });
   }
 
+  extractSymbolsNLU(aSymbol, mapObject) {
+
+    return {
+      marketName: mapObject[aSymbol],
+      ticker: aSymbol
+    }
+
+  }
+
   //NLU ******************
 
   /*
@@ -85,8 +94,10 @@ module.exports = class QueryExtractor {
     return new Promise( (resolve, reject) => {
       var PythonShell = require('python-shell');
       var entityPython = new PythonShell('server/api/entity_extractor.py');
+
+      var theMessage = this.getQuestionWithoutPunctuation();
       
-      entityPython.send(JSON.stringify(this.getQuestionWithoutPunctuation()));
+      entityPython.send(JSON.stringify(theMessage));
       
       var dataString;
 
@@ -107,29 +118,73 @@ module.exports = class QueryExtractor {
         var extractor = new QueryExtractor();
         var symbolArr = extractor.extractSymbols(dataString, masterStockHash);
         if (symbolArr.length != 0) {
+
+          var smar = symbolArr[0];
+
+          console.log("RESOLVE FOR NLTK AAPL:")
+          console.log(smar);
+
           resolve(symbolArr[0]);
         } 
         else {
-          //attempt to find first name in MSH
 
-          // TODO add market name here
-          var host = 'http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=' + dataString;
+          console.log("NLTK FAILED");
+          
+            var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+            var nlu = new NaturalLanguageUnderstandingV1({
+              username: process.env.NLU_USERNAME,
+              password: process.env.NLU_PASSWORD,
+              version_date: NaturalLanguageUnderstandingV1.VERSION_DATE_2017_02_27
+            });
 
-          request({uri: host}).then(function (res) {
-              var generalJSON = JSON.parse(res)[0];
+            nlu.analyze({
+              text: theMessage,
+              'features': {
+                'entities': {
+                  'limit': 5
+                },
+              },
+            }, function(err, watsonResponse) {
+              if (err) {
+                console.log(err);
+                reject(err);
+              } else {
+                var i;
+                var name;
+                for (i = 0; i < watsonResponse.entities.length; i++) {
+                  if (watsonResponse.entities[i].type == "Company") {
+                    name = watsonResponse.entities[i].text;
+                    break;
+                  }
+                } 
 
-              if (generalJSON != undefined) {
+                console.log(name);
+                var host = 'http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=' + name;
 
-                console.log(generalJSON);
+                request({uri: host}).then(function (res) {
+                  
+                  var generalJSON = JSON.parse(res)[0];
 
-                resolve(generalJSON);
+                  console.log(generalJSON);
 
+                  if (generalJSON != undefined) {
+
+                    var returnJSON = JSON.parse(JSON.stringify({ marketName : generalJSON.Name, ticker: generalJSON.Symbol }));
+
+                    console.log(returnJSON);
+
+                    resolve(returnJSON);
+
+                  }
+
+                });
               }
-          });
+            });
+
         }
       });
     });
-
   }
+
   
 }
