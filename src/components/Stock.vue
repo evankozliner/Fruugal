@@ -2,15 +2,9 @@
 <div class=''>
   <div class="info">
     <header id='stock_info'>
-      <h1>Stock Information for {{theResponse.companySymbol}}</h1>
-      <h3>{{theResponse.companyName}}</h3>
+      <h1>{{theResponse.companyName}}</h1>
       <h2>Current stock price: ${{theResponse.stockPrice}}</h2>
     </header>
-    <br>
-    <div id="advice">
-      <h2>What should you do?</h2>
-      <p>{{this.advice}}</p>
-    </div>
   </div>
 
   <transition name="slide-fade" mode="out-in"> <!-- Allows articles div to transition in -->
@@ -40,7 +34,6 @@ export default {
 
   data () {
     return {
-      advice: 'We\'re not too sure.  We suggest asking around',
       currentData: null
     }
   },
@@ -68,6 +61,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .info {
+  background: #42b983;
+  padding: 5px;
+  width: 100%;
+  margin: auto;
   padding: 20px 2px 20px 2px;
   color: #2c3e50;
   //background: rgba(150, 150, 150, 0.3);

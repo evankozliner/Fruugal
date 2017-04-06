@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!smallpage">
-    <div class="container">
+  <div v-if="!smallpage" class="jumbotron vertical-center">
+    <div class="container text-center">
       <div class="name-box">
         <h1 class="name">Früügal</h1>
         <h2>Getting the financial information you need</h2>
@@ -28,14 +28,11 @@
 <script>
 import SearchActions from '../SearchActions.js'
 import Spinner from './Spinner2.vue'
-
 export default {
   components: {
     'spinner': Spinner
   },
-
   props: ['smallpage'],
-
   data () {
     return {
       // note: changing this line won't causes changes
@@ -46,7 +43,6 @@ export default {
       loading: false
     }
   },
-
   methods: {
     askWatson () {
       // Start the spinner
@@ -73,7 +69,6 @@ export default {
 .cont {
   //background: #2E86AB;
 }
-
 .name-box {
   margin-bottom: 40px;
 }
@@ -82,34 +77,27 @@ h1.name {
   font-size: 70px;
   margin-bottom: 10px;
 }
-
 h1.smallName {
   color: #42b983;
   font-size: 50px;
   text-align: left;
 }
-
 h2 {
   margin: 0;
   font-size: 16px;
 }
-
 input {
   border-radius: 1px;
   border: none;
   width: 300px;
   height: 30px;
   font-size: 18px;
-
   transition: all 0.2s ease-in-out;
 }
-
 input:focus, button:hover {
   box-shadow: 1px 2px 4px rgba(48, 64, 80, .8);
   outline: none;
-
 }
-
 button {
   height: 32px;
   width: 70px;
@@ -119,26 +107,47 @@ button {
   outline: none;
   cursor: pointer;
   color: #2E86AB;
-
   font: inherit;
-
   transition: all 0.2s ease-in-out;
 }
-
+.jumbotron.vertical-center {
+  margin-bottom: 0;
+  background-color: #2E86AB;
+}
+.vertical-center {
+  min-height: 100%;
+  min-height: 100vh; 
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; 
+    -webkit-box-align : center;
+  -webkit-align-items : center;
+       -moz-box-align : center;
+       -ms-flex-align : center;
+          align-items : center;
+  width: 100%;
+         -webkit-box-pack : center;
+            -moz-box-pack : center;
+            -ms-flex-pack : center;
+  -webkit-justify-content : center;
+          justify-content : center;
+}
+.container {
+  background-color: #2E86AB;
+}
 .center {
   margin: auto
 }
-
 .right {
   float: right;
   margin-top: 0px;
   margin-bottom: 0px;
 }
-
 .oneline {
   margin: 0px;
 }
-
 .inputArea {
   text-align: left;
   margin-top: 35px;
