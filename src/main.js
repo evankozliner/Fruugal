@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import App from './App'
 import VueResource from 'vue-resource'
 import Vuex from 'vuex'
+import VTooltip from 'v-tooltip'
 
 // Components
 import Search from './components/Search.vue'
@@ -16,6 +17,7 @@ import Unknown from './components/Unknown.vue'
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(VTooltip)
 
 // Create the vuex store
 const store = new Vuex.Store({
