@@ -83,14 +83,9 @@ export default {
 
 .definition::-webkit-scrollbar
 {
-  width: 0px;
-  background-color: #F5F5F5;
-  transition: all .4s;
-}
-
-.active.definition::-webkit-scrollbar
-{
   width: 6px;
+  background-color: #F5F5F5;
+  transition: all 2s;
 }
 
 .definition::-webkit-scrollbar-thumb

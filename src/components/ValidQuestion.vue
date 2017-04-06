@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Sentiment from '../Sentiment.js'
+import Sorter from '../Sentiment.js'
 import sidebar from './Sidebar.vue'
 import search from './Search.vue'
 export default {
@@ -67,7 +67,7 @@ export default {
         console.log(resp)
         if (!resp.hasOwnProperty('solrErrorMessage')) {
           var arrOfArticles = resp.response.docs
-          this.articles = Sentiment.sortByDate(arrOfArticles)
+          this.articles = Sorter.sortByDate(arrOfArticles)
           console.log(this.articles)
         }
       }, response => {
