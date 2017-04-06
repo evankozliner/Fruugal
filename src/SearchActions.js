@@ -20,7 +20,7 @@ export default {
           name: comp
         }
 
-        console.log(whereToGo.name + ' -- Will now update the store')
+        console.log(whereToGo.name + ' -- Will now update the store.  From SearchActions.js')
         // Update the store
         vueInstance.$store.commit('newDataRetrieved', {retrievedData: response.body, query: query, page: comp})
 
