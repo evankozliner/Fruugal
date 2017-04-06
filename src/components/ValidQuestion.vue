@@ -54,6 +54,7 @@ export default {
 
   methods: {
     getArticles: function () {
+      this.loaded = false
       console.log('Going to get articles')
       // First get the ticker from the response
       var ticker = '/' + this.theResponse.companySymbol
@@ -69,13 +70,13 @@ export default {
           var arrOfArticles = resp.response.docs
           this.articles = Sorter.sortByDate(arrOfArticles)
           console.log(this.articles)
+          this.loaded = true  // Stop the spinner
         }
       }, response => {
         // Error
         console.log('Error getting articles')
+        this.loaded = true  // Stop the spinner
       })
-      // Stop the spinner
-      this.loaded = true
     },
 
     possiblyGetArticles: function () {

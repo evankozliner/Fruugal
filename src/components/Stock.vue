@@ -13,11 +13,11 @@
     </div>
   </div>
 
-  <transition name="slide-fade" mode="in-out"> <!-- Allows articles div to transition in -->
-    <spinner class="center" v-if="!loaded"></spinner>
-    <div id="articles" v-else-if="articles">  <!-- Makes sure articles is not null -->
+  <transition name="slide-fade" mode="out-in"> <!-- Allows articles div to transition in -->
+    <!--<spinner class="center" v-if="!this.stockCompAlreadyOpen && !loaded"></spinner>-->
+    <div id="articles" v-if="loaded && articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
-      <div id='article_display' v-for="article in articles">
+      <div id='article_display' v-for="article in articles" v-bind:key='article'>
         <article-box :info="article"></article-box>
       </div>
     </div> <!-- articles div -->
@@ -41,7 +41,8 @@ export default {
 
   data () {
     return {
-      advice: 'We\'re not too sure.  We suggest asking around'
+      advice: 'We\'re not too sure.  We suggest asking around',
+      stockCompAlreadyOpen: true
     }
   },
 
@@ -83,12 +84,12 @@ export default {
   text-align: left;
 }
 
-/* Transitions */
+/* Transitions for */
 .slide-fade-enter-active {
   transition: all .5s ease;
 }
 .slide-fade-leave-active {
-  transition: all .5s ease;
+  transition: all .2s ease;
 }
 
 /* For the articles div entrance */
@@ -98,11 +99,14 @@ export default {
   opacity: 0;
 }
 
-/* For the loading spinner leaving */
-.slide-fade-leave-to
-/* .slide-fade-leave-active for <2.1.8 */ {
+/* For the loading the page */
+.slide-fade-leave-to {
+  transform: translateY(10px);
   opacity: 0;
-  position: absolute;
-  left: 50%;
+}
+
+/* For the loading spinner leaving */
+.slide-fade-leave-to spinner {
+  opacity: 0;
 }
 </style>
