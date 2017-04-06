@@ -1,6 +1,7 @@
 let Answer = require('./Answer.js');
 let StockAnswer = require('./stockAnswer.js');
 let DescriptionAnswer = require('./descriptionAnswer.js');
+var QuestionUnknownAnswer = require('./questionUnknownAnswer.js');
 
 module.exports = class GeneralInfoAnswer extends Answer {
   // TODO seperate multipart answer logic into its own class
@@ -18,6 +19,9 @@ module.exports = class GeneralInfoAnswer extends Answer {
         answers: answers,
         classType: 'GeneralInfoAnswer'
       }
+    }).catch( (reason) => {
+      console.log("General info failure");
+      return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
     });
   }
 }
