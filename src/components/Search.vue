@@ -5,9 +5,10 @@
         <h1 class="name">Früügal</h1>
         <h2>Getting the financial information you need</h2>
       </div>
-      <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
-      <button @click="askWatson">Search</button>
-
+      <v-tooltip :title="text" trigger="focus">
+        <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
+        <button @click="askWatson">Search</button>
+      </v-tooltip>
       <spinner class="center" v-if="loading"></spinner>
     </div>
   </div>  <!-- End of full page div -->
@@ -16,9 +17,10 @@
     <div class="container cont">
       <h1 class="smallName col-md-3">Früügal</h1>
       <div class="inputArea col-md-7">
+      <v-tooltip :title="text" trigger="focus">
         <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
         <button @click="askWatson">Search</button>
-
+        </v-tooltip>
         <spinner class='col-md-2 right' v-if="loading"></spinner>
       </div>
     </div>
@@ -42,6 +44,7 @@ export default {
       // with hot-reload because the reloaded component
       // preserves its current state and we are modifying
       // its initial state.
+      text: 'To get the best results, make sure your search includes the word stock if you would like an analysis of the current stock for a company.',
       query: '',
       loading: false
     }
@@ -67,6 +70,8 @@ export default {
   }
 }
 </script>
+
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
