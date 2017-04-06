@@ -39,7 +39,10 @@ module.exports = class StockAnswer extends Answer {
         };
         res(this.stockAnswer(extractedData));
       })
-      .catch(function(reason) { console.log(reason); rej(reason); });
+      .catch( (reason) => { 
+        console.log(reason);
+        return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
+      });
     });
   }
 }
