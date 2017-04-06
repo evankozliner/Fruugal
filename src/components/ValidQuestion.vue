@@ -48,6 +48,7 @@ export default {
         retVal = storeData.data
         this.cachedResponse = retVal
       }
+      console.log('I am in theResponse')
       return retVal
     }
   },
@@ -89,7 +90,10 @@ export default {
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
   created: function () {
-    this.getArticles()
+    // Must first check its a stock answer so getArticles doesn't throw an error
+    if (this.$store.state.page === 'StockAnswer') {
+      this.getArticles()
+    }
   },
 
   beforeCreate: function () {

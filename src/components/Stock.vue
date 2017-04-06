@@ -41,14 +41,21 @@ export default {
 
   data () {
     return {
-      advice: 'We\'re not too sure.  We suggest asking around'
+      advice: 'We\'re not too sure.  We suggest asking around',
+      currentData: null
     }
   },
 
   computed: {
     theResponse: function () {
       console.log(this.$store.state)
-      return this.$store.state.data
+      var storeData = this.$store.state
+      var retval = this.currentData
+      if (storeData.page === 'StockAnswer') {
+        retval = storeData.data
+        this.currentData = retval
+      }
+      return retval
     }
   },
 
