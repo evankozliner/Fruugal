@@ -29,6 +29,7 @@ def fix_string(sentence):
             retStr += " "
     return retStr
 	
+# TODO use our local csv for these methods
 def is_a_ticker(ticker):
     ticker = ticker.upper()
     url = 'http://finance.yahoo.com/d/quotes.csv?s=%s&f=%s' % (ticker, 'n')
