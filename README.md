@@ -3,6 +3,18 @@
 Repo accompanying the blog post [Quick-n-clean way to deploy Vue + Webpack apps on Heroku
 ](https://medium.com/@sagarjauhari/quick-n-clean-way-to-deploy-vue-webpack-apps-on-heroku-b522d3904bc8#.xexhdzg4x)
 
+# Starting the app
+
+Note: Run all of these in different terminals
+
+```bash
+npm run dev 
+
+npm start
+
+cd rar_orchestrator && python rar_live_server.py
+```
+
 ## Build Setup
 
 ``` bash

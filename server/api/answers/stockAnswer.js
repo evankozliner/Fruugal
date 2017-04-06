@@ -29,10 +29,17 @@ module.exports = class StockAnswer extends Answer {
   }
 
   answer() {
-    let extractedData = (new QueryExtractor(this.rawQuestion)).extractSymbols()[0];
-    if (extractedData === undefined) {  
-      return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
-    };
-    return this.stockAnswer(extractedData);
+    return new Promise( (res, rej) => {
+      //let extractedData = (new QueryExtractor(this.rawQuestion)).getCompany();
+      let queryExtractor = new QueryExtractor(this.rawQuestion);
+      queryExtractor.getCompany().then( extractedData => {
+        if (extractedData === undefined) {  
+          console.log("Stock answer is undefined");
+          return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
+        };
+        res(this.stockAnswer(extractedData));
+      })
+      .catch(function(reason) { console.log(reason); rej(reason); });
+    });
   }
 }

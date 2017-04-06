@@ -11,7 +11,6 @@ module.exports = class StockQuery {
   getStockPriceInfo() {
     return new Promise((res, rej) => {
       request({uri: this.host + this.stockPath}).then( (response) => {
-        console.log(response);
         res(JSON.parse(response));
       });
     });
