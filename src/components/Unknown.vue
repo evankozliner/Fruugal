@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="searchBar">
-      <search smallpage="false"><search>
+      <search smallpage="false"></search>
     </header>
     <div class="info">
       <h1>Sorry...</h1>
