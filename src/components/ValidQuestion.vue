@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
     <header class="searchBar">
-      <search v-on:SP="possiblyGetArticles" smallpage="false"><search>
+      <search v-on:SP="possiblyGetArticles" smallpage="false"></search>
     </header>
 
     <div class='col-md-3'>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Sentiment from '../Sentiment.js'
+import Sorter from '../Sentiment.js'
 import sidebar from './Sidebar.vue'
 import search from './Search.vue'
 export default {
@@ -48,12 +48,14 @@ export default {
         retVal = storeData.data
         this.cachedResponse = retVal
       }
+      console.log('I am in theResponse')
       return retVal
     }
   },
 
   methods: {
     getArticles: function () {
+      this.loaded = false
       console.log('Going to get articles')
       // First get the ticker from the response
       var ticker = '/' + this.theResponse.companySymbol
@@ -67,15 +69,15 @@ export default {
         console.log(resp)
         if (!resp.hasOwnProperty('solrErrorMessage')) {
           var arrOfArticles = resp.response.docs
-          this.articles = Sentiment.sortByDate(arrOfArticles)
+          this.articles = Sorter.sortByDate(arrOfArticles)
           console.log(this.articles)
+          this.loaded = true  // Stop the spinner
         }
       }, response => {
         // Error
         console.log('Error getting articles')
+        this.loaded = true  // Stop the spinner
       })
-      // Stop the spinner
-      this.loaded = true
     },
 
     possiblyGetArticles: function () {
@@ -89,7 +91,10 @@ export default {
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
   created: function () {
-    this.getArticles()
+    // Must first check its a stock answer so getArticles doesn't throw an error
+    if (this.$store.state.page === 'StockAnswer') {
+      this.getArticles()
+    }
   },
 
   beforeCreate: function () {

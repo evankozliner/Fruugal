@@ -9,6 +9,7 @@ import Search from './components/Search.vue'
 import ValidQuestion from './components/ValidQuestion.vue'
 import Stock from './components/Stock.vue'
 import Info from './components/Info.vue'
+import Market from './components/Market.vue'
 import ErrorComp from './components/Error.vue'
 import Unknown from './components/Unknown.vue'
 
@@ -42,7 +43,8 @@ const routes = [
       { path: 'Stock', name: 'StockAnswer',
           component: Stock, props: true, meta: { requiresSearch: true }},
       { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true,
-      meta: { requiresSearch: true } }
+      meta: { requiresSearch: true } },
+      { path: 'Market', name: 'MarketAnswer', component: Market, props: true }
     ]
   },
   { path: '/Error', name: 'Error', component: ErrorComp },

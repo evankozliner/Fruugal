@@ -30,9 +30,10 @@ routes.get('/', function(req, res) {
   questionClassifier.classify(req.query.message)
     .then(routeQuestion)
     .then(function(watsonsAnswer) {
+      console.log(watsonsAnswer);
       return watsonsAnswer.answer();
     })
-    .then(function(ans) { res.status(200).json(ans); })
+    .then(function(ans) { console.log(ans); res.status(200).json(ans); })
     .catch(function(reason) {
       console.log(reason);
       res.status(500).json({error: reason});

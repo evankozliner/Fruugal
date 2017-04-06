@@ -7,11 +7,10 @@
     </header>
   </div>
 
-  <transition name="slide-fade" mode="in-out"> <!-- Allows articles div to transition in -->
-    <spinner class="center" v-if="!loaded"></spinner>
-    <div id="articles" v-else-if="articles">  <!-- Makes sure articles is not null -->
+  <transition name="slide-fade" mode="out-in"> <!-- Allows articles div to transition in -->
+    <div id="articles" v-if="loaded && articles">  <!-- Makes sure articles is not null -->
       <h1>What are people thinking?</h1>
-      <div id='article_display' v-for="article in articles">
+      <div id='article_display' v-for="article in articles" v-bind:key='article'>
         <article-box :info="article"></article-box>
       </div>
     </div> <!-- articles div -->
@@ -33,10 +32,22 @@ export default {
     'article-box': Article
   },
 
+  data () {
+    return {
+      currentData: null
+    }
+  },
+
   computed: {
     theResponse: function () {
       console.log(this.$store.state)
-      return this.$store.state.data
+      var storeData = this.$store.state
+      var retval = this.currentData
+      if (storeData.page === 'StockAnswer') {
+        retval = storeData.data
+        this.currentData = retval
+      }
+      return retval
     }
   },
 
@@ -75,12 +86,12 @@ export default {
   text-align: left;
 }
 
-/* Transitions */
+/* Transitions for */
 .slide-fade-enter-active {
   transition: all .5s ease;
 }
 .slide-fade-leave-active {
-  transition: all .5s ease;
+  transition: all .2s ease;
 }
 
 /* For the articles div entrance */
@@ -90,11 +101,9 @@ export default {
   opacity: 0;
 }
 
-/* For the loading spinner leaving */
-.slide-fade-leave-to
-/* .slide-fade-leave-active for <2.1.8 */ {
+/* For the loading the page */
+.slide-fade-leave-to {
+  transform: translateY(10px);
   opacity: 0;
-  position: absolute;
-  left: 50%;
 }
 </style>

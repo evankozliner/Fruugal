@@ -21,21 +21,38 @@ module.exports = class DescriptionAnswer extends Answer {
         uri: "https://" +this.host + this.hostPath + extractedSymbol,
         headers: {Authorization: this.buildBasicAuth()}
       }).then( (response) => {
+        console.log("RES");
+        console.log(response);
         res({
           data: JSON.parse(response),
           classType: 'DescriptionClass'
         });
+      })
+      .catch( reason => {
+        console.log(reason);
+        rej(reason);
       });
     });
   }
 
   answer() {
-    // TODO this logic is a repeat of stockAnswer
-    let extractedData = (new QueryExtractor(this.rawQuestion)).extractSymbols()[0];
-    if (extractedData === undefined) {
-      return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
-    };
-    console.log(extractedData)
-    return this.descriptionAnswer(extractedData.ticker)
+    return new Promise( (res, rej) => {
+      let queryExtractor = new QueryExtractor(this.rawQuestion);
+      //let extractedData = (new QueryExtractor(this.rawQuestion)).extractSymbols()[0];
+
+      queryExtractor.getCompany().then( extractedData => {
+        if (extractedData === undefined) {  
+          console.log("Stock answer is undefined");
+          return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
+        };
+        res(this.descriptionAnswer(extractedData.ticker));
+      })
+      .catch(function(reason) { console.log(reason); rej(reason); });
+
+      //if (extractedData === undefined) {
+      //  return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
+      //};
+    });
+    //return this.descriptionAnswer(extractedData.ticker)
   }
 }
