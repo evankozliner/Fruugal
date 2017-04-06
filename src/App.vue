@@ -10,8 +10,7 @@
 export default {
   data: function () {
     return {
-      currentView: 'search',
-      responseFromAPI: ''
+
     }
   }
 }
@@ -25,6 +24,8 @@ body {
 
   font-family: sans-serif;
   font-style: Verdana, Geneva;
+
+  padding: 10px;
 }
 
 #app {

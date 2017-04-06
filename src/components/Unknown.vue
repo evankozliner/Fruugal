@@ -1,21 +1,28 @@
 <template>
-  <div class="info">
-    <h1>Sorry...</h1>
-    <p> {{ theResponse.apology }} </p>
+  <div>
+    <header class="searchBar">
+      <search smallpage="false"></search>
+    </header>
+    <div class="info">
+      <h1>Sorry...</h1>
+      <h4> {{ theResponse.apology }} </h4>
+    </div>
   </div>
 </template>
 
 <script>
+import search from './Search.vue'
 export default {
+  components: {
+    search: search
+  },
 
-  // The data returned from the API call
-  props: ['theResponse'],
-
-  data () {
-    return {
-
+  computed: {
+    theResponse: function () {
+      return this.$store.state.data
     }
   }
+
 }
 </script>
 

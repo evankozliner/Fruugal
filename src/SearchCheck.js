@@ -7,6 +7,7 @@ export default {
   },
 
   searchPerformed (classType) {
+    console.log('Here in SearchCheck')
     console.log(classType)
     this.search.sp = true
     this.search.mostRecentClass = classType
@@ -14,6 +15,7 @@ export default {
   },
 
   searchHasBeenPerformedToThisClass (classType) {
+    console.log('Here in SearchCheck')
     console.log(classType)
     console.log(this.search.mostRecentClass)
     return this.search.sp && (classType === this.search.mostRecentClass)

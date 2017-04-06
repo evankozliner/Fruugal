@@ -1,6 +1,7 @@
 <template>
   <div class="info">
     <h1>Information on {{theResponse.answers[1].data.name}}</h1>
+
     <h2>{{theResponse.answers[1].data.name}}: ${{theResponse.answers[0].stockPrice}}</h2>
     <h2>CEO: {{theResponse.answers[1].data.ceo}}</h2>
     <p><b>Headquarters:</b> {{theResponse.answers[1].data.hq_address1}}, {{theResponse.answers[1].data.hq_address_city}}, {{theResponse.answers[1].data.hq_state}}</p>
@@ -14,12 +15,31 @@
 export default {
 
   // The data returned from the API call
-  props: ['theResponse'],
+  // props: ['theResponse'],
 
   data () {
     return {
-
+      currentData: null
     }
+  },
+
+  computed: {
+    // This function sets the data to the data in the store ONLY if the current page is
+    // GeneralInfoAnswer, meaning this is the component that is currently shown
+    theResponse: function () {
+      console.log('The method in Info.vue for getting the data was called')
+      var storeData = this.$store.state
+      var retVal = this.currentData
+      if (storeData.page === 'GeneralInfoAnswer') {
+        retVal = storeData.data
+        this.currentData = retVal
+      }
+      return retVal
+    }
+  },
+
+  destroyed: function () {
+    console.log('The Info component has been destroyed')
   }
 }
 </script>

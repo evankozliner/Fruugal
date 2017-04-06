@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class=''>
   <div class="info">
     <header id='stock_info'>
       <h1>Stock Information for {{theResponse.companySymbol}}</h1>
@@ -32,7 +32,7 @@ import Article from './Article.vue'
 export default {
 
   // The data returned from the API call
-  props: ['theResponse', 'articles', 'loaded'],
+  props: ['articles', 'loaded'],
 
   components: {
     'spinner': Spinner,
@@ -41,8 +41,26 @@ export default {
 
   data () {
     return {
-      advice: 'We\'re not too sure.  We suggest asking around'
+      advice: 'We\'re not too sure.  We suggest asking around',
+      currentData: null
     }
+  },
+
+  computed: {
+    theResponse: function () {
+      console.log(this.$store.state)
+      var storeData = this.$store.state
+      var retval = this.currentData
+      if (storeData.page === 'StockAnswer') {
+        retval = storeData.data
+        this.currentData = retval
+      }
+      return retval
+    }
+  },
+
+  beforeDestroy: function () {
+    console.log('Stock.vue is being destroyed')
   }
 
 }
@@ -65,14 +83,9 @@ export default {
   margin: auto
 }
 
-.break {
-  width: 200px;
-  border-bottom: 30px solid black;
-}
-
 #articles {
   background: rgba(150, 150, 150, 0.3);
-  margin: 30px 50px 30px 50px;
+  margin: 30px 0px 30px 0px;
   padding: 5px;
   text-align: left;
 }
