@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
     <header class="searchBar">
-      <search v-on:SP="possiblyGetArticles" smallpage="false"><search>
+      <search v-on:SP="possiblyGetArticles" smallpage="false"></search>
     </header>
 
     <div class='col-md-3'>
