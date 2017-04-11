@@ -20,7 +20,7 @@ def fix_string(sentence):
                     retStr += leaf[0].title()
                 else:
                     retStr += leaf[0]
-                retStr += " "         
+                retStr += " "
         elif chunk:
             if chunk[1] == "NN" and chunk[0] not in exception.values:
                 retStr += chunk[0].title()
@@ -28,22 +28,22 @@ def fix_string(sentence):
                 retStr += chunk[0]
             retStr += " "
     return retStr
-	
+
 # TODO use our local csv for these methods
 def is_a_ticker(ticker):
     ticker = ticker.upper()
     url = 'http://finance.yahoo.com/d/quotes.csv?s=%s&f=%s' % (ticker, 'n')
-    response = urllib3.urlopen(url)
+    response = urllib3.PoolManager().request('GET', url)
     content = response.read().decode().strip().strip('"')
     return True if content != 'N/A' else False
-	
+
 def is_a_major_exchange_ticker(ticker):
     ticker = ticker.upper()
     url = 'http://finance.yahoo.com/d/quotes.csv?s=%s&f=%s' % (ticker, 'x')
-    response = urllib3.urlopen(url)
+    response = urllib3.PoolManager().request('GET', url)
     content = response.read().decode().strip().strip('"')
     return True if content == 'NMS' or content == 'NYQ' or content == 'NSQ' else False
-	
+
 def check_chunks_for_symbol(initial_chunks):
 	#check for symbol
 	found_symbol = ""
@@ -65,7 +65,7 @@ def check_chunks_for_symbol(initial_chunks):
 				else:
 					found_symbol = [chunk[0], 0]
 	return found_symbol
-	
+
 def check_chunks_for_name(initial_chunks):
 	#check for found
     found_name = ""
@@ -96,9 +96,9 @@ def check_chunks_for_name(initial_chunks):
             if chunk[1] == "NN":
                 found_name += chunk[0]
                 return found_name
-    
+
     return found_name
-	
+
 
 
 def read_in():
@@ -107,10 +107,10 @@ def read_in():
     return json.loads(lines[0])
 
 def main():
-    
+
     #get our data as an array from read_in()
     lines = read_in()
-    
+
     sentence = lines
     #sentence = "Should I sell my netflix stock";
     tokens = word_tokenize(sentence)
@@ -119,7 +119,7 @@ def main():
 
     ticker_response = check_chunks_for_symbol(initial_chunks)
     company_name_response = check_chunks_for_name(ne_chunk(pos_tag(word_tokenize(fix_string(sentence))), binary = True))
-    
+
     if (ticker_response and ticker_response[1] == 1):
         print (ticker_response[0])
     elif(ticker_response and company_name_response == ""):
