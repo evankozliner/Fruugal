@@ -39,6 +39,7 @@ export default {
   min-width: 100%;
   padding: 10px 5px;
   overflow: hidden;
+  cursor: default;
 
   transition: all 0.5s;
 }

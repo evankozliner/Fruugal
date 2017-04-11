@@ -12,9 +12,9 @@
     </div>
 
     <div class="col-md-9">
-      <keep-alive>
-        <router-view :articles="articles" :loaded="loaded"></router-view>
-      </keep-alive>
+      <transition name="fade" mode="out-in">
+        <router-view :articles="articles" :loaded="loadedArticles" v-if:newPage></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -35,7 +35,8 @@ export default {
   data () {
     return {
       articles: null,
-      loaded: false,
+      loadedArticles: false,
+      newPage: true,
       cachedResponse: null
     }
   },
@@ -55,7 +56,7 @@ export default {
 
   methods: {
     getArticles: function () {
-      this.loaded = false
+      this.loadedArticles = false
       console.log('Going to get articles')
       // First get the ticker from the response
       var ticker = '/' + this.theResponse.companySymbol
@@ -71,12 +72,12 @@ export default {
           var arrOfArticles = resp.response.docs
           this.articles = Sorter.sortByDate(arrOfArticles)
           console.log(this.articles)
-          this.loaded = true  // Stop the spinner
+          this.loadedArticles = true  // Stop the spinner
         }
       }, response => {
         // Error
         console.log('Error getting articles')
-        this.loaded = true  // Stop the spinner
+        this.loadedArticles = true  // Stop the spinner
       })
     },
 
@@ -120,6 +121,27 @@ header.searchBar {
   padding: 1px;
   //background: rgba(200,200,200,0.4);
   //position: fixed;
+}
+
+/* Transitions for */
+.fade-enter-active {
+  transition: all .5s ease;
+}
+.fade-leave-active {
+  transition: all .2s ease;
+}
+
+/* For the articles div entrance */
+.fade-enter
+/* .slide-fade-leave-active for <2.1.8 */ {
+  //transform: translateY(20px);
+  opacity: 0;
+}
+
+/* For the loading the page */
+.fade-leave-to {
+  //transform: translateY(10px);
+  opacity: 0;
 }
 
 </style>

@@ -7,8 +7,7 @@
       </div>
       <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
       <button @click="askWatson">Search</button>
-
-      <spinner class="center" v-if="loading"></spinner>
+      <spinner class="center" v-show="loading"></spinner>
     </div>
   </div>  <!-- End of full page div -->
 
@@ -57,8 +56,11 @@ export default {
         console.log('There was an error')
         instance.loading = false
         instance.$router.push(err)
+      }).then(function () {
+        // Set the question back to a blank
+        instance.query = ''
       })
-      this.$emit('searchPerformed') // Emit the event that search occured
+      // this.$emit('searchPerformed') // Emit the event that search occured
     }
   }
 }
@@ -116,12 +118,12 @@ button {
 }
 .vertical-center {
   min-height: 100%;
-  min-height: 100vh; 
+  min-height: 80vh;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  display: flex; 
+  display: flex;
     -webkit-box-align : center;
   -webkit-align-items : center;
        -moz-box-align : center;
@@ -137,9 +139,11 @@ button {
 .container {
   background-color: #2E86AB;
 }
+
 .center {
-  margin: auto
+  margin: auto;
 }
+
 .right {
   float: right;
   margin-top: 0px;
