@@ -9,4 +9,5 @@ rar_orchestrator/data/*
 rar_orchestrator/articles.db
 fundamentals_extractor/ScraXBRL/*
 fundamentals_extractor/data/*
+*.pyc
 
