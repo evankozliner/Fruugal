@@ -115,10 +115,11 @@ button {
 .jumbotron.vertical-center {
   margin-bottom: 0;
   background-color: #2E86AB;
+
 }
 .vertical-center {
   min-height: 100%;
-  min-height: 80vh;
+  min-height: 90vh;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -136,12 +137,14 @@ button {
   -webkit-justify-content : center;
           justify-content : center;
 }
-.container {
+.jumbotron .container {
   background-color: #2E86AB;
+  height: 40vh;
 }
 
 .center {
   margin: auto;
+  padding: 1px;
 }
 
 .right {
@@ -156,4 +159,9 @@ button {
   text-align: left;
   margin-top: 35px;
 }
+
+spinner {
+    transition: all 0.5s ease-in-out;
+}
+
 </style>

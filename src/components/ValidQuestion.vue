@@ -13,7 +13,7 @@
 
     <div class="col-md-9">
       <transition name="fade" mode="out-in">
-        <router-view :articles="articles" :loaded="loadedArticles" v-if:newPage></router-view>
+        <router-view :articles="articles" :loaded="loadedArticles"></router-view>
       </transition>
     </div>
   </div>

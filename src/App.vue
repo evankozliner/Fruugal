@@ -1,7 +1,9 @@
 <template>
  <body>
   <div id="app">
-    <router-view></router-view>
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
  </body>
 </template>
@@ -28,5 +30,25 @@ body {
 #app {
   color: #2c3e50;
   text-align: center;
+}
+
+
+/* Transitions */
+.fade-enter-active {
+  transition: all .2s ease;
+}
+.fade-leave-active {
+  transition: all .2s ease;
+}
+
+/* when starting a component */
+.fade-enter
+/* .slide-fade-leave-active for <2.1.8 */ {
+  opacity: 0;
+}
+
+/* when leaving a component */
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
