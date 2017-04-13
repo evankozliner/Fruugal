@@ -119,7 +119,7 @@ module.exports = class QueryExtractor {
 
                   for (i = 0; i < watsonResponse.keywords.length; i++) {
 
-                    name = watsonResponse.keywords[j].text;
+                    name = watsonResponse.keywords[i].text;
 
                   }
 
