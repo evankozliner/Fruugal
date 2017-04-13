@@ -1,10 +1,16 @@
 from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
-import urllib3
 import pandas as pd
 import sys, json
+if sys.version_info[0] >= 3:
+    from urllib.request import urlopen
+else:
+    # Not Python 3 - today, it is most likely to be Python 2
+    # But note that this might need an update when Python 4
+    # might be around one day
+    from urllib import urlopen
 
-exception = pd.Series(['my', 'stock', 'price', 'i', 'want', 'info', 'information','today','now', 'purchase', 'sell', 'portfolio'])
+exception = pd.Series(['my', 'am', 'stock', 'price', 'i', 'want', 'info', 'information','today','now', 'purchase', 'sell', 'portfolio'])
 
 def fix_string(sentence):
     retStr = ""
@@ -33,14 +39,14 @@ def fix_string(sentence):
 def is_a_ticker(ticker):
     ticker = ticker.upper()
     url = 'http://finance.yahoo.com/d/quotes.csv?s=%s&f=%s' % (ticker, 'n')
-    response = urllib3.urlopen(url)
+    response = urlopen(url)
     content = response.read().decode().strip().strip('"')
     return True if content != 'N/A' else False
 	
 def is_a_major_exchange_ticker(ticker):
     ticker = ticker.upper()
     url = 'http://finance.yahoo.com/d/quotes.csv?s=%s&f=%s' % (ticker, 'x')
-    response = urllib3.urlopen(url)
+    response = urlopen(url)
     content = response.read().decode().strip().strip('"')
     return True if content == 'NMS' or content == 'NYQ' or content == 'NSQ' else False
 	
@@ -99,7 +105,16 @@ def check_chunks_for_name(initial_chunks):
     
     return found_name
 	
-
+def get_ticker_fix(chunks):
+    minor_chunk = ""
+    for chunk in chunks:
+        if chunk in exception.values:
+            continue
+        if is_a_major_exchange_ticker(chunk):
+            return chunk
+        elif is_a_ticker(chunk):
+            minor_chunk = chunk
+    return minor_chunk
 
 def read_in():
     lines = sys.stdin.readlines()
@@ -113,19 +128,16 @@ def main():
     
     sentence = lines
     #sentence = "Should I sell my netflix stock";
-    tokens = word_tokenize(sentence)
-    pos_tags = pos_tag(tokens)
-    initial_chunks = ne_chunk(pos_tags, binary=True)
-
-    ticker_response = check_chunks_for_symbol(initial_chunks)
-    company_name_response = check_chunks_for_name(ne_chunk(pos_tag(word_tokenize(fix_string(sentence))), binary = True))
+    #tokens = word_tokenize(sentence)
+    #pos_tags = pos_tag(tokens)
+    #initial_chunks = ne_chunk(pos_tags, binary=True)
     
-    if (ticker_response and ticker_response[1] == 1):
-        print (ticker_response[0])
-    elif(ticker_response and company_name_response == ""):
-        print (ticker_response[0])
-    else:
-        print(company_name_response)
+    ticker_response = get_ticker_fix(sentence.lower().split( ))
+    
+    #ticker_response = check_chunks_for_symbol(initial_chunks)
+    #company_name_response = check_chunks_for_name(ne_chunk(pos_tag(word_tokenize(fix_string(sentence))), binary = True))
+    
+    print(ticker_response)
 
 #start process
 if __name__ == '__main__':
