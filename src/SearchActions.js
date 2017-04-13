@@ -32,6 +32,24 @@ export default {
         reject('/Error')
       })
     })
+  },
+
+  /*
+   * Sends a request to the fundamentals API
+   * Needs a instance of vue and a stock ticker
+   */
+  sendFundamentalsRequest (vueInstance, ticker) {
+    return new Promise(function (resolve, reject) {
+      var requestString = '/balance/' + ticker
+      vueInstance.$http.get(requestString).then(function (response) {
+        // Check to make sure that a response was successful
+
+        resolve(response)
+      }, function (response) {
+        console.log('There was an error getting the fundamentals')
+        resolve('No fundamentals could be found')
+      })
+    })
   }
 }
 
