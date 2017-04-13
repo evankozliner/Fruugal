@@ -43,6 +43,9 @@ module.exports = class QueryExtractor {
   getCompany() {
     // TODO extact to another method
     return new Promise( (resolve, reject) => {
+
+      var host = 'http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=';
+
       var PythonShell = require('python-shell');
       var entityPython = new PythonShell('server/api/entity_extractor.py');
 
@@ -76,37 +79,54 @@ module.exports = class QueryExtractor {
           console.log(smar);
 
           resolve(symbolArr[0]);
-        } 
-        else {
+        } else {
 
           console.log("NLTK FAILED");
           
-            var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
-            var nlu = new NaturalLanguageUnderstandingV1({
-              username: process.env.NLU_USERNAME,
-              password: process.env.NLU_PASSWORD,
-              version_date: NaturalLanguageUnderstandingV1.VERSION_DATE_2017_02_27
-            });
+          var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+          var nlu = new NaturalLanguageUnderstandingV1({
+            username: process.env.NLU_USERNAME,
+             password: process.env.NLU_PASSWORD,
+             version_date: NaturalLanguageUnderstandingV1.VERSION_DATE_2017_02_27
+          });
 
-            nlu.analyze({
-              text: theMessage,
-              'features': {
-                'entities': {
-                  'limit': 5
-                },
+          nlu.analyze({
+            text: theMessage,
+            'features': {
+              'entities': {
+                'limit': 5
               },
-            }, function(err, watsonResponse) {
-              if (err) {
-                console.log(err);
-                reject(err);
-              } else {
-                var i;
-                var name;
+              'keywords': {
+                'limit': 5
+              },
+            },
+          }, function(err, watsonResponse) {
+            if (err) {
+              console.log(err);
+              reject(err);
+            } else {
+              var i;
+              var name;
 
-                if (watsonResponse.entities.length <= 0) {
+              if (watsonResponse.entities.length <= 0) {
+
+                if (watsonResponse.keywords.length <= 0) {
+
                   console.log("Empty Watson response.");
                   reject("Empty Watson response.");
+
+                } else {
+
+                  for (i = 0; i < watsonResponse.keywords.length; i++) {
+
+                    name = watsonResponse.keywords[j].text;
+
+                  }
+
                 }
+
+                  
+              } else {
 
                 for (i = 0; i < watsonResponse.entities.length; i++) {
                   if (watsonResponse.entities[i].type == "Company") {
@@ -114,13 +134,18 @@ module.exports = class QueryExtractor {
                     break;
                   }
                 } 
+              }
+
+              if (name != undefined) {
+                name = name.replace(" ", "%20");
 
                 console.log(name);
-                var host = 'http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=' + name;
 
-                request({uri: host}).then(function (res) {
+                var hostEntity = host + name;
+
+                request({uri: hostEntity}).then(function (markitRes) {
                   
-                  var generalJSON = JSON.parse(res)[0];
+                  var generalJSON = JSON.parse(markitRes)[0];
 
                   console.log(generalJSON);
 
@@ -128,15 +153,23 @@ module.exports = class QueryExtractor {
 
                     var returnJSON = JSON.parse(JSON.stringify({ marketName : generalJSON.Name, ticker: generalJSON.Symbol }));
 
-                    console.log(returnJSON);
+                    console.log("Entity name attemt: " + returnJSON);
 
                     resolve(returnJSON);
 
+                  } else {
+                    resolve(null);
                   }
 
                 });
+
+              } else {
+
+                resolve(null);
+
               }
-            });
+            }
+          });
 
         }
       });
