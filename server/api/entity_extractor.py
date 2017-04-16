@@ -10,7 +10,7 @@ else:
     # might be around one day
     from urllib import urlopen
 
-exception = pd.Series(['my', 'am', 'stock', 'price', 'i', 'want', 'info', 'information','today','now', 'purchase', 'sell', 'on', 'a', 'good', 'buy', 'price', 'is', 'should', 'got', 'how', 'to', 'trade', 'bad', 'what', 'it', 'of'])
+exception = pd.Series(['my', 'am', 'stock', 'price', 'i', 'want', 'info', 'information','today','now', 'purchase', 'sell', 'on', 'a', 'good', 'buy', 'price', 'is', 'should', 'got', 'how', 'to', 'trade', 'bad', 'what', 'it', 'of', 'do', 'with'])
 
 def fix_string(sentence):
     retStr = ""
