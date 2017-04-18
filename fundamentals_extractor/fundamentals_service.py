@@ -6,12 +6,15 @@ from BalanceSheetDataExtractor import BalanceSheetDataExtractor
 import ScraXBRL.DataViewer as dv
 import os
 import datetime
+from flask import jsonify
+import json
 
 app = Flask(__name__)
 
 DATE_FORMAT = '%Y-%m-%d'
 DIVIDEND_INDICATOR = 'ShareholdersEquitySummaryOfDividendsDeclaredAndPaidDetail'
 DIVIDENDS_KEY = 'CommonStockDividendsPerShareDeclared'
+FUNDAMENTALS_DIR = "fundamentals/"
 
 # Gets the latest divdends for a company
 @app.route('/dividends/<ticker>')
@@ -25,12 +28,14 @@ def dividends(ticker):
 
 @app.route('/balance_sheet/<ticker>')
 def balance_sheet(ticker):
-
+    with open(FUNDAMENTALS_DIR + ticker[0] + ".json") as f:
+        data = json.load(f)
+        return jsonify(data[ticker])
 
 def extract_dividends(company):
-        dividends_data = company.data['pre']['roles'][DIVIDEND_INDICATOR]\
-                ['tree']['EquityAbstract']['sub'][DIVIDENDS_KEY]['val']
-        return [ [k[0] + "," + k[1], dividends_data[k]] for k in dividends_data ]
+    dividends_data = company.data['pre']['roles'][DIVIDEND_INDICATOR]\
+            ['tree']['EquityAbstract']['sub'][DIVIDENDS_KEY]['val']
+    return [ [k[0] + "," + k[1], dividends_data[k]] for k in dividends_data ]
 
 def get_latest_balance_sheet(ticker):
     """ Returns the latest balance sheet string and what kind of balance sheet it is."""
