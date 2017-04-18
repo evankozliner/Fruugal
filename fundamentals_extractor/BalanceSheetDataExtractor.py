@@ -103,7 +103,11 @@ class BalanceSheetDataExtractor:
 
     def get_reports(self, report_type):
         reports = []
-        path = self.data_path.format(self.symbol) + report_type + '/xml'
+        report_path = self.data_path.format(self.symbol) + report_type
+        # In case the xml directory is missing
+        if len(os.listdir(report_path)) == 0: 
+            return []
+        path = report_path + '/xml'
         for report in os.listdir(path):
             reports.append((dt.datetime.strptime(report, self.date_format), report_type))
         return reports
