@@ -3,11 +3,16 @@ let stopWords = require('./stopwords.json');
 let punctuation = require('./punctuation.json');
 var request=require('request-promise');
 
+
+
 // TODO This should be using entity recognition
 module.exports = class QueryExtractor {
   constructor(question) {
     this.question = question;
   }
+
+  
+  
 
   getQuestionWithoutPunctuation() {
     var cleanedQuestion = this.question;
@@ -75,10 +80,22 @@ module.exports = class QueryExtractor {
 
           var smar = symbolArr[0];
 
-          console.log("RESOLVE FOR NLTK AAPL:")
+          console.log("RESOLVE FOR NLTK:")
           console.log(smar);
 
-          resolve(symbolArr[0]);
+          var hostChart = "http://dev.markitondemand.com/MODApis/Api/v2/InteractiveChart/json?parameters=%7B%22Normalized%22%3Afalse%2C%22NumberOfDays%22%3A365%2C%22DataPeriod%22%3A%22Day%22%2C%22Elements%22%3A%5B%7B%22Symbol%22%3A%22" + smar.ticker + "%22%2C%22Type%22%3A%22price%22%2C%22Params%22%3A%5B%22c%22%5D%7D%5D%7D";
+
+          request({uri: hostChart}).then(function (chartResponse) {
+
+            var chartJSON = JSON.parse(chartResponse);
+
+            smar.chart = chartJSON;
+
+            console.log("returnJSON: " + JSON.stringify(smar));
+
+            resolve(smar);
+
+          });
         } else {
 
           console.log("NLTK FAILED");
@@ -112,8 +129,8 @@ module.exports = class QueryExtractor {
 
                 if (watsonResponse.keywords.length <= 0) {
 
-                  console.log("Empty Watson response.");
-                  reject("Empty Watson response.");
+                  console.log("Empty Watson keyword response.");
+                  reject("Empty Watson keyword response.");
 
                 } else {
 
@@ -153,9 +170,21 @@ module.exports = class QueryExtractor {
 
                     var returnJSON = JSON.parse(JSON.stringify({ marketName : generalJSON.Name, ticker: generalJSON.Symbol }));
 
-                    console.log("Entity name attemt: " + returnJSON);
+                    var theTicker = generalJSON.Symbol;
 
-                    resolve(returnJSON);
+                    var hostChart = "http://dev.markitondemand.com/MODApis/Api/v2/InteractiveChart/json?parameters=%7B%22Normalized%22%3Afalse%2C%22NumberOfDays%22%3A365%2C%22DataPeriod%22%3A%22Day%22%2C%22Elements%22%3A%5B%7B%22Symbol%22%3A%22" + theTicker + "%22%2C%22Type%22%3A%22price%22%2C%22Params%22%3A%5B%22c%22%5D%7D%5D%7D";
+
+                    request({uri: hostChart}).then(function (chartResponse) {
+
+                      var chartJSON = JSON.parse(chartResponse);
+
+                      returnJSON.chart = chartJSON;
+
+                      console.log("returnJSON: " + JSON.stringify(returnJSON));
+
+                      resolve(returnJSON);
+
+                    });
 
                   } else {
                     resolve(null);
