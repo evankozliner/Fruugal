@@ -19,9 +19,16 @@ import datetime as dt
 import pandas as pd
 
 DEFAULT_BALANCE_SHEET_ITEMS = [
+        'CommonStockValue',
+        'LongTermDebt',
+        'PropertyPlantAndEquipmentNet',
+        'Goodwill',
+        'InventoryNet',
+        'AccountsReceivableNetCurrent',
         'CashAndCashEquivalentsAtCarryingValue', 
         'Assets', 
         'LiabilitiesCurrent']
+
 
 class BalanceSheetDataExtractor:
 
@@ -30,20 +37,20 @@ class BalanceSheetDataExtractor:
             balance_sheet_items = DEFAULT_BALANCE_SHEET_ITEMS,
             data_path = 'ScraXBRL/data/extracted_data/{0}/'):
         self.symbol = symbol
-        self.data_path = data_path
         self.balance_sheet_items = balance_sheet_items
-        self.last_balance_sheet_date = self.get_balance_sheet_before_date(start_date)
+        self.last_balance_sheet_date = start_date
         # Start date in format YYYY-MM-DD
         self.date_format = '%Y-%m-%d'
-        self.stock_data = bt.get('{0}:Open,{0}:High,{0}:Low,{0}:Close'.format(symbol), 
-                start = start_date)
+        self.data_path = data_path
+        try:
+            self.stock_data = bt.get('{0}:Open,{0}:High,{0}:Low,{0}:Close'.format(symbol),
+                                     start = start_date)
+            self.has_stock_data = True
+        except Exception:
+            self.stock_data = pd.Series()
+            self.has_stock_data = False
         self.balance_sheet_data = self.get_balance_sheet_data(self.last_balance_sheet_date)
         #self.data = self.join_quarterly_finances_to_stock_data()
-
-    def get_balance_sheet_before_date(self, date):
-        all_reports = self.get_all_reports()
-        date = dt.datetime.strptime(date, self.date_format)
-        return sorted(filter(lambda report: report[0] < date, all_reports))[-1]
 
     def get_balance_sheet_data(self, start_date):
         # Builds an array of tuples, reports, containing (date, report_type)
@@ -54,19 +61,26 @@ class BalanceSheetDataExtractor:
         report_data = []
 
         for report_date, report_type in self.reports:
-            data_view = dv.DataView(self.symbol, 
-                    report_date.strftime(self.date_format), 
-                    report_type, 
-                    start_path='ScraXBRL/')
-            balance_sheet_values = {}
-            year = report_date.strftime(self.date_format)
-            for fact in self.balance_sheet_items:
-                facts_listed = data_view.get_balance_sheet_value(fact)
-                # Balance sheet lists values for years other than one in quesiton, this removes
-                # those duplicates
-                if year in facts_listed.keys():
-                    balance_sheet_values[fact] = facts_listed[year]
-            report_data.append(balance_sheet_values)
+            try:
+                data_view = dv.DataView(self.symbol,
+                        report_date.strftime(self.date_format),
+                        report_type,
+                        start_path='ScraXBRL/')
+                balance_sheet_values = {}
+                year = report_date.strftime(self.date_format)
+                for fact in self.balance_sheet_items:
+                    facts_listed = data_view.get_balance_sheet_value(fact)
+
+                    balance_sheet_values[fact] = "Unknown"
+                    # Balance sheet lists values for years other than one in quesiton, this removes
+                    # those duplicates
+                    if facts_listed is not None and year in facts_listed.keys():
+                        balance_sheet_values[fact] = facts_listed[year]
+                report_data.append(balance_sheet_values)
+            # TODO some stocks appear to fail here
+            except Exception:
+                print "Failed to extract " + report_type + " data from " + self.symbol + \
+                    " at time " + report_date.strftime(self.date_format)
 
         # Sort by the date of the report and join the data into a larger vector
         return self.to_dataframe(sorted(zip(self.reports, report_data), key=lambda x: x[0][0]))
@@ -83,12 +97,9 @@ class BalanceSheetDataExtractor:
 
     def get_reports_after_date(self, start_date):
         """ Returns all reports after the given start date in [(date, type)...]"""
-        all_reports = self.get_all_reports()
+        all_reports = self.get_reports("10-K") + self.get_reports("10-Q")
         start_date = dt.datetime.strptime(start_date, self.date_format)
         return filter(lambda report: report[0] >= start_date, all_reports) 
-
-    def get_all_reports(self):
-        return self.get_reports("10-K") + self.get_reports("10-Q")
 
     def get_reports(self, report_type):
         reports = []
@@ -101,6 +112,9 @@ class BalanceSheetDataExtractor:
         """ Builds a pandas dataframe indexed by date with stock prices as well as the fundamentals
             prior to the stock prices as rows
         """
+        if not self.has_stock_data:
+            print "Stock data unavailable, historical stock to fundamentals therefore unavaiable."
+            return None
         data = self.stock_data.copy()
 
         for fact in self.balance_sheet_items:
