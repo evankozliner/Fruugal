@@ -18,16 +18,22 @@ def main():
     conn = sqlite3.connect('articles.db')
     raw_json = build_data(conn)
     data_num = str(get_data_num())
-    with open(DATA_DIR + "data-" + data_num + ".json", 'w+') as f:
+    fname=DATA_DIR + "data-" + data_num + ".json"
+    with open(fname, 'w+') as f:
         f.write(raw_json)
-    upload_articles(data_num, raw_json)
+    upload_articles(data_num, fname)
 
-def upload_articles(data_num, payload):
+def upload_articles(data_num, json_file):
     auth = (os.environ['RAR_USERNAME'], os.environ['RAR_PASSWORD'])
+    headers = {'Content-Type' : 'application/json'}
     raw_url ="https://gateway.watsonplatform.net/retrieve-and-rank/api/v1/solr_clusters/{0}"
-    raw_url += "/solr/admin/collections/update"
+    raw_url += "/solr/example_collection/update"
     url = raw_url.format(os.environ['RAR_CLUSTER_ID'])
-    req.post(url, auth=auth, data=json.dumps(payload))
+    with open(json_file, 'rb') as file_data:
+        r = req.post(url, auth=auth, data=file_data, headers=headers)
+    print r.status_code
+    print r.headers
+    print "Finished uploading articles"
 
 def post_all():
     for f in os.listdir(DATA_DIR):
@@ -65,6 +71,7 @@ def build_data(conn):
             conn.commit()
     final_json = '{%s}' % ',\n'.join(['"{}": {}'.format(action, json.dumps(dictionary)) 
         for action, dictionary in data])
+    print "Built json data for upload"
     return final_json
     
 def extract_body(idx, conn):

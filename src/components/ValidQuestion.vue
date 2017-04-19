@@ -62,6 +62,7 @@ export default {
   },
 
   methods: {
+    // Sends a request to the RAR server to retrieve articles
     getArticles: function () {
       this.loadedArticles = false
       console.log('Going to get articles')
@@ -88,6 +89,7 @@ export default {
       })
     },
 
+    // Calls getArticles if validQuestion component is already created
     possiblyGetArticles: function () {
       // If the page we are going to is a stock page, get articles for this company
       if (this.$store.state.page === 'StockAnswer') {
@@ -95,6 +97,7 @@ export default {
       }
     },
 
+    // Submits a search to the main server when one of the navigation buttons are clicked
     routerLinkClicked (where) {
       this.waitingOnLink = true
       var query = this.$store.state.ticker + ' ' + where

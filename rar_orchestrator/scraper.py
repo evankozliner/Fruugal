@@ -165,8 +165,8 @@ def get_text(html):
     return '\n'.join(chunk for chunk in chunks if chunk)
 
 if __name__ == "__main__":
-    while True:
-        main()
+    #while True:
+    main()
 
 # TODO 
 # Create a collection for RAR

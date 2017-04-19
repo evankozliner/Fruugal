@@ -32,7 +32,7 @@ const store = new Vuex.Store({
       state.searchString = payload.query
       state.page = payload.page
       state.ticker = payload.retrievedData.companySymbol
-      if (state.ticker === undefined) {
+      if (state.page !== 'QuestionUnknownAnswer' && state.ticker === undefined) {
         state.ticker = payload.retrievedData.answers[0].companySymbol
       }
     }

@@ -26,8 +26,10 @@ def dividends(ticker):
 
     return "This company either does not provide dividends, or we could not find their dividend information.\n"
 
-@app.route('/balance_sheet/<ticker>')
+@app.route('/fundamentals/<ticker>')
 def balance_sheet(ticker):
+    ticker = ticker.upper()
+    print ticker
     with open(FUNDAMENTALS_DIR + ticker[0] + ".json") as f:
         data = json.load(f)
         return jsonify(data[ticker])
@@ -56,4 +58,4 @@ def get_latest_date_by_path(path):
     return latest_date, latest_date.strftime(DATE_FORMAT)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=6666)
