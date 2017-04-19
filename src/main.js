@@ -22,7 +22,8 @@ const store = new Vuex.Store({
   state: {
     data: {},
     searchString: '',
-    page: ''
+    page: '',
+    ticker: undefined
   },
 
   mutations: {
@@ -30,6 +31,10 @@ const store = new Vuex.Store({
       state.data = payload.retrievedData
       state.searchString = payload.query
       state.page = payload.page
+      state.ticker = payload.retrievedData.companySymbol
+      if (state.ticker === undefined) {
+        state.ticker = payload.retrievedData.answers[0].companySymbol
+      }
     }
   }
 })
@@ -40,10 +45,8 @@ const routes = [
   { path: '/', name: 'Search', component: Search },
   { path: '/question', name: 'ValidQuestion', component: ValidQuestion, props: true,
     children: [
-      { path: 'Stock', name: 'StockAnswer',
-          component: Stock, props: true, meta: { requiresSearch: true }},
-      { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true,
-      meta: { requiresSearch: true } },
+      { path: 'Stock', name: 'StockAnswer', component: Stock, props: true },
+      { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true },
       { path: 'Fundamentals', name: 'FundamentalsAnswer', component: Fundamentals, props: true }
     ]
   },
@@ -65,7 +68,9 @@ var router = new VueRouter({
 // Check before goin to each route if it is ok to be going there
 import SearchCheck from './SearchCheck.js'
 router.beforeEach((to, from, next) => {
+  console.log('Doing a check!!!')
   if (to.matched.some(record => record.meta.requiresSearch)) {
+    console.log('Needs to be checked')
     // This route requires a search to have been performed
     if (!SearchCheck.searchHasBeenPerformedToThisClass(to.name)) {
       next({

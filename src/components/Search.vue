@@ -60,7 +60,6 @@ export default {
         // Set the question back to a blank
         instance.query = ''
       })
-      // this.$emit('searchPerformed') // Emit the event that search occured
     }
   }
 }

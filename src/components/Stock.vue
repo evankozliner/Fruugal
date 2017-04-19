@@ -40,7 +40,6 @@ export default {
 
   computed: {
     theResponse: function () {
-      console.log(this.$store.state)
       var storeData = this.$store.state
       var retval = this.currentData
       if (storeData.page === 'StockAnswer') {

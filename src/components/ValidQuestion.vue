@@ -2,6 +2,11 @@
   <div class='container'>
     <header class="searchBar">
       <search v-on:SP="possiblyGetArticles" smallpage="false"></search>
+      <div>
+        <button @click="routerLinkClicked('Stock')">Check out their stock price</button>
+        <button @click="routerLinkClicked('Info')">Learn more about them</button>
+        <button @click="">View their finacial fundamentals</button>
+      </div>
     </header>
 
     <div class='col-md-3'>
@@ -21,6 +26,7 @@
 
 <script>
 import Sorter from '../Sentiment.js'
+import SearchActions from '../SearchActions.js'
 import sidebar from './Sidebar.vue'
 import search from './Search.vue'
 export default {
@@ -86,6 +92,21 @@ export default {
       if (this.$store.state.page === 'StockAnswer') {
         this.getArticles()
       }
+    },
+
+    routerLinkClicked (where) {
+      var query = this.$store.state.ticker + ' ' + where
+      console.log(query + '--- From routerLinkClicked')
+
+      var instance = this
+      SearchActions.initialSearch(this, query).then(function (result) {
+        console.log('Search was classified')
+        instance.$router.push(result)
+        instance.possiblyGetArticles()
+      }, function (err) {
+        console.log('There was an error')
+        instance.$router.push(err)
+      })
     }
   },
 
