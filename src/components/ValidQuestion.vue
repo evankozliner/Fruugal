@@ -1,11 +1,12 @@
 <template>
   <div class='container'>
-    <header class="searchBar">
+    <header class="searchBar col-md-12">
       <search v-on:SP="possiblyGetArticles" smallpage="false" :linkWasClicked="waitingOnLink"></search>
-      <div>
-        <button @click="routerLinkClicked('Stock')">Check out their stock price</button>
-        <button @click="routerLinkClicked('Info')">Learn more about them</button>
-        <button @click="routerLinkClicked('Fundamentals')">View their finacial fundamentals</button>
+      <div class="col-md-3" />
+      <div id="nav-buttons" class="col-md-9">
+        <button class="hvr-grow" @click="routerLinkClicked('Stock')" title="Checkout this company's current stock price"><i class="fa fa-line-chart fa-2x" aria-hidden="true"></i></button>
+        <button class="hvr-grow" @click="routerLinkClicked('Info')" title="Learn more about this company"><i class="fa fa-id-card-o fa-2x" aria-hidden="true"></i></button>
+        <button class="hvr-grow" @click="routerLinkClicked('Fundamentals')" title="See this company's financial data"><i class="fa fa-list-alt fa-2x" aria-hidden="true"></i></button>
       </div>
     </header>
 
@@ -141,6 +142,7 @@ header.searchBar {
   text-align: left;
   height: auto;
   width: 100%;
+  min-width: 600px;
   margin-bottom: 20px;
   padding: 3px 2% 3px;
 }
@@ -151,25 +153,63 @@ header.searchBar {
   //position: fixed;
 }
 
+button {
+  background-color: rgba(66, 191, 80, 0.8); /* Green */
+  border: none;
+  color: white;
+  padding: 8px;
+  height: 45px;
+  width: 100px;
+  //text-align: center;
+  text-decoration: none;
+  //display: inline-block;
+  font-size: 16px;
+  margin: 4px 10px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+#nav-buttons {
+  text-align: center;
+  padding: 2px;
+  margin-top: 10px;
+}
+
 /* Transitions for */
 .fade-enter-active {
-  transition: all .5s ease;
+  transition: all .3s ease;
 }
 .fade-leave-active {
   transition: all .2s ease;
 }
 
 /* For the articles div entrance */
-.fade-enter
-/* .slide-fade-leave-active for <2.1.8 */ {
-  //transform: translateY(20px);
+.fade-enter {
   opacity: 0;
 }
 
 /* For the loading the page */
 .fade-leave-to {
-  //transform: translateY(10px);
   opacity: 0;
+}
+
+
+/* Used from Hover.css */
+.hvr-grow {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+}
+.hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 </style>

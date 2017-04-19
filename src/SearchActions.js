@@ -44,14 +44,14 @@ export default {
    */
   sendFundamentalsRequest (vueInstance, ticker) {
     return new Promise(function (resolve, reject) {
-      vueInstance.$http.get('/fundamentals/aapl').then(function (response) {
+      vueInstance.$http.get('/fundamentals/amzn').then(function (response) {
         // Check to make sure that a response was successful
         console.log('We got the fundamentals')
         var asJson = JSON.parse(response.body)
         resolve(asJson)
       }, function (response) {
         console.log('There was an error getting the fundamentals')
-        resolve('No fundamentals could be found')
+        resolve(null)
       })
     })
   }
