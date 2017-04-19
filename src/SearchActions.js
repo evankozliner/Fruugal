@@ -10,9 +10,9 @@ export default {
   initialSearch (vueInstance, query) {
     return new Promise(function (resolve, reject) {
       // Example request
-      //vueInstance.$http.get('/fundamentals/' + query).then(function (res) {
-      //  console.log(res)
-      //})
+      // vueInstance.$http.get('/fundamentals/' + query).then(function (res) {
+      //   console.log(res)
+      // })
       vueInstance.$http.get('/api', {params: {message: query}}).then(function (response) {
         console.log(response.body)
         var comp = response.body.classType
