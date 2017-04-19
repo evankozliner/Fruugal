@@ -97,7 +97,11 @@ def scrape_articles(articles, conn):
             conn.execute("insert into articles values (?,?,?,?,?,?,?,?,?,?,?,?)", data)
             conn.commit()
             with open(OUTPUT_DIR + hashed_url + ".html", 'w') as f:
-                f.write(page.read())
+                try:
+                    page.read()
+                    f.write()
+                except Exception:
+                    print "Reading page failed.. Skipping article."
 
 def get_sentiment(url):
     key=os.environ['ALCHEMY_KEY']
