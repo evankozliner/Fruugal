@@ -47,7 +47,8 @@ export default {
       vueInstance.$http.get('/fundamentals/aapl').then(function (response) {
         // Check to make sure that a response was successful
         console.log('We got the fundamentals')
-        resolve(response)
+        var asJson = JSON.parse(response.body)
+        resolve(asJson)
       }, function (response) {
         console.log('There was an error getting the fundamentals')
         resolve('No fundamentals could be found')

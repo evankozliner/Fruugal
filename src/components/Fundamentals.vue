@@ -1,7 +1,39 @@
 <template>
   <div class="jumbotron vertical-center">
-    Fundamentals
-    {{fundData}}
+    <h1>Fundamentals</h1>
+    <div :if="!fundData">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th v-for="key in dispKeyGroup">{{ key[1] }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Assets</th>
+            <td v-for="key in dispKeyGroup">{{ assets[key[0]] }}</td>
+          </tr>
+          <tr>
+            <th>Cash and Cash Equivalents at Carrying Value</th>
+            <td v-for="key in dispKeyGroup">{{ cashCarry[key[0]] }}</td>
+          </tr>
+          </tr>
+          <tr>
+            <th>Current Liabilities</th>
+            <td v-for="key in dispKeyGroup">{{ liabilities[key[0]] }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class=container>
+        <ul class="pagination">
+          <li v-for="(obj, index) in keyGroups">
+            <a @click="dispKeyGroup=keyGroups[index]" href="#0">{{ index+1 }}</a>
+          </li>
+        </ul>
+      </div>
+    </div> <!-- End of fundamentals data -->
   </div>
 </template>
 
@@ -13,7 +45,15 @@ export default {
   data () {
     return {
       currentData: null,
-      fundData: null
+      fundData: null,
+      cashCarry: null,
+      assets: null,
+      liabilities: null,
+      keyGroups: [],
+      dispKeyGroup: [],
+
+      monthNames: [ 'January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December' ]
     }
   },
 
@@ -37,7 +77,26 @@ export default {
     var instance = this
     Search.sendFundamentalsRequest(this, this.theResponse).then(function (result) {
       console.log(result)
-      instance.fundData = result.body
+      // Save all of the needed data
+      instance.fundData = result
+      instance.cashCarry = result['CashAndCashEquivalentsAtCarryingValue']
+      instance.assets = result['Assets']
+      instance.liabilities = result['LiabilitiesCurrent']
+      // Get all of the timestamps to be keys, and get the date that will be displayed
+      var keys = []
+      for (var obj in instance.assets) {
+        var date = new Date(obj * 1000)
+        var dateToDisplay = instance.monthNames[date.getMonth() - 1] + ' ' + date.getFullYear()
+        keys.unshift([obj, dateToDisplay])
+      }
+      // Slice the keys array into the pagination sections of size 6 each
+      var i = 0
+      while (keys.length > 0) {
+        instance.keyGroups[i] = keys.splice(0, 6)
+        i++
+      }
+      instance.dispKeyGroup = instance.keyGroups[0]
+      console.log(instance.keyGroups)
     }, function (response) {
       console.log('Error getting the fundamentals data')
     })
@@ -60,4 +119,5 @@ export default {
   width: 100%;
   background: rgba(240,240,240,0.2);
 }
+
 </style>
