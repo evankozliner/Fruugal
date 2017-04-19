@@ -19,6 +19,13 @@ module.exports = {
         pathRewrite: {
           '^api/': ''
         }
+      }, 
+      '/fundamentals': {
+        target: 'http://localhost:6666',
+        changeOrigin: true,
+        pathRewrite: {
+          '^api/': ''
+        }
       }
     }
   }
