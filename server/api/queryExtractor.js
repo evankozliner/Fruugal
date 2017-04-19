@@ -152,6 +152,7 @@ module.exports = class QueryExtractor {
                   }
                 } 
               }
+              
 
               if (name != undefined) {
                 name = name.replace(" ", "%20");
