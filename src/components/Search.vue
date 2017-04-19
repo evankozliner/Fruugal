@@ -18,7 +18,7 @@
         <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
         <button @click="askWatson">Search</button>
 
-        <spinner class='col-md-2 right' v-if="loading"></spinner>
+        <spinner class='col-md-2 right' v-if="loading || linkWasClicked"></spinner>
       </div>
     </div>
   </div>  <!-- End of small page div -->
@@ -31,7 +31,7 @@ export default {
   components: {
     'spinner': Spinner
   },
-  props: ['smallpage'],
+  props: ['smallpage', 'linkWasClicked'],
   data () {
     return {
       // note: changing this line won't causes changes

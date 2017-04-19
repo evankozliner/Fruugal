@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
     <header class="searchBar">
-      <search v-on:SP="possiblyGetArticles" smallpage="false"></search>
+      <search v-on:SP="possiblyGetArticles" smallpage="false" :linkWasClicked="waitingOnLink"></search>
       <div>
         <button @click="routerLinkClicked('Stock')">Check out their stock price</button>
         <button @click="routerLinkClicked('Info')">Learn more about them</button>
@@ -43,7 +43,8 @@ export default {
       articles: null,
       loadedArticles: false,
       newPage: true,
-      cachedResponse: null
+      cachedResponse: null,
+      waitingOnLink: false
     }
   },
 
@@ -95,16 +96,19 @@ export default {
     },
 
     routerLinkClicked (where) {
+      this.waitingOnLink = true
       var query = this.$store.state.ticker + ' ' + where
       console.log(query + '--- From routerLinkClicked')
 
       var instance = this
       SearchActions.initialSearch(this, query).then(function (result) {
         console.log('Search was classified')
-        instance.$router.push(result)
         instance.possiblyGetArticles()
+        instance.waitingOnLink = false
+        instance.$router.push(result)
       }, function (err) {
         console.log('There was an error')
+        instance.waitingOnLink = false
         instance.$router.push(err)
       })
     }
