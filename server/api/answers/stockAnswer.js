@@ -33,9 +33,10 @@ module.exports = class StockAnswer extends Answer {
       //let extractedData = (new QueryExtractor(this.rawQuestion)).getCompany();
       let queryExtractor = new QueryExtractor(this.rawQuestion);
       queryExtractor.getCompany().then( extractedData => {
-        if (extractedData === undefined) {  
+        if (extractedData === undefined || extractedData === null) {  
           console.log("Stock answer is undefined");
-          return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
+          console.log("raw question:" + this.rawQuestion);
+          res ((new QuestionUnknownAnswer(this.rawQuestion)).answer());
         };
         res(this.stockAnswer(extractedData));
       })
