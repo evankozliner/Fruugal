@@ -91,8 +91,6 @@ module.exports = class QueryExtractor {
 
             smar.chart = chartJSON;
 
-            console.log("returnJSON: " + JSON.stringify(smar));
-
             resolve(smar);
 
           });
@@ -180,8 +178,6 @@ module.exports = class QueryExtractor {
                       var chartJSON = JSON.parse(chartResponse);
 
                       returnJSON.chart = chartJSON;
-
-                      console.log("returnJSON: " + JSON.stringify(returnJSON));
 
                       resolve(returnJSON);
 

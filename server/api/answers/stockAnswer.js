@@ -13,12 +13,14 @@ module.exports = class StockAnswer extends Answer {
       let companySymbol = extractedData.ticker;
       let companyName = extractedData.marketName;
       let stockQuery = new StockQuery(companySymbol);
+      let chartData = extractedData.chart;
       stockQuery.getStockPriceInfo().then( (stockPriceInfo) => {
         res({
           classType: 'StockAnswer',
           companySymbol: companySymbol,
           companyName: companyName,
-          stockPrice: stockPriceInfo.LastPrice
+          stockPrice: stockPriceInfo.LastPrice,
+          chart: chartData
         });
       })
       .catch(function(reason) {
