@@ -1,6 +1,7 @@
 <template>
   <div class="jumbotron vertical-center">
     Fundamentals
+    {{fundData}}
   </div>
 </template>
 
@@ -33,7 +34,13 @@ export default {
 
   created: function () {
     console.log('Fundamentals was created')
-    Search.sendFundamentalsRequest(this, this.theResponse)
+    var instance = this
+    Search.sendFundamentalsRequest(this, this.theResponse).then(function (result) {
+      console.log(result)
+      instance.fundData = result.body
+    }, function (response) {
+      console.log('Error getting the fundamentals data')
+    })
   }
 }
 </script>

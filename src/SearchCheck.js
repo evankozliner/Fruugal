@@ -14,10 +14,9 @@ export default {
     console.log(this.search.mostRecentClass)
   },
 
-  searchHasBeenPerformedToThisClass (classType) {
+  searchHasBeenPerformed () {
     console.log('Here in SearchCheck')
-    console.log(classType)
     console.log(this.search.mostRecentClass)
-    return this.search.sp && (classType === this.search.mostRecentClass)
+    return this.search.sp
   }
 }

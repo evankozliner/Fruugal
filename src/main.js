@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresSearch)) {
     console.log('Needs to be checked')
     // This route requires a search to have been performed
-    if (!SearchCheck.searchHasBeenPerformedToThisClass(to.name)) {
+    if (!SearchCheck.searchHasBeenPerformed()) {
       next({
         path: '/'
       })

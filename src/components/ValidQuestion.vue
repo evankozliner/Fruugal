@@ -5,7 +5,7 @@
       <div>
         <button @click="routerLinkClicked('Stock')">Check out their stock price</button>
         <button @click="routerLinkClicked('Info')">Learn more about them</button>
-        <button @click="">View their finacial fundamentals</button>
+        <button @click="routerLinkClicked('Fundamentals')">View their finacial fundamentals</button>
       </div>
     </header>
 

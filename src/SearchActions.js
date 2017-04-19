@@ -44,13 +44,9 @@ export default {
    */
   sendFundamentalsRequest (vueInstance, ticker) {
     return new Promise(function (resolve, reject) {
-      var baseUrl = 'http://localhost:5050'
-      ticker = 'aapl'
-
-      var requestString = baseUrl + '/balance_sheet/' + ticker
-      vueInstance.$http.get(requestString).then(function (response) {
+      vueInstance.$http.get('/fundamentals/aapl').then(function (response) {
         // Check to make sure that a response was successful
-        console.log(response)
+        console.log('We got the fundamentals')
         resolve(response)
       }, function (response) {
         console.log('There was an error getting the fundamentals')
@@ -58,5 +54,6 @@ export default {
       })
     })
   }
+
 }
 
