@@ -94,13 +94,14 @@ def scrape_articles(articles, conn):
                     res['sadness'],
                     res['disgust']]
     
-            conn.execute("insert into articles values (?,?,?,?,?,?,?,?,?,?,?,?)", data)
-            conn.commit()
             with open(OUTPUT_DIR + hashed_url + ".html", 'w') as f:
                 try:
                     page.read()
                     f.write()
-                except Exception:
+            	    conn.execute("insert into articles values (?,?,?,?,?,?,?,?,?,?,?,?)", data)
+            	    conn.commit()
+                except Exception as e:
+                    print e
                     print "Reading page failed.. Skipping article."
 
 def get_sentiment(url):
