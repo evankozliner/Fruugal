@@ -83,19 +83,7 @@ module.exports = class QueryExtractor {
           console.log("RESOLVE FOR NLTK:")
           console.log(smar);
 
-          var hostChart = "http://dev.markitondemand.com/MODApis/Api/v2/InteractiveChart/json?parameters=%7B%22Normalized%22%3Afalse%2C%22NumberOfDays%22%3A365%2C%22DataPeriod%22%3A%22Day%22%2C%22Elements%22%3A%5B%7B%22Symbol%22%3A%22" + smar.ticker + "%22%2C%22Type%22%3A%22price%22%2C%22Params%22%3A%5B%22c%22%5D%7D%5D%7D";
-
-          request({uri: hostChart}).then(function (chartResponse) {
-
-            var chartJSON = JSON.parse(chartResponse);
-
-            smar.chart = chartJSON;
-
-            console.log("returnJSON: " + JSON.stringify(smar));
-
-            resolve(smar);
-
-          });
+          resolve(smar);
         } else {
 
           console.log("NLTK FAILED");
@@ -170,21 +158,7 @@ module.exports = class QueryExtractor {
 
                     var returnJSON = JSON.parse(JSON.stringify({ marketName : generalJSON.Name, ticker: generalJSON.Symbol }));
 
-                    var theTicker = generalJSON.Symbol;
-
-                    var hostChart = "http://dev.markitondemand.com/MODApis/Api/v2/InteractiveChart/json?parameters=%7B%22Normalized%22%3Afalse%2C%22NumberOfDays%22%3A365%2C%22DataPeriod%22%3A%22Day%22%2C%22Elements%22%3A%5B%7B%22Symbol%22%3A%22" + theTicker + "%22%2C%22Type%22%3A%22price%22%2C%22Params%22%3A%5B%22c%22%5D%7D%5D%7D";
-
-                    request({uri: hostChart}).then(function (chartResponse) {
-
-                      var chartJSON = JSON.parse(chartResponse);
-
-                      returnJSON.chart = chartJSON;
-
-                      console.log("returnJSON: " + JSON.stringify(returnJSON));
-
-                      resolve(returnJSON);
-
-                    });
+                    resolve(returnJSON);
 
                   } else {
                     resolve(null);
