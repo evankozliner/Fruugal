@@ -16,6 +16,9 @@ npm run dev
 npm start
 
 cd rar_orchestrator && python rar_live_server.py
+
+cd fundamentals_extractor && python fundamentals_service.py
+
 ```
 
 ## Build Setup

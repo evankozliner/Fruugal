@@ -29,7 +29,8 @@ import Chart from './Chart.vue'
 
 export default {
 
-  // The data returned from the API call
+  // 'articles' gets the article data from validQuestion
+  // 'loaded' gets whether the articles are still getting fetched
   props: ['articles', 'loaded'],
 
   components: {
@@ -46,7 +47,6 @@ export default {
 
   computed: {
     theResponse: function () {
-      console.log(this.$store.state)
       var storeData = this.$store.state
       var retval = this.currentData
       if (storeData.page === 'StockAnswer') {
@@ -55,12 +55,7 @@ export default {
       }
       return retval
     }
-  },
-
-  beforeDestroy: function () {
-    console.log('Stock.vue is being destroyed')
   }
-
 }
 </script>
 

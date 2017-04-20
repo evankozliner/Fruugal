@@ -7,8 +7,7 @@
       </div>
       <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
       <button @click="askWatson">Search</button>
-
-      <spinner class="center" v-if="loading"></spinner>
+      <spinner class="center" v-show="loading"></spinner>
     </div>
   </div>  <!-- End of full page div -->
 
@@ -19,7 +18,7 @@
         <input type="text" v-model="query" @keyup.enter="askWatson" autofocus="on" placeholder="What do you want to know?"></input>
         <button @click="askWatson">Search</button>
 
-        <spinner class='col-md-2 right' v-if="loading"></spinner>
+        <spinner class='col-md-2 right' v-if="loading || linkWasClicked"></spinner>
       </div>
     </div>
   </div>  <!-- End of small page div -->
@@ -32,7 +31,7 @@ export default {
   components: {
     'spinner': Spinner
   },
-  props: ['smallpage'],
+  props: ['smallpage', 'linkWasClicked'],
   data () {
     return {
       // note: changing this line won't causes changes
@@ -57,8 +56,10 @@ export default {
         console.log('There was an error')
         instance.loading = false
         instance.$router.push(err)
+      }).then(function () {
+        // Set the question back to a blank
+        instance.query = ''
       })
-      this.$emit('searchPerformed') // Emit the event that search occured
     }
   }
 }
@@ -113,15 +114,16 @@ button {
 .jumbotron.vertical-center {
   margin-bottom: 0;
   background-color: #2E86AB;
+
 }
 .vertical-center {
   min-height: 100%;
-  min-height: 100vh; 
+  min-height: 90vh;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  display: flex; 
+  display: flex;
     -webkit-box-align : center;
   -webkit-align-items : center;
        -moz-box-align : center;
@@ -134,12 +136,16 @@ button {
   -webkit-justify-content : center;
           justify-content : center;
 }
-.container {
+.jumbotron .container {
   background-color: #2E86AB;
+  height: 40vh;
 }
+
 .center {
-  margin: auto
+  margin: auto;
+  padding: 1px;
 }
+
 .right {
   float: right;
   margin-top: 0px;
@@ -152,4 +158,9 @@ button {
   text-align: left;
   margin-top: 35px;
 }
+
+spinner {
+    transition: all 0.5s ease-in-out;
+}
+
 </style>

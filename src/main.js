@@ -9,7 +9,7 @@ import Search from './components/Search.vue'
 import ValidQuestion from './components/ValidQuestion.vue'
 import Stock from './components/Stock.vue'
 import Info from './components/Info.vue'
-import Market from './components/Market.vue'
+import Fundamentals from './components/Fundamentals.vue'
 import ErrorComp from './components/Error.vue'
 import Unknown from './components/Unknown.vue'
 
@@ -23,7 +23,8 @@ const store = new Vuex.Store({
   state: {
     data: {},
     searchString: '',
-    page: ''
+    page: '',
+    ticker: undefined
   },
 
   mutations: {
@@ -31,6 +32,17 @@ const store = new Vuex.Store({
       state.data = payload.retrievedData
       state.searchString = payload.query
       state.page = payload.page
+      if (state.page !== 'QuestionUnknownAnswer') {
+        state.ticker = payload.retrievedData.companySymbol
+        if (state.ticker === undefined) {
+          // General Info answer
+          state.ticker = payload.retrievedData.answers[0].companySymbol
+        }
+        if (state.page === 'FundamentalsAnswer') {
+          // Fundamentals answer
+          state.ticker = payload.retrievedData.answers[0].data.ticker
+        }
+      }
     }
   }
 })
@@ -41,11 +53,9 @@ const routes = [
   { path: '/', name: 'Search', component: Search },
   { path: '/question', name: 'ValidQuestion', component: ValidQuestion, props: true,
     children: [
-      { path: 'Stock', name: 'StockAnswer',
-          component: Stock, props: true, meta: { requiresSearch: true }},
-      { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true,
-      meta: { requiresSearch: true } },
-      { path: 'Market', name: 'MarketAnswer', component: Market, props: true }
+      { path: 'Stock', name: 'StockAnswer', component: Stock, props: true },
+      { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true },
+      { path: 'Fundamentals', name: 'FundamentalsAnswer', component: Fundamentals, props: true }
     ]
   },
   { path: '/Error', name: 'Error', component: ErrorComp },
@@ -66,9 +76,11 @@ var router = new VueRouter({
 // Check before goin to each route if it is ok to be going there
 import SearchCheck from './SearchCheck.js'
 router.beforeEach((to, from, next) => {
+  console.log('Doing a check!!!')
   if (to.matched.some(record => record.meta.requiresSearch)) {
+    console.log('Needs to be checked')
     // This route requires a search to have been performed
-    if (!SearchCheck.searchHasBeenPerformedToThisClass(to.name)) {
+    if (!SearchCheck.searchHasBeenPerformed()) {
       next({
         path: '/'
       })

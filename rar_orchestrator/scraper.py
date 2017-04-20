@@ -94,10 +94,15 @@ def scrape_articles(articles, conn):
                     res['sadness'],
                     res['disgust']]
     
-            conn.execute("insert into articles values (?,?,?,?,?,?,?,?,?,?,?,?)", data)
-            conn.commit()
             with open(OUTPUT_DIR + hashed_url + ".html", 'w') as f:
-                f.write(page.read())
+                try:
+                    contents = page.read()
+                    f.write(contents)
+            	    conn.execute("insert into articles values (?,?,?,?,?,?,?,?,?,?,?,?)", data)
+            	    conn.commit()
+                except Exception as e:
+                    print str(e)
+                    print "Reading page failed.. Skipping article."
 
 def get_sentiment(url):
     key=os.environ['ALCHEMY_KEY']
@@ -165,8 +170,8 @@ def get_text(html):
     return '\n'.join(chunk for chunk in chunks if chunk)
 
 if __name__ == "__main__":
-    while True:
-        main()
+    #while True:
+    main()
 
 # TODO 
 # Create a collection for RAR

@@ -19,21 +19,21 @@ export default {
   border-left: 6px solid #42b983;
 }
 .good:hover {
-  border-left: 12px solid #42b983;
+  border-left: 10px solid #42b983;
 }
 
 .bad {
   border-left: 6px solid #FF6961;
 }
 .bad:hover {
-  border-left: 12px solid #FF6961;
+  border-left: 10px solid #FF6961;
 }
 
 .even {
   border-left: 6px solid #F8EC96;
 }
 .even:hover {
-  border-left: 12px solid #F8EC96;
+  border-left: 10px solid #F8EC96;
 }
 
 .article {
