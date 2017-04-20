@@ -1,20 +1,39 @@
 <template>
-  <div>
+  <div class='container'>
     <header class="searchBar">
-      <search smallpage="false"></search>
+      <search v-on:SP="possiblyGetArticles" smallpage="false"></search>
     </header>
-    <div class="info">
-      <h1>Sorry...</h1>
-      <h4> {{ theResponse.apology }} </h4>
+
+    <div class='col-md-3'>
+      <div class='sideBar'>
+      <!--This is where the side bar goes-->
+        <sidebar></sidebar>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="info">
+        <h1>Sorry! I don't know how to answer that.</h1>
+        <h2>Try again, swapping out tickers/words, remember that some short words can be tickers.</h2>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import search from './Search.vue'
+import sidebar from './Sidebar.vue'
+
 export default {
-  components: {
-    search: search
+  components: { 'sidebar': sidebar,
+      'search': search
+   },
+
+  data () {
+    return {
+      articles: null,
+      loaded: false,
+      cachedResponse: null
+    }
   },
 
   computed: {
@@ -29,8 +48,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .info {
-  color: #42b983;
-  background: rgba(173, 216, 230, 0.1);
-  height: 400px;
+  background: #42b983;
+  padding: 5px;
+  width: 100%;
+  margin: auto;
+  padding: 20px 2px 20px 2px;
+  color: #2c3e50;
+  //background: rgba(150, 150, 150, 0.3);
+  background: rgba(240,240,240,0.2);
 }
 </style>
