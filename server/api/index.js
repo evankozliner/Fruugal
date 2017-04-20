@@ -2,6 +2,7 @@ var QuestionClassifier = require('./questionClassifier.js');
 var GeneralInfoAnswer = require('./answers/generalInfoAnswer.js');
 var QuestionUnknownAnswer = require('./answers/questionUnknownAnswer.js');
 let StockAnswer = require('./answers/stockAnswer.js');
+let FundamentalsAnswer = require('./answers/fundamentalsAnswer.js');
 
 var routes = require('express').Router();
 
@@ -12,11 +13,14 @@ var stocks = require('./stocks.js');
 routes.use('/stocks', stocks);
 
 var routeQuestion = function(classificationRes) {
+  console.log(classificationRes);
   switch(classificationRes.watsonClassRes) {
     case "stock":
       return new StockAnswer(classificationRes.question);
     case "info":
       return new GeneralInfoAnswer(classificationRes.question);
+    case "fundamentals":
+      return new FundamentalsAnswer(classificationRes.question);
     default:
       return new QuestionUnknownAnswer(classificationRes.question);
   }
