@@ -19,7 +19,7 @@
 
     <div class="col-md-9">
       <transition name="fade" mode="out-in">
-        <router-view :articles="articles" :loaded="loadedArticles"></router-view>
+        <router-view :articles="articles" :loaded="loadedArticles" :fundData="fData"></router-view>
       </transition>
     </div>
   </div>
@@ -45,7 +45,8 @@ export default {
       loadedArticles: false,
       newPage: true,
       cachedResponse: null,
-      waitingOnLink: false
+      waitingOnLink: false,
+      fData: null
     }
   },
 
@@ -90,11 +91,26 @@ export default {
       })
     },
 
+    getFundamentalsData: function () {
+      var instance = this
+      var ticker = this.$store.state.ticker
+      SearchActions.sendFundamentalsRequest(this, ticker).then(function (result) {
+        console.log(result)
+        // Set the fData to the result
+        instance.fData = result
+      }, function (response) {
+        console.log('Error getting the fundamentals data')
+      })
+    },
+
     // Calls getArticles if validQuestion component is already created
+    // Calls getFundamentalsData if search was performed from the Fundamentals page
     possiblyGetArticles: function () {
       // If the page we are going to is a stock page, get articles for this company
       if (this.$store.state.page === 'StockAnswer') {
         this.getArticles()
+      } else if (this.$store.state.page === 'FundamentalsAnswer') {
+        this.getFundamentalsData()
       }
     },
 
@@ -124,6 +140,8 @@ export default {
     // Must first check its a stock answer so getArticles doesn't throw an error
     if (this.$store.state.page === 'StockAnswer') {
       this.getArticles()
+    } else if (this.$store.state.page === 'FundamentalsAnswer') {
+      this.getFundamentalsData()
     }
   },
 

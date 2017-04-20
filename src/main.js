@@ -33,7 +33,12 @@ const store = new Vuex.Store({
       state.page = payload.page
       state.ticker = payload.retrievedData.companySymbol
       if (state.page !== 'QuestionUnknownAnswer' && state.ticker === undefined) {
+        // General Info answer
         state.ticker = payload.retrievedData.answers[0].companySymbol
+      }
+      if (state.page === 'FundamentalsAnswer') {
+        // Fundamentals answer
+        state.ticker = payload.retrievedData.answers[0].data.ticker
       }
     }
   }

@@ -44,7 +44,7 @@ export default {
    */
   sendFundamentalsRequest (vueInstance, ticker) {
     return new Promise(function (resolve, reject) {
-      vueInstance.$http.get('/fundamentals/amzn').then(function (response) {
+      vueInstance.$http.get('/fundamentals/' + ticker).then(function (response) {
         // Check to make sure that a response was successful
         console.log('We got the fundamentals')
         var asJson = JSON.parse(response.body)

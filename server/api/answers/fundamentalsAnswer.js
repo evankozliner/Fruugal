@@ -19,7 +19,7 @@ module.exports = class FundamentalsAnswer extends Answer {
         classType: 'FundamentalsAnswer'
       }
     }).catch( (reason) => {
-      console.log("General info failure");
+      console.log("Fundamentals failure");
       return (new QuestionUnknownAnswer(this.rawQuestion)).answer();
     });
   }

@@ -24,7 +24,8 @@ import Article from './Article.vue'
 
 export default {
 
-  // The data returned from the API call
+  // 'articles' gets the article data from validQuestion
+  // 'loaded' gets whether the articles are still getting fetched
   props: ['articles', 'loaded'],
 
   components: {
@@ -48,12 +49,7 @@ export default {
       }
       return retval
     }
-  },
-
-  beforeDestroy: function () {
-    console.log('Stock.vue is being destroyed')
   }
-
 }
 </script>
 

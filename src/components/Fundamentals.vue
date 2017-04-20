@@ -2,12 +2,12 @@
   <div class="info">
     <h1>Fundamentals</h1>
     <div v-if="fundData === null">
-      <h3>Seems we don't have this company's data.</h3>
+      <h3>Seems we don't have {{theResponse.answers[0].data.name}}'s financial data.</h3>
       <h3>Sorry about that!</h3>
     </div>
     <div v-else> <!-- Server responded with data -->
       <div class='header'>
-        <h3>Financial information for {{ }}</h3>
+        <h3>Financial information for {{theResponse.answers[0].data.name}}</h3>
       </div>
       <table>
         <thead>
@@ -43,16 +43,16 @@
 </template>
 
 <script>
-import Search from '../SearchActions.js'
 var numeral = require('numeral')
 
 export default {
+
+  props: ['fundData'],
 
   data () {
     return {
       currentData: null,
       curPageNum: 0,
-      fundData: null,
       cashCarry: {},
       assets: {},
       liabilities: {},
@@ -64,6 +64,12 @@ export default {
     }
   },
 
+  watch: {
+    fundData: function () {
+      this.processFundamentalsData()
+    }
+  },
+
   computed: {
     // This function sets the data to the data in the store ONLY if the current page is
     // Fundamentals, meaning this is the component that is currently shown
@@ -71,7 +77,7 @@ export default {
       console.log('The method in Fundamentals.vue for getting the data was called')
       var storeData = this.$store.state
       var retVal = this.currentData
-      if (storeData.page === 'Fundamentals') {
+      if (storeData.page === 'FundamentalsAnswer') {
         retVal = storeData.data
         this.currentData = retVal
       }
@@ -87,59 +93,56 @@ export default {
     },
 
     // Sends request to get fundamentals data and preprocesses the returned data
-    getFundamentalsData: function () {
-      var instance = this
-      var ticker = this.$store.state.ticker
-      Search.sendFundamentalsRequest(this, ticker).then(function (result) {
-        console.log(result)
-        // Save all of the needed data
-        instance.fundData = result
-        // Return if no data was returned
-        if (instance.fundData === null) { return }
+    processFundamentalsData: function () {
+      // Return if no data was returned
+      if (this.fundData === null) { return }
+      var result = this.fundData
+      var cashCarryNums = result['CashAndCashEquivalentsAtCarryingValue']
+      var assetsNums = result['Assets']
+      var liabilitiesNums = result['LiabilitiesCurrent']
+      // Get all of the timestamps to be keys, and get the date that will be displayed
+      var keys = []
+      for (var obj in assetsNums) {
+        var date = new Date(obj * 1000)
+        var dateToDisplay = this.monthNames[date.getMonth() - 1] + ' ' + date.getFullYear()
+        keys.unshift([obj, dateToDisplay])
+      }
+      // Slice the keys array into the pagination sections of size 6 each
+      var i = 0
+      while (keys.length > 0) {
+        this.keyGroups[i] = keys.splice(0, 4)
+        i++
+      }
+      this.dispKeyGroup = this.keyGroups[0]  // Set the first group to display
 
-        var cashCarryNums = result['CashAndCashEquivalentsAtCarryingValue']
-        var assetsNums = result['Assets']
-        var liabilitiesNums = result['LiabilitiesCurrent']
-        // Get all of the timestamps to be keys, and get the date that will be displayed
-        var keys = []
-        for (var obj in assetsNums) {
-          var date = new Date(obj * 1000)
-          var dateToDisplay = instance.monthNames[date.getMonth() - 1] + ' ' + date.getFullYear()
-          keys.unshift([obj, dateToDisplay])
-        }
-        // Slice the keys array into the pagination sections of size 6 each
-        var i = 0
-        while (keys.length > 0) {
-          instance.keyGroups[i] = keys.splice(0, 4)
-          i++
-        }
-        instance.dispKeyGroup = instance.keyGroups[0]  // Set the first group to display
-
-        // Go through each array and change all numbers to currency
-        for (var key1 in assetsNums) {
+      // Go through each array and change all numbers to currency
+      for (var key1 in assetsNums) {
+        if (assetsNums[key1] !== 'Unknown') {
           var num1 = numeral(assetsNums[key1]).format('$0,0[.]00')
-          instance.assets[key1] = num1
+          this.assets[key1] = num1
+        } else {
+          this.assets[key1] = '-'
         }
+      }
 
-        for (var key2 in cashCarryNums) {
+      for (var key2 in cashCarryNums) {
+        if (cashCarryNums[key2] !== 'Unknown') {
           var num2 = numeral(cashCarryNums[key2]).format('$0,0[.]00')
-          instance.cashCarry[key2] = num2
+          this.cashCarry[key2] = num2
+        } else {
+          this.cashCarry[key2] = '-'
         }
+      }
 
-        for (var key3 in liabilitiesNums) {
+      for (var key3 in liabilitiesNums) {
+        if (liabilitiesNums[key3] !== 'Unknown') {
           var num3 = numeral(liabilitiesNums[key3]).format('$0,0[.]00')
-          instance.liabilities[key3] = num3
+          this.liabilities[key3] = num3
+        } else {
+          this.liabilities[key3] = '-'
         }
-      }, function (response) {
-        console.log('Error getting the fundamentals data')
-      })
+      }
     }
-
-  },
-
-  created: function () {
-    console.log('Fundamentals was created')
-    this.getFundamentalsData()
   }
 }
 </script>
