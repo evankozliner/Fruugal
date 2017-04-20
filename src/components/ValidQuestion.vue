@@ -28,6 +28,7 @@
 <script>
 import Sorter from '../Sentiment.js'
 import SearchActions from '../SearchActions.js'
+import Processor from '../Processor.js'
 import sidebar from './Sidebar.vue'
 import search from './Search.vue'
 export default {
@@ -91,13 +92,19 @@ export default {
       })
     },
 
+    // Sends a request to get the fundamentals data and then processes it
     getFundamentalsData: function () {
+      this.fData = undefined
       var instance = this
       var ticker = this.$store.state.ticker
       SearchActions.sendFundamentalsRequest(this, ticker).then(function (result) {
         console.log(result)
-        // Set the fData to the result
-        instance.fData = result
+        // Process the data as long as it is not null
+        if (result !== undefined) {
+          var processedData = Processor.processFundData(result)
+          instance.fData = processedData
+        }
+        console.log('Done in getFundamentalsData')
       }, function (response) {
         console.log('Error getting the fundamentals data')
       })
@@ -110,6 +117,7 @@ export default {
       if (this.$store.state.page === 'StockAnswer') {
         this.getArticles()
       } else if (this.$store.state.page === 'FundamentalsAnswer') {
+        console.log('Need to get fund data')
         this.getFundamentalsData()
       }
     },
@@ -172,7 +180,7 @@ header.searchBar {
 }
 
 button {
-  background-color: rgba(66, 191, 80, 0.8); /* Green */
+  background-color: rgba(66, 191, 80, 0.7); /* Green */
   border: none;
   color: white;
   padding: 8px;
