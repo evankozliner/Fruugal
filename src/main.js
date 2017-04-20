@@ -16,6 +16,7 @@ import Unknown from './components/Unknown.vue'
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.component('chartjs-line', require('./components/Chart.vue'))
 
 // Create the vuex store
 const store = new Vuex.Store({
