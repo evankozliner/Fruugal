@@ -30,8 +30,8 @@ export default {
     console.log(aCategory)
     for (var obj in result[aCategory]) {
       var date = new Date(obj * 1000)
-      var dateToDisplay = monthNames[date.getMonth() - 1] + ' ' + date.getFullYear()
-      keys.unshift([obj, dateToDisplay])  // Add this array to the keys
+      var dateToDisplay = monthNames[date.getMonth()] + ' ' + date.getFullYear()
+      keys.unshift([obj, dateToDisplay])
     }
     // Slice the keys array into the pagination sections of size 4 each
     var i = 0
