@@ -17,19 +17,10 @@
               <th v-for="key in fundData['dispKeyGroup']">{{ key[1] }}</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <th>Assets</th>
-              <td v-for="key in fundData['dispKeyGroup']">{{ fundData['assets'][key[0]] }}</td>
-            </tr>
-            <tr>
-              <th>Cash and Cash<br/>Equivalents at<br/> Carrying Value</th>
-              <td v-for="key in fundData['dispKeyGroup']">{{ fundData['cashCarry'][key[0]] }}</td>
-            </tr>
-            </tr>
-            <tr>
-              <th>Current Liabilities</th>
-              <td v-for="key in fundData['dispKeyGroup']">{{ fundData['liabilities'][key[0]] }}</td>
+          <tbody v-for="(data, category) in fundData">
+            <tr v-if="category !== 'keyGroups' && category !== 'dispKeyGroup'">
+              <th>{{ category }}</th>
+              <td v-for="key in fundData['dispKeyGroup']">{{ data[key[0]] }}</td>
             </tr>
           </tbody>
         </table>
