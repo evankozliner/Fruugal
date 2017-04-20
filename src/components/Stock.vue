@@ -1,10 +1,14 @@
 <template>
-<div class=''>
+<div>
   <div class="info">
     <header id='stock_info'>
       <h1>{{theResponse.companyName}}</h1>
       <h2>Current stock price: ${{theResponse.stockPrice}}</h2>
     </header>
+  </div>
+  
+  <div>
+    <chart :info="theResponse.chart"></chart>
   </div>
 
   <transition name="slide-fade" mode="out-in"> <!-- Allows articles div to transition in -->
@@ -21,6 +25,7 @@
 <script>
 import Spinner from './Spinner2.vue'
 import Article from './Article.vue'
+import Chart from './Chart.vue'
 
 export default {
 
@@ -29,7 +34,8 @@ export default {
 
   components: {
     'spinner': Spinner,
-    'article-box': Article
+    'article-box': Article,
+    'chart': Chart
   },
 
   data () {
