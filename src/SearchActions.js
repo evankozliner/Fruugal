@@ -39,6 +39,27 @@ export default {
   },
 
   /*
+   * Sends a request to the RAR server for articles
+   * Needs a instance of vue, stock ticker, and company name
+   */
+  sendArticlesRequest (vueInstance, ticker, name) {
+    let baseUrl = 'http://localhost:4040'
+    var fullUrl = baseUrl + '/' + ticker + '/' + name
+
+    return new Promise(function (resolve, reject) {
+      vueInstance.$http.get(fullUrl).then(function (response) {
+        // Success
+        var resp = response.body
+        resolve(resp)
+      }, function (response) {
+        // Error
+        console.log('Error getting articles')
+        resolve(undefined)
+      })
+    })
+  },
+
+  /*
    * Sends a request to the fundamentals API
    * Needs a instance of vue and a stock ticker
    */
@@ -51,7 +72,7 @@ export default {
         resolve(asJson)
       }, function (response) {
         console.log('There was an error getting the fundamentals')
-        resolve(null)
+        resolve(undefined)
       })
     })
   }

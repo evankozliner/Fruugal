@@ -13,7 +13,7 @@
     <div class="col-md-9">
       <div class="info">
         <h1>Sorry! I don't know how to answer that.</h1>
-        <h2>Try again, swapping out tickers/words, remember that some short words can be tickers.</h2>
+        <h3>Try again, swapping out tickers/words, remember that some short words can be tickers.</h3>
       </div>
     </div>
   </div>
@@ -26,22 +26,7 @@ import sidebar from './Sidebar.vue'
 export default {
   components: { 'sidebar': sidebar,
       'search': search
-   },
-
-  data () {
-    return {
-      articles: null,
-      loaded: false,
-      cachedResponse: null
-    }
-  },
-
-  computed: {
-    theResponse: function () {
-      return this.$store.state.data
-    }
-  }
-
+   }
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
     <header class="searchBar col-md-12">
-      <search v-on:SP="possiblyGetArticles" smallpage="false" :linkWasClicked="waitingOnLink"></search>
+      <search v-on:SP="possiblyGetData" smallpage="false" :linkWasClicked="waitingOnLink"></search>
       <div class="col-md-3" />
       <div id="nav-buttons" class="col-md-9">
         <button class="hvr-grow" @click="routerLinkClicked('Stock')" title="Checkout this company's current stock price"><i class="fa fa-line-chart fa-2x" aria-hidden="true"></i></button>
@@ -33,9 +33,6 @@ import sidebar from './Sidebar.vue'
 import search from './Search.vue'
 export default {
 
-  // theResponse will get the returned data
-  // props: ['theResponse'],
-
   components: { 'sidebar': sidebar,
       'search': search
    },
@@ -51,44 +48,26 @@ export default {
     }
   },
 
-  computed: {
-    theResponse: function () {
-      var storeData = this.$store.state
-      var retVal = this.cachedResponse
-      if (storeData.page === 'StockAnswer') {
-        retVal = storeData.data
-        this.cachedResponse = retVal
-      }
-      console.log('I am in theResponse')
-      return retVal
-    }
-  },
-
   methods: {
     // Sends a request to the RAR server to retrieve articles
     getArticles: function () {
       this.loadedArticles = false
-      console.log('Going to get articles')
-      // First get the ticker from the response
-      var ticker = '/' + this.theResponse.companySymbol
-      var companyName = '/' + this.theResponse.companyName
-      var baseUrl = 'http://localhost:4040'
+      var instance = this
 
-      var fullUrl = baseUrl + ticker + companyName
-      this.$http.get(fullUrl).then(response => {
-        // Success
-        var resp = response.body
-        console.log(resp)
-        if (!resp.hasOwnProperty('solrErrorMessage')) {
-          var arrOfArticles = resp.response.docs
-          this.articles = Sorter.sortByDate(arrOfArticles)
-          console.log(this.articles)
-          this.loadedArticles = true  // Stop the spinner
+      // First get the ticker and company from the store
+      var ticker = this.$store.state.ticker
+      // OK to access stock store directly because method only called if class is stock
+      var companyName = this.$store.state.stock.data.companyName
+
+      SearchActions.sendArticlesRequest(this, ticker, companyName).then(function (result) {
+        if (!result.hasOwnProperty('solrErrorMessage') && result !== undefined) {
+          var arrOfArticles = result.response.docs
+          instance.articles = Sorter.sortByDate(arrOfArticles)
+          instance.loadedArticles = true   // Stop the spinner
         }
-      }, response => {
-        // Error
+      }, function (result) {
         console.log('Error getting articles')
-        this.loadedArticles = true  // Stop the spinner
+        instance.loadedArticles = true   // Stop the spinner
       })
     },
 
@@ -112,11 +91,12 @@ export default {
 
     // Calls getArticles if validQuestion component is already created
     // Calls getFundamentalsData if search was performed from the Fundamentals page
-    possiblyGetArticles: function () {
+    possiblyGetData: function () {
+      var page = this.$store.state.mostRecentPage
       // If the page we are going to is a stock page, get articles for this company
-      if (this.$store.state.page === 'StockAnswer') {
+      if (page === 'StockAnswer') {
         this.getArticles()
-      } else if (this.$store.state.page === 'FundamentalsAnswer') {
+      } else if (page === 'FundamentalsAnswer') {
         console.log('Need to get fund data')
         this.getFundamentalsData()
       }
@@ -131,7 +111,7 @@ export default {
       var instance = this
       SearchActions.initialSearch(this, query).then(function (result) {
         console.log('Search was classified')
-        instance.possiblyGetArticles()
+        instance.possiblyGetData()
         instance.waitingOnLink = false
         instance.$router.push(result)
       }, function (err) {
@@ -145,10 +125,11 @@ export default {
   // Method for making the call to get articles from the cluster
   // This will be called as soon as the component is ready
   created: function () {
+    var page = this.$store.state.mostRecentPage
     // Must first check its a stock answer so getArticles doesn't throw an error
-    if (this.$store.state.page === 'StockAnswer') {
+    if (page === 'StockAnswer') {
       this.getArticles()
-    } else if (this.$store.state.page === 'FundamentalsAnswer') {
+    } else if (page === 'FundamentalsAnswer') {
       this.getFundamentalsData()
     }
   },

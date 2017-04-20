@@ -2,21 +2,21 @@
 // been perfomed
 export default {
   search: {
-    sp: false,
-    mostRecentClass: ''
+    StockAnswer: false,
+    GeneralInfoAnswer: false,
+    FundamentalsAnswer: false
   },
 
   searchPerformed (classType) {
     console.log('Here in SearchCheck')
     console.log(classType)
-    this.search.sp = true
-    this.search.mostRecentClass = classType
-    console.log(this.search.mostRecentClass)
+    this[classType] = true
+    console.log(this[classType])
   },
 
-  searchHasBeenPerformed () {
-    console.log('Here in SearchCheck')
-    console.log(this.search.mostRecentClass)
-    return this.search.sp
+  canGoToThisComponent (classType) {
+    console.log('Here in canGoToThisComponent')
+    console.log(classType)
+    return this[classType] === true
   }
 }

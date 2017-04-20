@@ -5,33 +5,17 @@
     <p><b>Headquarters: </b>{{theResponse.answers[1].data.hq_state}}</p>
     <p><b>Number of employees:</b> {{theResponse.answers[1].data.employees}}</p>
     <p>{{theResponse.answers[1].data.short_description}}</p>
-    <a :href="theResponse.answers[1].data.company_url" style="color:#42b983;font-size:35px">{{theResponse.answers[1].data.company_url}}</a>
+    <a :href="'http://' + theResponse.answers[1].data.company_url" target="_blank" style="color:#42b983;font-size:35px">{{theResponse.answers[1].data.company_url}}</a>
   </div>
 </template>
 
 <script>
 export default {
-
-  // The data returned from the API call
-  // props: ['theResponse'],
-
-  data () {
-    return {
-      currentData: null
-    }
-  },
-
   computed: {
     // This function sets the data to the data in the store ONLY if the current page is
     // GeneralInfoAnswer, meaning this is the component that is currently shown
     theResponse: function () {
-      console.log('The method in Info.vue for getting the data was called')
-      var storeData = this.$store.state
-      var retVal = this.currentData
-      if (storeData.page === 'GeneralInfoAnswer') {
-        retVal = storeData.data
-        this.currentData = retVal
-      }
+      var retVal = this.$store.state.info.data
       return retVal
     }
   },
