@@ -71,4 +71,7 @@ button {
   background: rgba(150, 150, 150, 0.3);
   transition: all 0.2s ease-in-out;
 }
+#myDIV {
+    display: none;
+}
 </style>
