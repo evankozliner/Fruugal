@@ -35,7 +35,7 @@
 
       <div> <!-- For pagination at the bottom of the table -->
         <div id="pagination" v-for="(obj, index) in keyGroups">
-            <a @click="dispKeyGroup=keyGroups[index]" href="#0">{{ index+1 }}</a>
+            <a :class="{active: curPageNum == index}" @click="updatePagination(index)" href="#0">{{ index+1 }}</a>
         </div>
       </div>
     </div> <!-- End of fundamentals data -->
@@ -51,6 +51,7 @@ export default {
   data () {
     return {
       currentData: null,
+      curPageNum: 0,
       fundData: null,
       cashCarry: {},
       assets: {},
@@ -75,6 +76,14 @@ export default {
         this.currentData = retVal
       }
       return retVal
+    }
+  },
+
+  methods: {
+    updatePagination: function (index) {
+      this.dispKeyGroup = this.keyGroups[index]
+      this.curPageNum = index
+      console.log(index)
     }
   },
 
@@ -176,6 +185,10 @@ table, td, th {
   text-decoration: none;
   border: 1px rgba(240,240,240,0.1) solid;
   transition: background-color .2s;
+}
+
+#pagination .active {
+  background: rgba(240,240,240,0.8);
 }
 
 #pagination a:hover {
