@@ -2,8 +2,11 @@
   <div class="small">
     <h3>Past Year Stock Minimum: ${{info.Elements[0].DataSeries.close.min}} on {{info.Elements[0].DataSeries.close.minDate.substr(0,10)}}</h3>
     <h3>Past Year Stock Maximum: ${{info.Elements[0].DataSeries.close.max}} on {{info.Elements[0].DataSeries.close.maxDate.substr(0,10)}}</h3>
-    <button @click="fillData()">Graph (remember to refresh by clicking again!)</button>
-      <line-chart :chart-data="datacollection"></line-chart>
+    </br>
+    <button @click="fillData();toggle()">Graph (toggle to reload)</button>
+      <div id="myDIV">
+        <line-chart :chart-data="datacollection"></line-chart>
+      </div>
   </div>
 </template>
 
@@ -37,6 +40,13 @@
             }
           ]
         }
+      }, toggle () {
+        var x = document.getElementById('myDIV')
+        if (x.style.display === 'none') {
+          x.style.display = 'block'
+        } else {
+          x.style.display = 'none'
+        }
       }
     }
   }
@@ -48,15 +58,17 @@
     margin:  center;
   }
 button {
-  height: 32px;
-  width: 200px;
+  height: 68px;
+  width: 600px;
   margin-left: 6px;
   border-radius: 5px;
   border: none;
   outline: none;
   cursor: pointer;
-  color: #2E86AB;
-  font: inherit;
+  color: #42b983;
+  font-size: 50px;
+  font-family: sansserif;
+  background: rgba(150, 150, 150, 0.3);
   transition: all 0.2s ease-in-out;
 }
 </style>
