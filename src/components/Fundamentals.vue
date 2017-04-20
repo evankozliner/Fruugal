@@ -102,6 +102,7 @@ table, td, th {
   border: 1px solid #2E86AB;
   padding: 8px;
   font-size: 16px;
+  text-align: center;
 }
 
 
