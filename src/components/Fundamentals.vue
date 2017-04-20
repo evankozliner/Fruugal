@@ -80,61 +80,66 @@ export default {
   },
 
   methods: {
+    // Updates the curPageNum for the pagination tabs so active class can change
     updatePagination: function (index) {
       this.dispKeyGroup = this.keyGroups[index]
       this.curPageNum = index
-      console.log(index)
+    },
+
+    // Sends request to get fundamentals data and preprocesses the returned data
+    getFundamentalsData: function () {
+      var instance = this
+      var ticker = this.$store.state.ticker
+      Search.sendFundamentalsRequest(this, ticker).then(function (result) {
+        console.log(result)
+        // Save all of the needed data
+        instance.fundData = result
+        // Return if no data was returned
+        if (instance.fundData === null) { return }
+
+        var cashCarryNums = result['CashAndCashEquivalentsAtCarryingValue']
+        var assetsNums = result['Assets']
+        var liabilitiesNums = result['LiabilitiesCurrent']
+        // Get all of the timestamps to be keys, and get the date that will be displayed
+        var keys = []
+        for (var obj in assetsNums) {
+          var date = new Date(obj * 1000)
+          var dateToDisplay = instance.monthNames[date.getMonth() - 1] + ' ' + date.getFullYear()
+          keys.unshift([obj, dateToDisplay])
+        }
+        // Slice the keys array into the pagination sections of size 6 each
+        var i = 0
+        while (keys.length > 0) {
+          instance.keyGroups[i] = keys.splice(0, 4)
+          i++
+        }
+        instance.dispKeyGroup = instance.keyGroups[0]  // Set the first group to display
+
+        // Go through each array and change all numbers to currency
+        for (var key1 in assetsNums) {
+          var num1 = numeral(assetsNums[key1]).format('$0,0[.]00')
+          instance.assets[key1] = num1
+        }
+
+        for (var key2 in cashCarryNums) {
+          var num2 = numeral(cashCarryNums[key2]).format('$0,0[.]00')
+          instance.cashCarry[key2] = num2
+        }
+
+        for (var key3 in liabilitiesNums) {
+          var num3 = numeral(liabilitiesNums[key3]).format('$0,0[.]00')
+          instance.liabilities[key3] = num3
+        }
+      }, function (response) {
+        console.log('Error getting the fundamentals data')
+      })
     }
+
   },
 
   created: function () {
     console.log('Fundamentals was created')
-    var instance = this
-    var ticker = this.$store.state.ticker
-    Search.sendFundamentalsRequest(this, ticker).then(function (result) {
-      console.log(result)
-      // Save all of the needed data
-      instance.fundData = result
-      // Return if no data was returned
-      if (instance.fundData === null) { return }
-
-      var cashCarryNums = result['CashAndCashEquivalentsAtCarryingValue']
-      var assetsNums = result['Assets']
-      var liabilitiesNums = result['LiabilitiesCurrent']
-      // Get all of the timestamps to be keys, and get the date that will be displayed
-      var keys = []
-      for (var obj in assetsNums) {
-        var date = new Date(obj * 1000)
-        var dateToDisplay = instance.monthNames[date.getMonth() - 1] + ' ' + date.getFullYear()
-        keys.unshift([obj, dateToDisplay])
-      }
-      // Slice the keys array into the pagination sections of size 6 each
-      var i = 0
-      while (keys.length > 0) {
-        instance.keyGroups[i] = keys.splice(0, 4)
-        i++
-      }
-      instance.dispKeyGroup = instance.keyGroups[0]  // Set the first group to display
-
-      // Go through each array and change all numbers to currency
-      for (var key1 in assetsNums) {
-        var num1 = numeral(assetsNums[key1]).format('$0,0[.]00')
-        instance.assets[key1] = num1
-      }
-      console.log(instance.assets)
-      for (var key2 in cashCarryNums) {
-        var num2 = numeral(cashCarryNums[key2]).format('$0,0[.]00')
-        instance.cashCarry[key2] = num2
-      }
-      for (var key3 in liabilitiesNums) {
-        var num3 = numeral(liabilitiesNums[key3]).format('$0,0[.]00')
-        instance.liabilities[key3] = num3
-      }
-
-      console.log(instance.keyGroups)
-    }, function (response) {
-      console.log('Error getting the fundamentals data')
-    })
+    this.getFundamentalsData()
   }
 }
 </script>
@@ -145,7 +150,7 @@ export default {
   background: #42b983;
   padding: 5px;
   //width: 100%;
-  min-height: 60em;
+  min-height: 40em;
   margin: auto;
   padding: 20px 2px 20px 2px;
   color: #2c3e50;
@@ -166,7 +171,7 @@ table {
 
 table, td, th {
   border: 1px solid #2E86AB;
-  padding: 5px;
+  padding: 8px;
   font-size: 16px;
 }
 
