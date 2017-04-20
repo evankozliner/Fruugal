@@ -3,7 +3,7 @@
     <h3>Past Year Stock Minimum: ${{info.Elements[0].DataSeries.close.min}} on {{info.Elements[0].DataSeries.close.minDate.substr(0,10)}}</h3>
     <h3>Past Year Stock Maximum: ${{info.Elements[0].DataSeries.close.max}} on {{info.Elements[0].DataSeries.close.maxDate.substr(0,10)}}</h3>
     </br>
-    <button @click="fillData();toggle()">Graph (toggle to reload)</button>
+    <button @click="fillData();toggle()" id="theChart">Graph (toggle to reload)</button>
       <div id="myDIV">
         <line-chart :chart-data="datacollection"></line-chart>
       </div>
@@ -57,7 +57,7 @@
     max-width: 100%;
     margin:  center;
   }
-button {
+#theChart {
   height: 68px;
   width: 600px;
   margin-left: 6px;
@@ -68,7 +68,6 @@ button {
   color: #42b983;
   font-size: 50px;
   font-family: sansserif;
-  background: rgba(150, 150, 150, 0.3);
   transition: all 0.2s ease-in-out;
 }
 #myDIV {
