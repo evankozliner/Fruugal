@@ -51,13 +51,7 @@ export default {
     // This function sets the data to the data in the store ONLY if the current page is
     // Fundamentals, meaning this is the component that is currently shown
     theResponse: function () {
-      console.log('The method in Fundamentals.vue for getting the data was called')
-      var storeData = this.$store.state
-      var retVal = this.currentData
-      if (storeData.page === 'FundamentalsAnswer' || storeData.page === 'QuestionUnknownAnswer') {
-        retVal = storeData.data
-        this.currentData = retVal
-      }
+      var retVal = this.$store.state.fundamentals.data
       return retVal
     }
   },

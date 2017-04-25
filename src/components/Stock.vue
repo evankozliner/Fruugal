@@ -6,7 +6,7 @@
       <h2>Current stock price: ${{theResponse.stockPrice}}</h2>
     </header>
   </div>
-  
+
   <div>
     <chart :info="theResponse.chart"></chart>
   </div>
@@ -47,12 +47,7 @@ export default {
 
   computed: {
     theResponse: function () {
-      var storeData = this.$store.state
-      var retval = this.currentData
-      if (storeData.page === 'StockAnswer') {
-        retval = storeData.data
-        this.currentData = retval
-      }
+      var retval = this.$store.state.stock.data
       return retval
     }
   }

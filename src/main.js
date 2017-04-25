@@ -21,28 +21,48 @@ Vue.component('chartjs-line', require('./components/Chart.vue'))
 // Create the vuex store
 const store = new Vuex.Store({
   state: {
-    data: {},
-    searchString: '',
-    page: '',
+    stock: {
+      data: {},
+      searchString: '',
+      page: '',
+      ticker: undefined
+    },
+
+    info: {
+      data: {},
+      searchString: '',
+      page: '',
+      ticker: undefined
+    },
+
+    fundamentals: {
+      data: {},
+      searchString: '',
+      page: '',
+      ticker: undefined
+    },
+
+    mostRecentPage: undefined,
     ticker: undefined
   },
 
   mutations: {
     newDataRetrieved (state, payload) {
-      state.data = payload.retrievedData
-      state.searchString = payload.query
-      state.page = payload.page
-      if (state.page !== 'QuestionUnknownAnswer') {
+      // Update the corresponding object to the page name
+      if (payload.page === 'StockAnswer') {
+        state.stock.data = payload.retrievedData
+        state.stock.ticker = payload.retrievedData.companySymbol
         state.ticker = payload.retrievedData.companySymbol
-        if (state.ticker === undefined) {
-          // General Info answer
-          state.ticker = payload.retrievedData.answers[0].companySymbol
-        }
-        if (state.page === 'FundamentalsAnswer') {
-          // Fundamentals answer
-          state.ticker = payload.retrievedData.answers[0].data.ticker
-        }
+      } else if (payload.page === 'GeneralInfoAnswer') {
+        state.info.data = payload.retrievedData
+        state.info.ticker = payload.retrievedData.answers[0].companySymbol
+        state.ticker = payload.retrievedData.answers[0].companySymbol
+      } else if (payload.page === 'FundamentalsAnswer') {
+        state.fundamentals.data = payload.retrievedData
+        state.fundamentals.ticker = payload.retrievedData.answers[0].data.ticker
+        state.ticker = payload.retrievedData.answers[0].data.ticker
       }
+      state.mostRecentPage = payload.page
     }
   }
 })
@@ -53,9 +73,9 @@ const routes = [
   { path: '/', name: 'Search', component: Search },
   { path: '/question', name: 'ValidQuestion', component: ValidQuestion, props: true,
     children: [
-      { path: 'Stock', name: 'StockAnswer', component: Stock, props: true },
-      { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true },
-      { path: 'Fundamentals', name: 'FundamentalsAnswer', component: Fundamentals, props: true }
+      { path: 'Stock', name: 'StockAnswer', component: Stock, props: true, meta: { requiresCheck: true } },
+      { path: 'Information', name: 'GeneralInfoAnswer', component: Info, props: true, meta: { requiresCheck: true } },
+      { path: 'Fundamentals', name: 'FundamentalsAnswer', component: Fundamentals, props: true, meta: { requiresCheck: true } }
     ]
   },
   { path: '/Error', name: 'Error', component: ErrorComp },
@@ -77,10 +97,11 @@ var router = new VueRouter({
 import SearchCheck from './SearchCheck.js'
 router.beforeEach((to, from, next) => {
   console.log('Doing a check!!!')
-  if (to.matched.some(record => record.meta.requiresSearch)) {
+  if (to.matched.some(record => record.meta.requiresCheck)) {
     console.log('Needs to be checked')
+    console.log(to)
     // This route requires a search to have been performed
-    if (!SearchCheck.searchHasBeenPerformed()) {
+    if (!SearchCheck.canGoToThisComponent(to.name)) {
       next({
         path: '/'
       })
